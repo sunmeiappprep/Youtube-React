@@ -2,6 +2,7 @@ import axios from 'axios';
 import api from './axiosInterceptors';
 
 export const loginUser = async (email,password) => {
+
     const url = 'http://localhost:8080/login'; // Adjust the URL to match your backend endpoint
     const userData = {
       username: email,
@@ -10,9 +11,10 @@ export const loginUser = async (email,password) => {
 
     try {
       const response = await axios.post(url, userData);
-      console.log('Login successful:', response.data);
-      localStorage.setItem('token', response.data);
+      console.log('Login successful:', response.data.user);
+      localStorage.setItem('token', response.data.jwtToken);
       console.log(localStorage.getItem('token'));
+      return response.data
       // Handle response here (e.g., redirect to another page, store the user data, etc.)
     } catch (error) {
       console.error('Login failed:', error.response || error.message);

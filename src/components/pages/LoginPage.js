@@ -1,16 +1,27 @@
 // LoginPage.jsx
 import React, { useState } from 'react';
 import { loginUser } from '../../utils/authUtils';
+import { useGlobalState } from '../../StateContext'; 
+
 function LoginPage() {
+  const { user,token,setUser, setToken } = useGlobalState(); // Access the context methods
+  console.log(user, token)
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleSubmit = (event) => {
+  const  handleSubmit  = async (event) => {
     event.preventDefault();
     // Handle the login logic here
-    console.log(email, password);
+    let data = await loginUser(email, password)
+    console.log(data)
+    setUser(data.user.id)
+    setToken(data.jwtToken)
+    console.log("Global state user:", user);
+    console.log("Global state token:", token);
     // You would replace the above console.log with your login logic
   };
+
+  
 
   return (
     <div className="min-h-screen flex flex-col justify-center items-center bg-gray-100">
@@ -42,7 +53,7 @@ function LoginPage() {
           />
         </div>
         <div className="flex items-center justify-between">
-          <button onClick={() => loginUser(email, password)}
+          <button 
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
             type="submit"
           >
