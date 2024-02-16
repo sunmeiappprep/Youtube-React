@@ -1,25 +1,30 @@
 // LoginPage.jsx
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { loginUser } from '../../utils/authUtils';
 import { useGlobalState } from '../../StateContext'; 
 
 function LoginPage() {
   const { user,token,setUser, setToken } = useGlobalState(); // Access the context methods
-  console.log(user, token)
+
+  useEffect(() => {
+    console.log("Updated global state user:", user);
+    console.log("Updated global state token:", token);
+  }, [user, token]); // This effect runs when `user` or `token` changes
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const  handleSubmit  = async (event) => {
     event.preventDefault();
     // Handle the login logic here
-    let data = await loginUser(email, password)
+    let data = await loginUser("asdasd1@gmail.com", 'asdasd')
     console.log(data)
     setUser(data.user.id)
     setToken(data.jwtToken)
-    console.log("Global state user:", user);
-    console.log("Global state token:", token);
     // You would replace the above console.log with your login logic
   };
+
+  
 
   
 
