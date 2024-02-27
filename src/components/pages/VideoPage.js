@@ -4,6 +4,12 @@ import { addLiked, getLiked } from '../../utils/videoReactionUtils';
 import { useGlobalState } from '../../StateContext';
 import LikedAndDislike from '../videoPageComponent/LikedAndDislike';
 import LikeAndDislikeButton from '../videoPageComponent/LikeAndDislikeButton';
+import VideoEmbed from '../videoPageComponent/VideoEmbed';
+import NavBar from '../navBar/NavBar';
+import CommentInput from '../videoPageComponent/CommentInput';
+import CommentsDisplay from '../videoPageComponent/CommentsDisplay';
+import { getComments } from '../../utils/commentUtils';
+
 function VideoPage() {
   const { user, token, setUser, setToken } = useGlobalState(); 
   const [title, setVideoTitle] = useState('');
@@ -11,6 +17,11 @@ function VideoPage() {
   const [description, setVideoDescription] = useState('');
   const [liked,setLiked] = useState([])
   const videoId = window.location.pathname.split("/")[2];
+  const [comments, setComments] = useState([]);
+
+
+
+
   useEffect(() => {
    
     
@@ -22,6 +33,8 @@ function VideoPage() {
     getLiked(videoId).then((e) => {
       setLiked(e)
     })
+    getComments(videoId).then((e) => setComments(e)) 
+
   }, []); 
 
   const handleUpdateLiked = () => { 
@@ -29,24 +42,23 @@ function VideoPage() {
       setLiked(e);
     });
   }
+
+  const handleUpdateComment = () => { 
+    getComments(videoId).then((e) => setComments(e)) 
+  }
   
 
   console.log(title, url, description,liked)
-  const code = url.split("=")[1]
+  const youtubeCode = url.split("=")[1]
   return (
     <div className="video-responsive">
-      <iframe
-        width="853"
-        height="480"
-        src={`https://www.youtube.com/embed/${code}`}
-        frameBorder="0"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-        allowFullScreen
-        title="Embedded youtube"
-      />
+      <NavBar/>
+      <VideoEmbed videoId={youtubeCode}/>
       <LikedAndDislike liked={liked} videoId={videoId}/>
       <LikeAndDislikeButton videoId={videoId} handleUpdateLiked={handleUpdateLiked}/>
-    </div>
+      <CommentInput videoId={videoId} handleUpdateComment = {handleUpdateComment}/>
+      <CommentsDisplay comments={comments}/>
+     </div>
   );
 }
 

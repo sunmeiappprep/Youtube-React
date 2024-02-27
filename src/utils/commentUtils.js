@@ -13,7 +13,8 @@ export const createComment = async (commentInfo) => {
 export const getComments = async (videoId) => {
     try {
         const response = await api.get(`http://localhost:8080/api/comment/get/video/${videoId}`);
-        console.log(response.data); // Handle the response as needed
+        console.log(response.data)
+        return(response.data); 
     } catch (error) {
         console.error(error.response ? error.response.data : error.message);
     }

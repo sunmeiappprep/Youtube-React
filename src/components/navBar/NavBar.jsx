@@ -22,6 +22,12 @@ function NavBar() {
     const handleLogin = () => {
       navigate("signin")
     }
+
+    const handleHomepageRedirect = () => {
+      if (window.location.pathname !== "/") {
+        navigate("/")
+      }
+    }
     useEffect(() => {
     console.log("Updated global state user:", user);
     console.log("Updated global state token:", token);
@@ -31,7 +37,7 @@ function NavBar() {
     <div className="flex justify-between items-center w-full px-4 py-2">
       <div className="flex gap-4">
       <SubMenu/>
-      <img src={Youtube} className="h-6 w-18" alt="YouTube" />
+      <img onClick={handleHomepageRedirect} src={Youtube} className="h-6 w-18" alt="YouTube" />
       </div>
       <div>
       <SearchBar className="max-w-screen-md"  />  {/* SearchBar will take the available space but won't be exactly centered due to other elements taking space too */}
