@@ -23,7 +23,8 @@ export const getComments = async (videoId) => {
 export const updateComment = async (commentId,text) => {
     try {
       const response = await api.put(`http://localhost:8080/api/comment/edit/${commentId}`,text);
-      console.log(response.data); // Handle the response as needed
+      console.log(response.data); 
+      return response.data
     } catch (error) {
       console.error(error.response ? error.response.data : error.message);
     }
@@ -32,7 +33,8 @@ export const updateComment = async (commentId,text) => {
 export const deleteComment = async (id) => {
     try {
       const response = await api.delete(`http://localhost:8080/api/comment/${id}`);
-      console.log(response.data); // Handle the response as needed
+      console.log(response.data);
+      return response.data
     } catch (error) {
       console.error(error.response ? error.response.data : error.message);
     }

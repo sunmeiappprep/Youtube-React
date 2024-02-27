@@ -46,6 +46,8 @@ function VideoPage() {
   const handleUpdateComment = () => { 
     getComments(videoId).then((e) => setComments(e)) 
   }
+
+  
   
 
   console.log(title, url, description,liked)
@@ -57,7 +59,7 @@ function VideoPage() {
       <LikedAndDislike liked={liked} videoId={videoId}/>
       <LikeAndDislikeButton videoId={videoId} handleUpdateLiked={handleUpdateLiked}/>
       <CommentInput videoId={videoId} handleUpdateComment = {handleUpdateComment}/>
-      <CommentsDisplay comments={comments}/>
+      <CommentsDisplay comments={comments} handleUpdateComment={handleUpdateComment}/>
      </div>
   );
 }
