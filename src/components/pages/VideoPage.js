@@ -5,30 +5,31 @@ import { useGlobalState } from '../../StateContext';
 import LikedAndDislike from '../videoPageComponent/LikedAndDislike';
 import LikeAndDislikeButton from '../videoPageComponent/LikeAndDislikeButton';
 function VideoPage() {
-  const { user, token, setUser, setToken } = useGlobalState(); // Access the context methods
+  const { user, token, setUser, setToken } = useGlobalState(); 
   const [title, setVideoTitle] = useState('');
   const [url, setVideoURL] = useState('');
   const [description, setVideoDescription] = useState('');
   const [liked,setLiked] = useState([])
   const videoId = window.location.pathname.split("/")[2];
   useEffect(() => {
-    // Assuming `window.location.pathname.split("/")[2]` correctly retrieves your video ID
+   
     
     getVideo(videoId).then((e) => {
-      setVideoTitle(e.title); // Assuming the response object has a title property
-      setVideoURL(e.url); // Assuming the response object has a url property
+      setVideoTitle(e.title); 
+      setVideoURL(e.url);
       setVideoDescription(e.description);
     });
     getLiked(videoId).then((e) => {
       setLiked(e)
     })
-  }, []); // Empty dependency array means this runs once after the component mounts
+  }, []); 
 
   const handleUpdateLiked = () => { 
     getLiked(videoId).then((e) => {
-      setLiked(e)
-    })
+      setLiked(e);
+    });
   }
+  
 
   console.log(title, url, description,liked)
   const code = url.split("=")[1]

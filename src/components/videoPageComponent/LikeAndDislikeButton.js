@@ -6,8 +6,7 @@ export default function LikeAndDislikeButton({videoId,handleUpdateLiked}) {
             videoId: videoId,
             liked: true,
         }
-        addLiked(likedInfo);
-        handleUpdateLiked()
+        addLiked(likedInfo).then(() => handleUpdateLiked())
          
     }
 
@@ -16,8 +15,7 @@ export default function LikeAndDislikeButton({videoId,handleUpdateLiked}) {
             videoId: videoId,
             liked: false,
         }
-        addLiked(likedInfo);
-        handleUpdateLiked()
+        addLiked(likedInfo).then(() => handleUpdateLiked())
     }
   return (
     <div>
