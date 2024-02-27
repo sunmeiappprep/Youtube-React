@@ -1,11 +1,11 @@
 import axios from 'axios';
 import api from './axiosInterceptors';
 
-export const loginUser = async (email,password) => {
+export const loginUser = async (username,password) => {
 
     const url = 'http://localhost:8080/login'; // Adjust the URL to match your backend endpoint
     const userData = {
-      username: email,
+      username: username,
       password: password
     };
 
@@ -35,10 +35,10 @@ export const loginUser = async (email,password) => {
   };
   
 
-export const registerUser = async (email,password) => {
+export const registerUser = async (username,password) => {
     const url = 'http://localhost:8080/register'; // Adjust the URL to match your backend endpoint
     const userData = {
-      username: email,
+      username: username,
       password: password
     };
 

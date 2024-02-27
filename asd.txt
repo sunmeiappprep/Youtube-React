@@ -1,4 +1,51 @@
-// LoginPage.jsx
+
+
+      // <form onSubmit={handleSubmit} className="w-full max-w-lg">
+      //   <div className="mb-5">
+      //     <label htmlFor="title" className="block text-sm font-medium text-gray-700">
+      //       Video Title:
+      //     </label>
+      //     <input
+      //       id="title"
+      //       type="text"
+      //       value={title}
+      //       onChange={(e) => setVideoTitle(e.target.value)}
+      //       required
+      //       className="mt-1 p-2 w-full border rounded-md"
+      //     />
+      //   </div>
+      //   <div className="mb-5">
+      //     <label htmlFor="url" className="block text-sm font-medium text-gray-700">
+      //       Video URL:
+      //     </label>
+      //     <input
+      //       id="url"
+      //       type="url"
+      //       value={url}
+      //       onChange={(e) => setVideoURL(e.target.value)}
+      //       required
+      //       className="mt-1 p-2 w-full border rounded-md"
+      //     />
+      //   </div>
+      //   <div className="mb-6">
+      //     <label htmlFor="description" className="block text-sm font-medium text-gray-700">
+      //       Video Description (Optional):
+      //     </label>
+      //     <textarea
+      //       id="description"
+      //       value={description}
+      //       onChange={(e) => setVideoDescription(e.target.value)}
+      //       className="mt-1 p-2 w-full border rounded-md"
+      //       rows="4"
+      //     />
+      //   </div>
+      //   <button onClick={postVideo} type="submit" className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700">
+      //     Submit
+      //   </button>
+      // </form>
+
+
+      // LoginPage.jsx
 import React, { useState,useEffect } from 'react';
 import { loginUser } from '../../utils/authUtils';
 import { useGlobalState } from '../../StateContext'; 
@@ -11,7 +58,7 @@ function LoginPage() {
     console.log("Updated global state token:", token);
   }, [user, token]); // This effect runs when `user` or `token` changes
 
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const  handleSubmit  = async (event) => {
@@ -24,23 +71,7 @@ function LoginPage() {
     // You would replace the above console.log with your login logic
   };
 
-  const handleChange = (e) => {
-    console.log(e)
-      const { name, value } = e.target;
-      if (name === 'username') {
-          setUsername(value)
-          console.log(username)
-      } else if (name === 'password') {
-          setPassword(value)
-          console.log(username)
-
-      }
-  };
-
-  const handleLogin = async (e) => {
-    let data = await loginUser(email,password)
-    console.log(data)
-};
+  
 
   
 
@@ -48,16 +79,16 @@ function LoginPage() {
     <div className="min-h-screen flex flex-col justify-center items-center bg-gray-100">
       <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4" onSubmit={handleSubmit}>
         <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="username">
-            Username
+          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
+            Email
           </label>
           <input
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            id="username"
-            type="username"
-            placeholder="username"
-            value={username}
-            onChange={(e) => handleChange(e.target.value)}
+            id="email"
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
         </div>
         <div className="mb-6">
@@ -70,11 +101,11 @@ function LoginPage() {
             type="password"
             placeholder="******************"
             value={password}
-            onChange={(e) => handleChange(e.target.value)}
+            onChange={(e) => setPassword(e.target.value)}
           />
         </div>
         <div className="flex items-center justify-between">
-          <button onClick={(e) => handleLogin}
+          <button 
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
             type="submit"
           >
