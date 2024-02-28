@@ -21,7 +21,7 @@ const CommentOptions = ({ handleEdit, handleDelete }) => (
 
 const CommentsDisplay = ({ comments,handleUpdateComment }) => {
     const [activeComment, setActiveComment] = useState(null);
-    const [activeCommentUserId, setActiveCommentUserId] = useState(null);
+    const [activeCommentUserId, setActiveCommentUserId] = useState(false);
     const { user, token, setUser, setToken } = useGlobalState(); // Access the context methods
 
     const handleToggleOptions = (comment) => {
@@ -31,10 +31,10 @@ const CommentsDisplay = ({ comments,handleUpdateComment }) => {
             setActiveComment(comment.id);
         }
 
-        if (activeCommentUserId === comment.user.id) {
-            setActiveCommentUserId(null);
+        if (comment.user.id === user) {
+            setActiveCommentUserId(true);
         } else {
-            setActiveCommentUserId(comment.user.id);
+            setActiveCommentUserId(false);
         }
     };
 
@@ -56,7 +56,7 @@ const CommentsDisplay = ({ comments,handleUpdateComment }) => {
                     <div className="flex items-center justify-between">
                         <div className="flex items-center space-x-2">
                             <div className="flex-shrink-0">
-                                <span className="block bg-gray-200 rounded-full w-10 h-10"></span> {/* Placeholder for user avatar */}
+                                <span className="block bg-gray-200 rounded-full w-10 h-10"></span>
                             </div>
                             <div className="flex-1 min-w-0">
                                 <p className="text-sm font-medium text-gray-900 truncate">{comment.user.username}</p>
@@ -74,9 +74,10 @@ const CommentsDisplay = ({ comments,handleUpdateComment }) => {
                     <div className="text-gray-700">
                         <p>{comment.text}</p>
                     </div>
+                     {/* problem here */}
                     {activeComment === comment.id ? (
-                        activeCommentUserId === user ? (
-                          <CommentOptions onEdit={handleEdit} onDelete={handleDelete} />
+                        activeCommentUserId ? (
+                          <CommentOptions handleEdit={handleEdit} handleDelete={handleDelete} />
                         ) : (
                           <button className="text-sm text-gray-500 hover:text-gray-700 focus:outline-none">
                             No permission

@@ -18,7 +18,7 @@ function App() {
     <div className="App">
     <Router>
       <Routes>
-        <Route path="/login" element={<LoginPage />} />
+        <Route path="/login" element={<SignInAndRegisterPage />} />
         <Route path="/register" element={<RegisterUserPage />} />
         <Route path="/crud" element={<Register />} />
         <Route path="/video/:id" element={<VideoPage />} />

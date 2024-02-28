@@ -8,19 +8,21 @@ import { useNavigate } from 'react-router-dom'
 import { logOut } from '../../utils/authUtils'
 import { useEffect } from 'react'
 function NavBar() {
-  const { user, token, setUser, setToken } = useGlobalState(); // Access the context methods
+    const { user, token, setUser, setToken } = useGlobalState(); 
     const navigate = useNavigate()
    
     const handleLogOut = async (event) => {
         event.preventDefault();
         // Handle the login logic here
         let data = await logOut()
+        setUser("")
         setToken("")
+        navigate("/signin")
 
     }
 
     const handleLogin = () => {
-      navigate("signin")
+      navigate("/signin")
     }
 
     const handleHomepageRedirect = () => {
