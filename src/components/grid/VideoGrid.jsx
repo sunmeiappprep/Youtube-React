@@ -12,6 +12,8 @@ function VideoGrid({ videos }) {
                             videoId={video.id}
                             title={video.title}
                             uploader={video.userId}
+                            generatedDate={video.generatedDate}
+                            view={video.view}
                             url = {video.url.split("=")[1]}
                         />
                     </div>
