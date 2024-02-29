@@ -21,9 +21,8 @@ const CommentOptions = ({ handleEdit, handleDelete }) => (
 
 const CommentsDisplay = ({ comments,handleUpdateComment }) => {
     const [activeComment, setActiveComment] = useState(null);
-    const [activeCommentUserId, setActiveCommentUserId] = useState(false);
+    const [activeCommentIsUser, setActiveCommentIsUser] = useState(false);
     const { user, token, setUser, setToken } = useGlobalState(); // Access the context methods
-
     const handleToggleOptions = (comment) => {
         if (activeComment === comment.id) {
             setActiveComment(null);
@@ -31,11 +30,13 @@ const CommentsDisplay = ({ comments,handleUpdateComment }) => {
             setActiveComment(comment.id);
         }
 
-        if (comment.user.id === user) {
-            setActiveCommentUserId(true);
+        if (comment.user.id == user) {
+            setActiveCommentIsUser(true);
         } else {
-            setActiveCommentUserId(false);
+            setActiveCommentIsUser(false);
         }
+        console.log(comment.user.id,user)
+
     };
 
 
@@ -52,31 +53,32 @@ const CommentsDisplay = ({ comments,handleUpdateComment }) => {
     return (
         <div className="space-y-4 mt-6">
             {comments.map((comment) => (
-                <div key={comment.id} className="bg-white shadow rounded-lg p-16 relative">
+                <div key={comment.id} className="bg-black shadow rounded-lg p-16 relative">
                     <div className="flex items-center justify-between">
-                        <div className="flex items-center space-x-2">
+                        <div className="flex items-center space-x-2 ">
                             <div className="flex-shrink-0">
                                 <span className="block bg-gray-200 rounded-full w-10 h-10"></span>
                             </div>
                             <div className="flex-1 min-w-0">
-                                <p className="text-sm font-medium text-gray-900 truncate">{comment.user.username}</p>
-                                <p className="text-sm text-gray-500">{new Date(comment.createdAt).toLocaleDateString()}</p>
+                                <p className="text-sm font-medium text-white truncate">{comment.user.username}</p>
+                                <p className="text-sm text-white">{new Date(comment.createdAt).toLocaleDateString()}</p>
                             </div>
                         </div>
-                        <div className="ml-4 flex-shrink-0">
-                            <button onClick={() => handleToggleOptions(comment)} className="focus:outline-none">
-                                <svg className="w-6 h-6 text-gray-600 hover:text-gray-800" fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path d="M4 6h16M4 12h16m-7 6h7"></path>
-                                </svg>
-                            </button>
-                        </div>
+                        <div className="flex-shrink-0">
+                        <button onClick={() => handleToggleOptions(comment)} className="focus:outline-none">
+                            <svg className="w-6 h-6 text-gray-600 hover:text-gray-800" fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" stroke="currentColor">
+                                <path d="M4 6h16M4 12h16m-7 6h7"></path>
+                            </svg>
+                        </button>
                     </div>
-                    <div className="text-gray-700">
+                    </div>
+                    <div className="text-white flex items-centerr">
                         <p>{comment.text}</p>
                     </div>
+                    
                      {/* problem here */}
                     {activeComment === comment.id ? (
-                        activeCommentUserId ? (
+                        activeCommentIsUser ? (
                           <CommentOptions handleEdit={handleEdit} handleDelete={handleDelete} />
                         ) : (
                           <button className="text-sm text-gray-500 hover:text-gray-700 focus:outline-none">

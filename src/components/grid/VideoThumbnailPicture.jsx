@@ -10,7 +10,7 @@ function VideoThumbnail({ videoId, title, uploader,url }) {
   };
   return (
     <div className="max-w-sm rounded overflow-hidden shadow-lg">
-      <img className="w-full" src={`https://i.ytimg.com/vi/${url}/hq720.jpg`} alt="Video thumbnail"   onClick={handleClick} />
+      <img className="w-full" src={`https://i.ytimg.com/vi/${url}/hqdefault.jpg`} alt="Video thumbnail"   onClick={handleClick} />
       <div className="px-6 py-4">
         <div className="font-bold text-xl mb-2">{title}</div>
         <p className="text-gray-700 text-base">

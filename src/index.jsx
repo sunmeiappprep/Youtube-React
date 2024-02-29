@@ -6,6 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import { StateProvider } from './StateContext'; // Import the provider
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
+document.body.classList.add('dark');
 
 root.render(
   <React.StrictMode>

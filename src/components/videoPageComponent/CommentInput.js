@@ -35,7 +35,7 @@ const CommentInput = ({videoId,handleUpdateComment}) => {
         onChange={(e) => setComment(e.target.value)}
         onFocus={() => setIsActive(true)}
         placeholder="Write a comment..."
-        className="border border-gray-300 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+        className="border text-white bg-black border-gray-300 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
       />
       {isActive ? (
         user ? (

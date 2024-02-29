@@ -15,10 +15,10 @@ function App() {
 
 
   return (
-    <div className="App">
+    <div className="App dark:bg-black dark:text-white">
     <Router>
       <Routes>
-        <Route path="/login" element={<SignInAndRegisterPage />} />
+        <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterUserPage />} />
         <Route path="/crud" element={<Register />} />
         <Route path="/video/:id" element={<VideoPage />} />
