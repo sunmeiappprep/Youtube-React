@@ -18,8 +18,10 @@ export default function SidebarVideoRec() {
             <VideoSideBarThumbnail
                 videoId={video.id}
                 title={video.title}
-                uploader={video.userId}
+                uploader={video.username}
                 url = {video.url.split("=")[1]}
+                generatedDate={video.generatedDate}
+                view={video.view}
             />
         </div>
     ))}

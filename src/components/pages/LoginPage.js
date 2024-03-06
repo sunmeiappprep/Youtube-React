@@ -2,6 +2,7 @@
 import React, { useState,useEffect } from 'react';
 import { loginUser } from '../../utils/authUtils';
 import { useGlobalState } from '../../StateContext'; 
+import NavBar from '../navBar/NavBar';
 
 function LoginPage() {
   const { user,token,setUser, setToken } = useGlobalState(); // Access the context methods

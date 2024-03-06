@@ -4,13 +4,15 @@ import React from 'react';
 import { registerUser,loginUser,testing,logOut} from './utils/authUtils';
 import NavBar from './components/navBar/NavBar';
 import LoginPage from './components/pages/LoginPage';
-import RegisterPage from './components/pages/RegisterPage';
+import RegisterPage from './components/pages/CRUD';
 import HomePage from './components/pages/HomePage';
 import VideoUploadPage from './components/pages/VideoPage';
 import SignInAndRegisterPage from './components/pages/SignInAndRegisterPage';
 import RegisterUserPage from './components/pages/RegisterUserPage';
-import Register from './components/pages/RegisterPage';
+import Register from './components/pages/CRUD';
 import VideoPage from './components/pages/VideoPage';
+import FakeComments from './components/pages/Faker';
+import Search from './components/pages/Search';
 function App() {
 
 
@@ -23,7 +25,9 @@ function App() {
         <Route path="/crud" element={<Register />} />
         <Route path="/video/:id" element={<VideoPage />} />
         <Route path="/video" element={<VideoUploadPage />} />
+        <Route path="/search/:searchTerm" element={<Search />} />
         <Route path="/signin" element={<SignInAndRegisterPage />} />
+        <Route path="/faker" element={<FakeComments />} />
         <Route path="/" element={<HomePage />} />
       </Routes>
     </Router>

@@ -3,6 +3,7 @@ import { loginUser,registerUser } from '../../utils/authUtils';
 import { useGlobalState } from '../../StateContext'; 
 import { useEffect,useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import NavBar from '../navBar/NavBar';
 function RegisterUserPage() {
     const { user, token, setUser, setToken } = useGlobalState(); // Access the context methods
     const navigate = useNavigate()
@@ -51,6 +52,8 @@ function RegisterUserPage() {
 
     return (
         <div className="flex items-center justify-center min-h-screen bg-gray-100">
+            <div><NavBar/></div>
+
             <div className="max-w-md w-full space-y-8">
                 <div>
                     <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">

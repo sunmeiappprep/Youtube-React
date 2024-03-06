@@ -64,11 +64,11 @@ function VideoPage() {
       <CommentInput videoId={videoId} handleUpdateComment={handleUpdateComment} />
       <div className="flex justify-center bg-black">
         <div className="flex w-full mx-auto px-4">
-          <div className='w-1/4'></div>
-          <div className="w-1/2">
+          <div className='w-1/5'></div>
+          <div className="w-2/5">
             <CommentsDisplay comments={comments} handleUpdateComment={handleUpdateComment} />
           </div>
-          <div className="w-1/4">
+          <div className="w-1/5">
             <SidebarVideoRec />
           </div>
         </div>

@@ -1,4 +1,5 @@
 import api from './axiosInterceptors';
+import axios from 'axios';
 // Assuming api is an Axios instance configured to include JWT in headers
 export const postVideo = async (videoData) => {
     try {
@@ -21,7 +22,7 @@ export const postVideo = async (videoData) => {
 
   export const fetchVideos = async (seed, page) => {
     try {
-        const response = await api.get(`http://localhost:8080/api/video/videos?seed=${seed}&page=${page}`);
+        const response = await axios.get(`http://localhost:8080/api/video/videos?seed=${seed}&page=${page}`);
         // Handle the response - add the videos to your state, etc.
         return (response.data)
     } catch (error) {
@@ -49,12 +50,23 @@ export const postVideo = async (videoData) => {
   };
   export const getVideo = async (id) => {
     try {
-      const response = await api.get(`http://localhost:8080/api/video/${id}`);
+      const response = await axios.get(`http://localhost:8080/api/video/${id}`);
       return(response.data); // Handle the response as needed
     } catch (error) {
       console.error(error.response ? error.response.data : error.message);
     }
   };
+
+  export const getSearchVideo = async (searchTerm) => {
+    try {
+      const response = await axios.get(`http://localhost:8080/api/search/${searchTerm}`);
+      console.log(response.data); // Handle the response as needed
+      return(response.data); // Handle the response as needed
+    } catch (error) {
+      console.error(error.response ? error.response.data : error.message);
+    }
+  };
+  
   
   // Example usage:
   const videoInfo = {

@@ -1,10 +1,12 @@
 // LoginPage.jsx
 import React, { useState,useEffect } from 'react';
-import { postVideo,getUserVideos,updateVideo,deleteVideo,getVideo, fetchVideos } from '../../utils/videoUtils';
+import { postVideo,getUserVideos,updateVideo,deleteVideo,getVideo, fetchVideos, getSearchVideo } from '../../utils/videoUtils';
 import { addLiked, getLiked } from '../../utils/videoReactionUtils';
 import { useGlobalState } from '../../StateContext'; 
 import { createComment,getComments,deleteComment, updateComment } from '../../utils/commentUtils';
 import { loginUser,logOut } from '../../utils/authUtils';
+import { addToPlaylist, createPlaylist, deleteVideoFromPlaylist, getPlaylistVideo } from '../../utils/playlist';
+import NavBar from '../navBar/NavBar';
 function Register() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -1047,9 +1049,25 @@ function Register() {
     page:1,
     size:10
   }
+  
+  const handleCreatePlaylist = () => {
+    let playlistInfo = {
+      title:"teasdsfsdf"
+    }
+    createPlaylist(playlistInfo)
+  }
+
+  const handleAddToPlaylist = () => {
+    let playlistInfo = {
+      playlistTitleId:69,
+      videoId:186
+    }
+    addToPlaylist(playlistInfo)
+  }
 
   return (
     <div className="flex-wrap justify-center items-center h-screen ">
+    <NavBar/>
       <button  className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700"  onClick={() => { postVideo(videoInfo); }}>Post Video</button>
       <button  className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-700"  onClick={() => { getUserVideos(user); }}>Get User Video</button>
       <button  className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-yellow-700"  onClick={() => handleUpdateVideo()}>Update Video</button>
@@ -1065,6 +1083,11 @@ function Register() {
       <button className="px-4 py-2 bg-blue-400 text-white rounded hover:bg-yellow-700"  onClick={() => updateComment(354,commentInfo)}>Edit CommentByID</button>
       <button className="px-4 py-2 bg-blue-400 text-white rounded hover:bg-yellow-700"  onClick={handleMakeSubmitted}>Make Array</button>
       <button className="px-4 py-2 bg-blue-400 text-white rounded hover:bg-yellow-700"  onClick={() => fetchVideos("123123213",2)}>getHomePageVideo</button>
+      <button className="px-4 py-2 bg-blue-400 text-white rounded hover:bg-yellow-700"  onClick={handleCreatePlaylist}>createPlaylist</button>
+      <button className="px-4 py-2 bg-blue-400 text-white rounded hover:bg-yellow-700"  onClick={handleAddToPlaylist}>addToPlaylist</button>
+      <button className="px-4 py-2 bg-blue-400 text-white rounded hover:bg-yellow-700"  onClick={() => getPlaylistVideo(69)}>getPlaylistVideo</button>
+      <button className="px-4 py-2 bg-blue-400 text-white rounded hover:bg-yellow-700"  onClick={() => deleteVideoFromPlaylist(69,186)}>deleteVideoFromPlaylist</button>
+      <button className="px-4 py-2 bg-blue-400 text-white rounded hover:bg-yellow-700"  onClick={() => getSearchVideo("Winter")}>getSearchVideo</button>
 
     </div>
   );
