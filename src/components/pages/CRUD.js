@@ -3,7 +3,7 @@ import React, { useState,useEffect } from 'react';
 import { postVideo,getUserVideos,updateVideo,deleteVideo,getVideo, fetchVideos, getSearchVideo } from '../../utils/videoUtils';
 import { addLiked, getLiked } from '../../utils/videoReactionUtils';
 import { useGlobalState } from '../../StateContext'; 
-import { createComment,getComments,deleteComment, updateComment } from '../../utils/commentUtils';
+import { createComment,getComments,deleteComment, updateComment, getCommentsReaction, commentAddLiked } from '../../utils/commentUtils';
 import { loginUser,logOut } from '../../utils/authUtils';
 import { addToPlaylist, createPlaylist, deleteVideoFromPlaylist, getPlaylistVideo } from '../../utils/playlist';
 import NavBar from '../navBar/NavBar';
@@ -1010,6 +1010,20 @@ function Register() {
     text: 'tests',
   };
 
+  const commentLikedInfo = {
+    userId:user,
+    commentId: 39,
+    liked: true,
+  };
+  
+  const commentLikedInfo2 = {
+    userId:user,
+    commentId: 39,
+    liked: false,
+  };
+
+
+
 
   useEffect(() => {
     console.log("Updated global state user:", user);
@@ -1052,7 +1066,7 @@ function Register() {
   
   const handleCreatePlaylist = () => {
     let playlistInfo = {
-      title:"teasdsfsdf"
+      title:"dwdw"
     }
     createPlaylist(playlistInfo)
   }
@@ -1088,7 +1102,12 @@ function Register() {
       <button className="px-4 py-2 bg-blue-400 text-white rounded hover:bg-yellow-700"  onClick={() => getPlaylistVideo(69)}>getPlaylistVideo</button>
       <button className="px-4 py-2 bg-blue-400 text-white rounded hover:bg-yellow-700"  onClick={() => deleteVideoFromPlaylist(69,186)}>deleteVideoFromPlaylist</button>
       <button className="px-4 py-2 bg-blue-400 text-white rounded hover:bg-yellow-700"  onClick={() => getSearchVideo("Winter")}>getSearchVideo</button>
-
+      <button className="px-4 py-2 bg-blue-400 text-white rounded hover:bg-yellow-700"  onClick={() => getCommentsReaction(39)}>getcomment38reaction</button>
+      <button className="px-4 py-2 bg-red-500 text-white rounded hover:bg-yellow-700"  onClick={() => commentAddLiked(commentLikedInfo2)}>commentLikedInfofalse</button>
+      <button className="px-4 py-2 bg-red-500 text-white rounded hover:bg-yellow-700"  onClick={() => commentAddLiked(commentLikedInfo)}>commentLikedInfo</button>
+      <button className="px-4 py-2 bg-blue-400 text-white rounded hover:bg-yellow-700"  onClick={() => getSearchVideo("Winter")}>getSearchVideo</button>
+      <button className="px-4 py-2 bg-blue-400 text-white rounded hover:bg-yellow-700"  onClick={() => getSearchVideo("Winter")}>getSearchVideo</button>
+      <button className="px-4 py-2 bg-blue-400 text-white rounded hover:bg-yellow-700"  onClick={() => getSearchVideo("Winter")}>getSearchVideo</button>
     </div>
   );
 }

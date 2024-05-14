@@ -13,9 +13,18 @@ function Search() {
 
     return (
         <div>
-            <h1>Search Results for: {searchTerm}</h1>
+          {videos.map(video => {
+            const videoId = video.url.split("v=")[1].split("&")[0];
+            return (
+              <div key={video.id}>
+                <img src={`https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`} alt="Video"></img>
+                <p>{video.title}</p>
+              </div>
+            );
+          })}
         </div>
-    )
+      );
+      
 }
 
 export default Search

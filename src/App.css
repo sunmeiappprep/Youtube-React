@@ -40,3 +40,30 @@ iframe#webpack-dev-server-client-overlay{display:none!important}
     transform: rotate(360deg);
   }
 } */
+
+body {
+  font-family: 'Roboto', sans-serif;
+  font-size: 1rem; /* Base font size, usually 16px */
+}
+
+.title {
+  font-size: 1.5rem; 
+}
+
+.subtitle {
+  font-size: 1.25rem; /* 1.25 times the base font size */
+}
+
+.bold-text {
+  font-size: 1.25rem; /* 1.25 times the base font size */
+  font-weight: 700; /* Bold weight */
+}
+
+.truncate-multiline {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+}

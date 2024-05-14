@@ -1,7 +1,10 @@
-import React, { useState } from 'react';
-import { deleteComment, updateComment } from '../../utils/commentUtils';
+import React, { useEffect, useState } from 'react';
+import { commentAddLiked, deleteComment, getCommentsReaction, updateComment } from '../../utils/commentUtils';
 import { useGlobalState } from '../../StateContext';
 const CommentOptions = ({ handleEdit, handleDelete }) => (
+
+
+
     <div className="absolute right-10 bg-white shadow-lg rounded-md py-1">
         <button
             onClick={handleEdit}
@@ -22,6 +25,7 @@ const CommentOptions = ({ handleEdit, handleDelete }) => (
 const CommentsDisplay = ({ comments,handleUpdateComment }) => {
     const [activeComment, setActiveComment] = useState(null);
     const [activeCommentIsUser, setActiveCommentIsUser] = useState(false);
+    const [commentReactions, setCommentReactions] = useState({});
     const { user, token, setUser, setToken } = useGlobalState(); // Access the context methods
     const handleToggleOptions = (comment) => {
         if (activeComment === comment.id) {
@@ -35,11 +39,39 @@ const CommentsDisplay = ({ comments,handleUpdateComment }) => {
         } else {
             setActiveCommentIsUser(false);
         }
-        console.log(comment.user.id,user)
-
+        
     };
 
+    
 
+    useEffect(() => {
+        const fetchCommentReactions = async () => {
+            const newCommentReactions = {};
+    
+            for (const comment of comments) {
+                try {
+                    const response = await getCommentsReaction(comment.id);
+                    console.log(response);
+                    newCommentReactions[comment.id] = response; 
+                } catch (error) {
+                    console.log("Error fetching reactions for comment:", comment.id, error);
+                    newCommentReactions[comment.id] = null; 
+                }
+            }
+    
+            setCommentReactions(prevReactions => ({...prevReactions, ...newCommentReactions}));
+        };
+    
+        if (comments.length > 0) {
+            fetchCommentReactions();
+        }
+    }, [comments]); 
+
+
+
+    // <button className="px-4 py-2 bg-blue-400 text-white rounded hover:bg-yellow-700"  onClick={() => getCommentsReaction(38)}>getcomment38reaction</button>
+    // <button className="px-4 py-2 bg-red-500 text-white rounded hover:bg-yellow-700"  onClick={() => commentAddLiked(commentLikedInfo2)}>commentLikedInfofalse</button>
+    // <button className="px-4 py-2 bg-red-500 text-white rounded hover:bg-yellow-700"  onClick={() => commentAddLiked(commentLikedInfo)}>commentLikedInfo</button
     const handleEdit = () => {
         const newComment = {
             text:"testing"
@@ -50,6 +82,34 @@ const CommentsDisplay = ({ comments,handleUpdateComment }) => {
         deleteComment(activeComment).then(() => handleUpdateComment())
     }
 
+
+    const handleCommentReaction = async (commentId, bool) => {
+        console.log(commentId, bool); 
+        let commentLikedInfo = {
+            userId: user,
+            commentId: commentId,
+            liked: bool,
+        };
+    
+        try {
+            await commentAddLiked(commentLikedInfo);  // forgot to make sure this is finish
+            const response = await getCommentsReaction(commentId);
+            setCommentReactions(prevReactions => ({
+                ...prevReactions,
+                [commentId]: response
+            }));
+        } catch (error) {
+            console.error('Failed to fetch comment reactions:', error);
+        }
+    };
+    
+
+    useEffect(() => {
+        console.log("Comment Reactions Updated", commentReactions);
+        // Perform any action that depends on the updated state here
+    }, [commentReactions]);
+    
+    
     return (
         <div className="space-y-4 mt-6">
             {comments.map((comment) => (
@@ -74,8 +134,12 @@ const CommentsDisplay = ({ comments,handleUpdateComment }) => {
                     </div>
                     <div className="text-white flex items-centerr">
                         <p>{comment.text}</p>
+                        <p>{commentReactions[comment.id]}</p>
                     </div>
-                    
+                    <div>
+                    <button onClick={() => handleCommentReaction(comment.id,true)}>Good</button>
+                    <button onClick={() => handleCommentReaction(comment.id,false)}>Bad</button>
+                    </div>
                      {/* problem here */}
                     {activeComment === comment.id ? (
                         activeCommentIsUser ? (

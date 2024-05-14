@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 function VideoThumbnail({ videoId, title, uploader, url, generatedDate, view }) {
   const navigate = useNavigate();
   const handleClick = () => {
-    navigate(`/video/${videoId}`); // Adjust the route as needed
+    navigate(`/video/${videoId}`);
   };
 
   const formatDateDifference = (generatedDate) => {
@@ -31,8 +31,8 @@ function VideoThumbnail({ videoId, title, uploader, url, generatedDate, view }) 
 
   return (
     <div className="max-w-sm rounded overflow-hidden shadow-lg">
-      <img className="w-full" src={`https://i.ytimg.com/vi/${url}/hqdefault.jpg`} alt="Video thumbnail" onClick={handleClick} />
-      <div className="px-6 py-4">
+      <img className="h-full" src={`https://i.ytimg.com/vi/${url}/hqdefault.jpg`} alt="Video thumbnail" onClick={handleClick} />
+      <div className="">
         <div className="font-bold text-xl mb-2">{title}</div>
         <p className="text-gray-500 text-base">
           Uploaded by {uploader}
