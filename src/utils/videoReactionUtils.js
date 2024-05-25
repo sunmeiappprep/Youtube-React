@@ -1,5 +1,5 @@
 import api from './axiosInterceptors';
-
+import axios from 'axios';
 export const addLiked = async (videoData) => {
     try {
     console.log(videoData)
@@ -13,7 +13,7 @@ export const addLiked = async (videoData) => {
 
   export const getLiked = async (id) => {
     try {
-      const response = await api.get(`http://localhost:8080/api/videoReactions/results/${id}`);
+      const response = await axios.get(`http://localhost:8080/api/videoReactions/results/${id}`);
       return(response.data); // Handle the response as needed
     } catch (error) {
       console.error(error.response ? error.response.data : error.message);

@@ -16,12 +16,12 @@ export default function SidebarVideoRec() {
     {videosSide.map((video) => (
         <div key={video.id} className="">
             <VideoSideBarThumbnail
-                videoId={video.id}
-                title={video.title}
+                videoId={video.videoId}
+                title={video.videoTitle}
                 uploader={video.username}
-                url = {video.url.split("=")[1]}
-                generatedDate={video.generatedDate}
-                view={video.view}
+                url = {video.videoUrl.split("=")[1]}
+                generatedDate={video.videoGeneratedDate}
+                view={video.videoViews}
             />
         </div>
     ))}

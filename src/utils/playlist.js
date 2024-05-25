@@ -9,6 +9,29 @@ export const createPlaylist = async (playlistData) => {
     }
   };
 
+  export const getUserPlaylist = async (userId) => {
+    try{
+      const response = await api.get(`http://localhost:8080/api/playlistTitle/${userId}`);
+      console.log(response.data)
+      return response.data
+    }catch (error){
+      nsole.error(error.response ? error.response.data : error.message);
+    }
+  }
+
+  export const checkIfVideoInPlaylists = async (videoId) => {
+    try {
+      const response = await api.get(`http://localhost:8080/api/playlistVideos/checkVideo`, {
+        params: {
+          videoId: videoId
+        }
+      });
+      console.log(response.data);
+      return response.data;
+    } catch (error) {
+      console.error(error.response ? error.response.data : error.message);
+    }
+  }
 
     export const addToPlaylist = async (playlistData) => {
         try {
@@ -20,15 +43,37 @@ export const createPlaylist = async (playlistData) => {
         }
     };
 
+    export const getUserFirstVideo = async (userId) => {
+      try {
+          const response = await api.get(`http://localhost:8080/api/playlistTitle/user/${userId}/firstVideos`);
+          console.log(response);
+          return response.data;
+      } catch (error) {
+          console.error(error.response ? error.response.data : error.message);
+      }
+  };
+  
+
     export const getPlaylistVideo = async (playlistId) => {
         try {
-        console.log(playlistId)
         const response = await api.get(`http://localhost:8080/api/playlistVideos/${playlistId}`);
-        console.log(response.data); // Handle the response as needed
+        console.log(response.data); 
+        return response.data
         } catch (error) {
         console.error(error.response ? error.response.data : error.message);
         }
     };
+
+    export const getPlaylistTitle = async (playlistTitleId) => {
+      try {
+      const response = await api.get(`http://localhost:8080/api/playlistTitle/title/${playlistTitleId}`);
+      console.log(response.data); 
+      return response.data
+      } catch (error) {
+      console.error(error.response ? error.response.data : error.message);
+      }
+  };
+
 
     export const deleteVideoFromPlaylist = async (playlistId,VideoId) => {
         try {

@@ -13,11 +13,13 @@ import Register from './components/pages/CRUD';
 import VideoPage from './components/pages/VideoPage';
 import FakeComments from './components/pages/Faker';
 import Search from './components/pages/Search';
+import UserPage from './components/pages/UserPage';
+import PlaylistPage from './components/pages/PlaylistPage';
 function App() {
 
 
   return (
-    <div className="App dark:bg-black dark:text-white">
+    <div className="App bg-custom-dark text-custom-white">
     <Router>
       <Routes>
         <Route path="/login" element={<LoginPage />} />
@@ -28,6 +30,8 @@ function App() {
         <Route path="/search/:searchTerm" element={<Search />} />
         <Route path="/signin" element={<SignInAndRegisterPage />} />
         <Route path="/faker" element={<FakeComments />} />
+        <Route path="/user" element={<UserPage />} />
+        <Route path="/playlist/:id" element={<PlaylistPage />} />
         <Route path="/" element={<HomePage />} />
       </Routes>
     </Router>

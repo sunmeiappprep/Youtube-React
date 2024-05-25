@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faThumbsUp, faThumbsDown } from '@fortawesome/free-solid-svg-icons';
 
-export default function LikeAndDislikeButton({ videoId, handleUpdateLiked }) {
+export default function LikeAndDislikeButton({ videoId, handleUpdateLiked,liked }) {
     const { user, token, setUser, setToken } = useGlobalState();
     const [attempted, setAttempted] = useState(false);
     const navigate = useNavigate()
@@ -41,24 +41,29 @@ export default function LikeAndDislikeButton({ videoId, handleUpdateLiked }) {
     }
 
 
-
     return (
-        <div className="flex space-x-2">
+        <div className="flex items-center h-8 bg-custom-gray rounded-l-full rounded-r-full">
         <button
-            onClick={handleLikeButton}
-            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700 transition duration-150 ease-in-out">
-            <FontAwesomeIcon icon={faThumbsUp} /> Like
-        </button>
-        <button
-            onClick={handleDislikeButton}
-            className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-700 transition duration-150 ease-in-out">
-            <FontAwesomeIcon icon={faThumbsDown} /> Dislike
-        </button>
-            {!user && attempted &&
-                <button onClick={handleLogin} className="px-4 py-1 text-sm font-semibold text-white bg-green-500 hover:bg-green-600 rounded">
-                    Login
-                </button>}
-
-        </div>
+        onClick={handleLikeButton}
+        className="flex items-center px-4 py-2 h-full bg-custom-gray text-white rounded-l-full rounded-r-none hover:bg-custom-hover-gray transition duration-150 ease-in-out">
+        <FontAwesomeIcon icon={faThumbsUp} /> {liked[0]}
+      </button>
+      
+      <div className="h-3/5 w-px bg-custom-white m-0"></div>
+      
+      <button
+        onClick={handleDislikeButton}
+        className="flex items-center px-4 py-2 h-full bg-custom-gray text-white rounded-l-none rounded-r-full hover:bg-custom-hover-gray transition duration-150 ease-in-out">
+        <FontAwesomeIcon icon={faThumbsDown} /> {liked[1]}
+      </button>
+        
+        {token === "" && attempted && (
+          <button 
+            onClick={handleLogin} 
+            className="ml-2 px-4 py-1 text-sm font-semibold text-white bg-green-500 hover:bg-green-600 rounded">
+            Login
+          </button>
+        )}
+      </div>
     );
 }

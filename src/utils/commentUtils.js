@@ -1,5 +1,5 @@
 import api from "./axiosInterceptors";
- 
+import axios from 'axios';
 export const createComment = async (commentInfo) => {
     try {
     console.log(commentInfo)
@@ -12,7 +12,7 @@ export const createComment = async (commentInfo) => {
 
 export const getComments = async (videoId) => {
     try {
-        const response = await api.get(`http://localhost:8080/api/comment/get/video/${videoId}`);
+        const response = await axios.get(`http://localhost:8080/api/comment/get/video/${videoId}`);
         console.log(response.data)
         return(response.data); 
     } catch (error) {
@@ -31,7 +31,7 @@ export const commentAddLiked = async (commentData) => {
 
 export const getCommentsReaction = async (commentId) => {
   try {
-      const response = await api.get(`http://localhost:8080/api/commentReactions/results/${commentId}`);
+      const response = await axios.get(`http://localhost:8080/api/commentReactions/results/${commentId}`);
       console.log(response.data)
       return(response.data); 
   } catch (error) {

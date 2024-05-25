@@ -3,11 +3,13 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 const StateContext = createContext();
 
 export const StateProvider = ({ children }) => {
-  // Initialize state with localStorage values if they exist
+
   const [user, setUser] = useState(localStorage.getItem('user') || "");
   const [token, setToken] = useState(localStorage.getItem('token') || "");
+  const [userUsername, setUserUsername] = useState(localStorage.getItem('userUsername') || "");
+  const [showSubMenu, setShowSubMenu] = useState(false); 
 
-  // Effect to persist user changes
+
   useEffect(() => {
     if (user) {
       localStorage.setItem('user', user);
@@ -16,7 +18,7 @@ export const StateProvider = ({ children }) => {
     }
   }, [user]);
 
-  // Effect to persist token changes
+
   useEffect(() => {
     if (token) {
       localStorage.setItem('token', token);
@@ -25,8 +27,16 @@ export const StateProvider = ({ children }) => {
     }
   }, [token]);
 
+  useEffect(() => {
+    if (userUsername) {
+      localStorage.setItem('userUsername', userUsername);
+    } else {
+      localStorage.removeItem('userUsername');
+    }
+  }, [userUsername]);
+
   return (
-    <StateContext.Provider value={{ user, setUser, token, setToken }}>
+    <StateContext.Provider value={{ user, setUser, token, setToken, userUsername, setUserUsername, showSubMenu, setShowSubMenu }}>
       {children}
     </StateContext.Provider>
   );

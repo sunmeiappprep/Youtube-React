@@ -18,6 +18,12 @@ module.exports = {
       fontSize: {
         'xxs': '0.625rem', // Custom size, adjust as needed
       },
+      colors: {
+        'custom-dark': '#0F0F0F',
+        'custom-white': '#F5F3F4',
+        'custom-gray': '#262626',
+        "custom-hover-gray": "#3F3F3F",
+      },
     },
   },
   variants: {},

@@ -33,6 +33,31 @@ export const loginUser = async (username,password) => {
       // Handle error here
     }
   };
+
+  export const getUsernameById = async (userId) => {
+    try {
+      const response = await axios.get(`http://localhost:8080/api/user/${userId}/username`);
+      console.log(response);
+      return response.data
+    } catch (error) {
+      console.error(error.response || error.message);
+      // Handle error here
+    }
+  };
+
+  
+  export const checkJWT = async () => {
+    try {
+      const response = await api.get(`http://localhost:8080/api/user/checkJWT`);
+      console.log(response.data);
+      return response.data.status
+    } catch (error) {
+      console.log(error.response.data.status)
+      return error.response.data.status
+    }
+  };
+  
+  
   
 
 export const registerUser = async (username,password) => {

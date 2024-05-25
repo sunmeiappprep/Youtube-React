@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-
-
+import { formatDateDifference } from '../../utils/dateUtils';
+import { convertNumber } from '../../utils/numberUtils';
 function VideoSideBarThumbnail({ generatedDate, view, videoId, title, uploader, url }) {
     const navigate = useNavigate();
     const handleClick = () => {
@@ -10,25 +10,6 @@ function VideoSideBarThumbnail({ generatedDate, view, videoId, title, uploader, 
         window.location.href = `/video/${videoId}`;
     };
 
-    const formatDateDifference = (generatedDate) => {
-        const date1 = new Date(generatedDate);
-        const date2 = new Date();
-        const diffTime = Math.abs(date2 - date1);
-        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-
-        if (diffDays < 7) {
-            return `${diffDays} day${diffDays > 1 ? 's' : ''}`;
-        } else if (diffDays < 30) {
-            const weeks = Math.floor(diffDays / 7);
-            return `${weeks} week${weeks > 1 ? 's' : ''}`;
-        } else if (diffDays < 365) {
-            const months = Math.floor(diffDays / 30);
-            return `${months} month${months > 1 ? 's' : ''}`;
-        } else {
-            const years = Math.floor(diffDays / 365);
-            return `${years} year${years > 1 ? 's' : ''}`;
-        }
-    };
 
     if (url)
 
@@ -51,7 +32,7 @@ function VideoSideBarThumbnail({ generatedDate, view, videoId, title, uploader, 
                     </p>
                     <div className='flex text-gray-500 text-xs '>
                         <div className='pr-4'>
-                            {view} Views
+                            {convertNumber(view)} Views
                         </div>
                         <div>
                             {formatDateDifference(generatedDate)} ago
