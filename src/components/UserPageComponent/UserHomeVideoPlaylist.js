@@ -1,9 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import PlaylistTitleAndVideoInfo from '../playlistComp/PlaylistTitleAndVideoInfo';
 import UserVideoUploadInfo from './UserVideoUploadInfo';
 
 function UserHomeVideoPlaylist() {
+    const location = useLocation();
     const [selected, setSelected] = useState("Home");
+
+    useEffect(() => {
+        const params = new URLSearchParams(location.search);
+        const tab = params.get('tab');
+        if (tab) {
+            setSelected(tab);
+        }
+    }, [location.search]);
 
     const handleClick = (item) => {
         setSelected(item);

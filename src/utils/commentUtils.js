@@ -59,3 +59,22 @@ export const deleteComment = async (id) => {
     }
   };
 
+  export const deleteAllComments = async () => {
+    try {
+      const response = await api.delete(`http://localhost:8080/api/comment/deleteAll`);
+      console.log(response.data);
+      return response.data;
+    } catch (error) {
+      console.error(error.response ? error.response.data : error.message);
+    }
+  };
+
+  export const getVideoCommentsReactions = async (videoId) => {
+    try {
+      const response = await axios.get(`http://localhost:8080/api/comment/videos/${videoId}/comments/reactions`);
+      console.log(response.data);
+      return response.data;
+    } catch (error) {
+      console.error(error.response ? error.response.data : error.message);
+    }
+  };

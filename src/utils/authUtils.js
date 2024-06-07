@@ -3,7 +3,7 @@ import api from './axiosInterceptors';
 
 export const loginUser = async (username,password) => {
 
-    const url = 'http://localhost:8080/login'; // Adjust the URL to match your backend endpoint
+    const url = 'http://localhost:8080/login'; 
     const userData = {
       username: username,
       password: password
@@ -15,24 +15,11 @@ export const loginUser = async (username,password) => {
       localStorage.setItem('token', response.data.jwtToken);
       console.log(localStorage.getItem('token'));
       return response.data
-      // Handle response here (e.g., redirect to another page, store the user data, etc.)
     } catch (error) {
       console.error('Login failed:', error.response || error.message);
-      // Handle error here (e.g., show error message to the user)
     }
   };
 
-
-  export const testing = async () => {
-    try {
-      const response = await api.get('http://localhost:8080/testing');
-      console.log(response);
-      // Handle response here
-    } catch (error) {
-      console.error(error.response || error.message);
-      // Handle error here
-    }
-  };
 
   export const getUsernameById = async (userId) => {
     try {
@@ -48,32 +35,41 @@ export const loginUser = async (username,password) => {
   
   export const checkJWT = async () => {
     try {
-      const response = await api.get(`http://localhost:8080/api/user/checkJWT`);
-      console.log(response.data);
-      return response.data.status
+        //find token from storage
+        const token = localStorage.getItem('token'); 
+        if (!token) {
+            console.log('No token found');
+            return false;
+        }
+
+        const response = await axios.get('http://localhost:8080/api/user/checkJWT', {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+
+        console.log(response.data); //true or false
+        return response.data
     } catch (error) {
-      console.log(error.response.data.status)
-      return error.response.data.status
+        return false
     }
-  };
-  
+};
   
   
 
 export const registerUser = async (username,password) => {
-    const url = 'http://localhost:8080/register'; // Adjust the URL to match your backend endpoint
     const userData = {
       username: username,
       password: password
     };
 
     try {
-      const response = await axios.post(url, userData);
+      const response = await axios.post('http://localhost:8080/register', userData);
       console.log('register successful:', response.data);
-      // Handle response here (e.g., redirect to another page, store the user data, etc.)
+      return true
     } catch (error) {
       console.error('register failed:', error.response || error.message);
-      // Handle error here (e.g., show error message to the user)
+      return false
     }
   };
    

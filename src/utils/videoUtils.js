@@ -67,6 +67,20 @@ export const postVideo = async (videoData) => {
       console.error(error.response ? error.response.data : error.message);
     }
   };
+
+
+export const getSubscribedVideos = async (subscriberId) => {
+  try {
+    const response = await api.get('http://localhost:8080/api/video/subscribed', {
+      params: { subscriberId: subscriberId }
+    });
+    console.log("Axios", response.data);
+    return response.data; // Handle the response as needed
+  } catch (error) {
+    console.error(error.response ? error.response.data : error.message);
+  }
+};
+
   
   
   // Example usage:

@@ -15,8 +15,11 @@ import FakeComments from './components/pages/Faker';
 import Search from './components/pages/Search';
 import UserPage from './components/pages/UserPage';
 import PlaylistPage from './components/pages/PlaylistPage';
+import Subscriptions from './components/pages/Subscriptions';
+import VideoDescriptions from './components/pages/GPT';
 function App() {
 
+  // <Route path="/gpt" element={<VideoDescriptions />} />
 
   return (
     <div className="App bg-custom-dark text-custom-white">
@@ -30,7 +33,8 @@ function App() {
         <Route path="/search/:searchTerm" element={<Search />} />
         <Route path="/signin" element={<SignInAndRegisterPage />} />
         <Route path="/faker" element={<FakeComments />} />
-        <Route path="/user" element={<UserPage />} />
+        <Route path="/user/:id" element={<UserPage />} />
+        <Route path="/subscriptions" element={<Subscriptions />} />
         <Route path="/playlist/:id" element={<PlaylistPage />} />
         <Route path="/" element={<HomePage />} />
       </Routes>

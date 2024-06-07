@@ -1,12 +1,13 @@
 // LoginPage.jsx
 import React, { useState,useEffect } from 'react';
-import { postVideo,getUserVideos,updateVideo,deleteVideo,getVideo, fetchVideos, getSearchVideo } from '../../utils/videoUtils';
+import { postVideo,getUserVideos,updateVideo,deleteVideo,getVideo, fetchVideos, getSearchVideo,getSubscribedVideos } from '../../utils/videoUtils';
 import { addLiked, getLiked } from '../../utils/videoReactionUtils';
 import { useGlobalState } from '../../StateContext'; 
-import { createComment,getComments,deleteComment, updateComment, getCommentsReaction, commentAddLiked } from '../../utils/commentUtils';
+import { createComment,getComments,deleteComment, updateComment, getCommentsReaction, commentAddLiked, deleteAllComments, getVideoCommentsReactions } from '../../utils/commentUtils';
 import { loginUser,logOut, registerUser } from '../../utils/authUtils';
 import { addToPlaylist, createPlaylist, deleteVideoFromPlaylist, getPlaylistVideo, getUserFirstVideo } from '../../utils/playlist';
 import NavBar from '../navBar/NavBar';
+import { subscribeToChannel,unsubscribeFromChannel,getSubscribers,getSubscriptions, getSubscribedChannels  } from '../../utils/subscriptionUtils';
 function Register() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -96,8 +97,8 @@ function Register() {
   ];
   
   
-    pingPongComments.forEach(comment => {
-      const commentObj = { text: comment };
+  comments.forEach(comment => {
+      const commentObj = { text: "Noooo" };
       createComment(commentObj);
     });
   };
@@ -135,7 +136,14 @@ function Register() {
 
   
 
-  
+  const handleGetSubs = async () => {
+    try {
+      const data = await getSubscribedVideos(1);
+    } catch (error) {
+      console.error('Failed to fetch subscribed videos:', error);
+    }
+  };
+
   
   
   const handleUpdateVideo = () => {
@@ -199,7 +207,7 @@ function Register() {
     <div className="flex-wrap justify-center items-center h-screen ">
     <NavBar/>
       <button  className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700"  onClick={() => { postVideo(videoInfo); }}>Post Video</button>
-      <button  className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-700"  onClick={() => { getUserVideos(user); }}>Get User Video</button>
+      <button  className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-700"  onClick={() => { getUserVideos(1); }}>Get User Video</button>
       <button  className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-yellow-700"  onClick={() => handleUpdateVideo()}>Update Video</button>
       <button  className="px-4 py-2 bg-red-500 text-white rounded hover:bg-yellow-700"  onClick={() => deleteVideo(187)}>Delete Video</button>
       <button className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-yellow-700"  onClick={() => getVideo(3)}>Get Video info</button>
@@ -211,7 +219,6 @@ function Register() {
       <button className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-yellow-700"  onClick={() => getComments(3)}>GetComments</button>
       <button className="px-4 py-2 bg-blue-400 text-white rounded hover:bg-yellow-700"  onClick={() => deleteComment(98)}>deleteCommentByID</button>
       <button className="px-4 py-2 bg-blue-400 text-white rounded hover:bg-yellow-700"  onClick={() => updateComment(354,commentInfo)}>Edit CommentByID</button>
-      <button className="px-4 py-2 bg-blue-400 text-white rounded hover:bg-yellow-700"  onClick={handleMakeSubmitted}>Make Array</button>
       <button className="px-4 py-2 bg-blue-400 text-white rounded hover:bg-yellow-700"  onClick={() => fetchVideos("123123213",2)}>getHomePageVideo</button>
       <button className="px-4 py-2 bg-blue-400 text-white rounded hover:bg-yellow-700"  onClick={handleCreatePlaylist}>createPlaylist</button>
       <button className="px-4 py-2 bg-blue-400 text-white rounded hover:bg-yellow-700"  onClick={handleAddToPlaylist}>addToPlaylist</button>
@@ -225,6 +232,16 @@ function Register() {
       <button className="px-4 py-2 bg-blue-400 text-white rounded hover:bg-yellow-700"  onClick={() => getSearchVideo("Winter")}>getSearchVideo</button>
       <button className="px-4 py-2 bg-blue-400 text-white rounded hover:bg-yellow-700"  onClick={() => getSearchVideo("Winter")}>getSearchVideo</button>
       <button className="px-4 py-2 bg-blue-400 text-white rounded hover:bg-yellow-700"  onClick={() => handleGeneratingUser()}>registerUser</button>
+      <button className="px-4 py-2 bg-blue-400 text-white rounded hover:bg-yellow-700"  onClick={handleMakeSubmitted}>Make Video</button>
+
+      <button className="px-4 py-2 bg-blue-400 text-white rounded hover:bg-yellow-700"  onClick={() => deleteAllComments()}>deleteAll</button>
+      <button className="px-4 py-2 bg-blue-400 text-white rounded hover:bg-yellow-700"  onClick={() => subscribeToChannel(2)}>subscribeToChannel</button>
+      <button className="px-4 py-2 bg-blue-400 text-white rounded hover:bg-yellow-700"  onClick={() => unsubscribeFromChannel(2)}>unsubscribeFromChannel</button>
+      <button className="px-4 py-2 bg-blue-400 text-white rounded hover:bg-yellow-700"  onClick={() => getSubscribers(2)}>getSubscribers</button>
+      <button className="px-4 py-2 bg-blue-400 text-white rounded hover:bg-yellow-700"  onClick={() => getSubscriptions(1)}>getSubscriptions</button>
+      <button className="px-4 py-2 bg-blue-400 text-white rounded hover:bg-yellow-700"  onClick={() => handleGetSubs()}>getSubVideo</button>
+      <button className="px-4 py-2 bg-blue-400 text-white rounded hover:bg-yellow-700"  onClick={() => getSubscribedChannels(1)}>getSubscribedChannels</button>
+      <button className="px-4 py-2 bg-blue-400 text-white rounded hover:bg-yellow-700"  onClick={() => getVideoCommentsReactions(29)}>getVideoCommentsReactions</button>
     </div>
   );
 }

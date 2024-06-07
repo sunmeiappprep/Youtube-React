@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { checkJWT } from './utils/authUtils';
 
 const StateContext = createContext();
 
@@ -8,7 +9,7 @@ export const StateProvider = ({ children }) => {
   const [token, setToken] = useState(localStorage.getItem('token') || "");
   const [userUsername, setUserUsername] = useState(localStorage.getItem('userUsername') || "");
   const [showSubMenu, setShowSubMenu] = useState(false); 
-
+  const [isAuthenticated, setIsAuthenticated] = useState(null);
 
   useEffect(() => {
     if (user) {
@@ -36,7 +37,7 @@ export const StateProvider = ({ children }) => {
   }, [userUsername]);
 
   return (
-    <StateContext.Provider value={{ user, setUser, token, setToken, userUsername, setUserUsername, showSubMenu, setShowSubMenu }}>
+    <StateContext.Provider value={{ user, setUser, token, setToken, userUsername, setUserUsername, showSubMenu, setShowSubMenu, isAuthenticated, setIsAuthenticated }}>
       {children}
     </StateContext.Provider>
   );

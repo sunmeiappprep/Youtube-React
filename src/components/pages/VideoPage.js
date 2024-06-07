@@ -8,12 +8,14 @@ import VideoEmbed from '../videoPageComponent/VideoEmbed';
 import NavBar from '../navBar/NavBar';
 import CommentInput from '../videoPageComponent/CommentInput';
 import CommentsDisplay from '../videoPageComponent/CommentsDisplay';
-import { getComments } from '../../utils/commentUtils';
+import { commentAddLiked, getComments, getCommentsReaction, getVideoCommentsReactions } from '../../utils/commentUtils';
 import SidebarVideoRec from '../videoPageComponent/SidebarVideoRec';
 import { getUsernameById } from '../../utils/authUtils';
 import Playlist from '../videoPageComponent/Playlist';
 import Sidebar from '../navBar/Sidebar'; 
+import { useParams } from 'react-router-dom';
 function VideoPage() {
+
   const { user, token, setUser, setToken,showSubMenu,setShowSubMenu } = useGlobalState();
   const [title, setVideoTitle] = useState('');
   const [url, setVideoURL] = useState('');
@@ -26,6 +28,10 @@ function VideoPage() {
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [uploaderUserId, setUploaderUserId] = useState("");
   const [uploadUsername, setUploaderUsername] = useState("");
+  const [commentsReactionsObject, setCommentReactionsObject] = useState({});
+
+  // const { videoId } = useParams();
+
 
   useEffect(() => {
     const fetchVideoData = async () => {
@@ -36,51 +42,68 @@ function VideoPage() {
         // Set the uploader user ID
         setUploaderUserId(videoData.userId);
 
-        // Fetch the uploader's username
-        // const username = await getUsernameById(videoData.userId);
-        // console.log(username);
+        // Set the uploader's username
         setUploaderUsername(videoData.username);
 
         // Set other video details
         setVideoTitle(videoData.videoTitle);
         setVideoURL(videoData.videoUrl);
         setVideoDescription(videoData.videoDescription);
-        const code = videoData.videoUrl.split("=")[1];
+        const code = videoData.videoUrl.split('=')[1];
         setYoutubeCode(code);
+
+        // Set the document title
+        document.title = videoData.videoTitle;
       } catch (error) {
         console.error('Error fetching video data or username:', error);
       }
     };
 
+
     fetchVideoData();
+
+    return () => {
+      document.title = 'Youtube';
+    };
   }, [videoId]);
 
+  useEffect(() => {
+    const getCommentsReactionAndStore = async () => {
+      try {
+        const commentsReactionsArrayResult = await getVideoCommentsReactions(videoId);
+        const commentsReactionsObject = commentsReactionsArrayResult.reduce((acc, reaction) => {
+          acc[reaction.commentId] = reaction.diff;
+          return acc;
+        }, {});
+        setCommentReactionsObject(commentsReactionsObject);
+        console.log("results", commentsReactionsObject);
+      } catch (error) {
+        console.error('Error fetching video data or username:', error);
+      }
+    };
+    getCommentsReactionAndStore();
+  }, [videoId,comments]);
+  
   useEffect(() => {
     setShowSubMenu(false)
   },[])
 
+  const fetchData = async (videoId) => {
+    try {
+      const likedData = await getLiked(videoId);
+      setLiked(likedData);
+
+      const commentsData = await getComments(videoId);
+      commentsData.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+      console.log(commentsData);
+      setComments(commentsData);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+
   useEffect(() => {
-    const fetchLikedData = async (videoId) => {
-      try {
-        const likedData = await getLiked(videoId);
-        setLiked(likedData);
-      } catch (error) {
-        console.error('Error fetching liked data:', error);
-      }
-    };
-
-    const fetchCommentsData = async (videoId) => {
-      try {
-        const commentsData = await getComments(videoId);
-        console.log(commentsData)
-        setComments(commentsData);
-      } catch (error) {
-        console.error('Error fetching comments data:', error);
-      }
-    };
-
-    fetchLikedData(videoId);
-    fetchCommentsData(videoId);
+    fetchData(videoId);
   }, [videoId]);
 
   useLayoutEffect(() => {
@@ -121,13 +144,44 @@ function VideoPage() {
   };
 
   const handleUpdateComment = () => {
-    getComments(videoId).then((e) => setComments(e));
+    fetchData(videoId);
   };
 
   const handleVideoClick = (event) => {
     console.log('Click event:', event);
     // Additional logic for handling the click can be added here
   };
+
+  const handleCommentReaction = async (commentId, bool) => {
+    let commentLikedInfo = {
+        userId: user,
+        commentId: commentId,
+        liked: bool,
+    };
+
+    try {
+
+        await commentAddLiked(commentLikedInfo); // Make sure this is finished
+        const response = await getVideoCommentsReactions(commentId);
+        const getCommentsReactionAndStore = async () => {
+          try {
+            const commentsReactionsArrayResult = await getVideoCommentsReactions(videoId);
+            const commentsReactionsObject = commentsReactionsArrayResult.reduce((acc, reaction) => {
+              acc[reaction.commentId] = reaction.diff;
+              return acc;
+            }, {});
+            setCommentReactionsObject(commentsReactionsObject);
+            console.log("results", commentsReactionsObject);
+          } catch (error) {
+            console.error('Error fetching video data or username:', error);
+          }
+        };
+        getCommentsReactionAndStore();
+    } catch (error) {
+        console.error('Failed to fetch comment reactions:', error);
+    }
+};
+
 
   if (!youtubeCode) {
     return <div>Loading...</div>;
@@ -173,7 +227,7 @@ function VideoPage() {
                       <div className="col-span-1"></div> {/* Empty div for the 5th part */}
                     </div>
                     <CommentInput videoId={videoId} handleUpdateComment={handleUpdateComment} />
-                    <CommentsDisplay comments={comments} handleUpdateComment={handleUpdateComment} />
+                    <CommentsDisplay comments={comments} handleUpdateComment={handleUpdateComment} commentsReactionsObject={commentsReactionsObject} handleCommentReaction={handleCommentReaction}/>
                   </div>
                   <div className="w-1/4">
                     <SidebarVideoRec />

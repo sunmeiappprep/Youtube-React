@@ -8,54 +8,52 @@ import { useNavigate } from 'react-router-dom'
 import { checkJWT, logOut } from '../../utils/authUtils'
 
 function NavBar() {
-  const { user, token, setUser, setToken,setUserUsername} = useGlobalState();
+  const { user, token, setUser, setToken,setUserUsername,isAuthenticated, setIsAuthenticated} = useGlobalState();
   const [login, setLogin] = useState("")
   const navigate = useNavigate()
 
   const handleLogOut = async (event) => {
     event.preventDefault();
-    let data = await logOut()
-    setUser("")
-    setToken("")
-    setUserUsername("")
-    navigate("/signin")
-  }
+    await deleteInfo();
+    navigate("/signin");
+  };
 
   const deleteInfo = async () => {
-    let data = await logOut()
-    setUser("")
-    setToken("")
-    setUserUsername("")
-  }
+    await logOut();
+    setUser("");
+    setToken("");
+    setUserUsername("");
+  };
 
   const handleLogin = () => {
     navigate("/signin")
   }
 
   const handleUserPageRedirect = () => {
-    navigate("/user")
-  }
+  navigate(`/user/${user}`);
+}
 
-  useEffect(() => {
-    if (login == 500) {
-      console.log("what is login", login)
-      deleteInfo();
-    }
-  }, [login]);
+useEffect(() => {
+    const verifyToken = async () => {
+      const result = await checkJWT();
+      setIsAuthenticated(result);
+      if (!result) {
+        console.log(result)
+        await deleteInfo();
+      }
+    };
+
+    verifyToken();
+  }, [user, token, setIsAuthenticated]);
+
+
+
 
   const handleHomepageRedirect = () => {
     if (window.location.pathname !== "/") {
       navigate("/")
     }
   }
-
-  useEffect(() => {
-    // console.log("Updated global state user:", user);
-    // console.log("Updated global state token:", token);
-    checkJWT().then(e => setLogin(e))
-  }, [user, token]);
-
-  if (login === "") return null
 
   return (
     <div className="flex justify-between items-center w-full px-4 py-2">
@@ -68,10 +66,14 @@ function NavBar() {
       </div>
       <div className="flex gap-4"> {/* Wrapper for buttons */}
         <button onClick={handleUserPageRedirect} className="px-4 py-1 text-sm font-semibold text-white bg-blue-500 hover:bg-blue-600 rounded">User Page</button>
-        {!user ? (
-          <button onClick={handleLogin} className="px-4 py-1 text-sm font-semibold text-white bg-green-500 hover:bg-green-600 rounded">Login</button>
+        {isAuthenticated === null ? (
+          <button className="px-4 py-1 text-sm font-semibold text-white bg-gray-500 rounded">Loading...</button>
         ) : (
-          <button onClick={handleLogOut} className="px-4 py-1 text-sm font-semibold text-white bg-red-500 hover:bg-red-600 rounded">Logout</button>
+          !isAuthenticated ? (
+            <button onClick={handleLogin} className="px-4 py-1 text-sm font-semibold text-white bg-green-500 hover:bg-green-600 rounded">Login</button>
+          ) : (
+            <button onClick={handleLogOut} className="px-4 py-1 text-sm font-semibold text-white bg-red-500 hover:bg-red-600 rounded">Logout</button>
+          )
         )}
       </div>
     </div>

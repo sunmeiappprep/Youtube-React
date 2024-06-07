@@ -1,5 +1,6 @@
 import React from 'react';
 import CommentOptions from './CommentOptions'; // Import CommentOptions
+import ReplyButton from './ReplyButton';
 
 const Comment = ({
     comment,
@@ -10,10 +11,11 @@ const Comment = ({
     handleDelete,
     activeComment,
     activeCommentIsUser,
-    isReply = false
+    handleUpdateComment
 }) => {
+    console.log(comment)
     return (
-        <div key={comment.id} className={`bg-black shadow rounded-lg p-6 relative ${isReply ? 'ml-6' : ''}`}>
+        <div key={comment.id} className={`bg-black shadow rounded-lg p-6 relative ml-6`}>
             <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-2">
                     <div className="flex-shrink-0">
@@ -34,13 +36,13 @@ const Comment = ({
             </div>
             <div className="text-white flex items-center mt-4">
                 <p>{comment.text}</p>
-                <p className="ml-4">{isReply.toString()}</p> {/* Outputting isReply directly */}
-                <p className="ml-4">{commentReactions[comment.id]}</p>
+                <p className="ml-4">{commentReactions}</p>
             </div>
             <div className="mt-4 flex space-x-4">
                 <button onClick={() => handleCommentReaction(comment.id, true)} className="text-sm bg-green-500 text-white px-2 py-1 rounded">Good</button>
                 <button onClick={() => handleCommentReaction(comment.id, false)} className="text-sm bg-red-500 text-white px-2 py-1 rounded">Bad</button>
             </div>
+            <div><ReplyButton commentUser={comment.user.username} parentCommentId={comment.id} handleUpdateComment={handleUpdateComment}/></div>
             {activeComment === comment.id ? (
                 activeCommentIsUser ? (
                     <CommentOptions handleEdit={handleEdit} handleDelete={handleDelete} />

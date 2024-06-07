@@ -1,9 +1,10 @@
+import axios from 'axios';
 import api from './axiosInterceptors';
 export const createPlaylist = async (playlistData) => {
     try {
-    console.log(playlistData)
+    console.log("Axios",playlistData)
       const response = await api.post('http://localhost:8080/api/playlistTitle/', playlistData);
-      console.log(response.data); // Handle the response as needed
+      console.log("Axios",response.data); // Handle the response as needed
     } catch (error) {
       console.error(error.response ? error.response.data : error.message);
     }
@@ -12,7 +13,7 @@ export const createPlaylist = async (playlistData) => {
   export const getUserPlaylist = async (userId) => {
     try{
       const response = await api.get(`http://localhost:8080/api/playlistTitle/${userId}`);
-      console.log(response.data)
+      console.log("Axios",response.data)
       return response.data
     }catch (error){
       nsole.error(error.response ? error.response.data : error.message);
@@ -26,7 +27,7 @@ export const createPlaylist = async (playlistData) => {
           videoId: videoId
         }
       });
-      console.log(response.data);
+      console.log("Axios",response.data);
       return response.data;
     } catch (error) {
       console.error(error.response ? error.response.data : error.message);
@@ -35,9 +36,9 @@ export const createPlaylist = async (playlistData) => {
 
     export const addToPlaylist = async (playlistData) => {
         try {
-        console.log(playlistData)
+        console.log("Axios",playlistData)
         const response = await api.post('http://localhost:8080/api/playlistVideos/addVideoToPlaylist', playlistData);
-        console.log(response.data); // Handle the response as needed
+        console.log("Axios",response.data); // Handle the response as needed
         } catch (error) {
         console.error(error.response ? error.response.data : error.message);
         }
@@ -45,8 +46,8 @@ export const createPlaylist = async (playlistData) => {
 
     export const getUserFirstVideo = async (userId) => {
       try {
-          const response = await api.get(`http://localhost:8080/api/playlistTitle/user/${userId}/firstVideos`);
-          console.log(response);
+          const response = await axios.get(`http://localhost:8080/api/playlistTitle/user/${userId}/firstVideos`);
+          console.log("Axios",response);
           return response.data;
       } catch (error) {
           console.error(error.response ? error.response.data : error.message);
@@ -57,7 +58,7 @@ export const createPlaylist = async (playlistData) => {
     export const getPlaylistVideo = async (playlistId) => {
         try {
         const response = await api.get(`http://localhost:8080/api/playlistVideos/${playlistId}`);
-        console.log(response.data); 
+        console.log("Axios",response.data); 
         return response.data
         } catch (error) {
         console.error(error.response ? error.response.data : error.message);
@@ -67,7 +68,7 @@ export const createPlaylist = async (playlistData) => {
     export const getPlaylistTitle = async (playlistTitleId) => {
       try {
       const response = await api.get(`http://localhost:8080/api/playlistTitle/title/${playlistTitleId}`);
-      console.log(response.data); 
+      console.log("Axios",response.data); 
       return response.data
       } catch (error) {
       console.error(error.response ? error.response.data : error.message);
@@ -78,7 +79,7 @@ export const createPlaylist = async (playlistData) => {
     export const deleteVideoFromPlaylist = async (playlistId,VideoId) => {
         try {
           const response = await api.delete(`http://localhost:8080/api/playlistVideos/delete/${playlistId}/${VideoId}`);
-          console.log(response.data); // Handle the response as needed
+          console.log("Axios",response.data); // Handle the response as needed
         } catch (error) {
           console.error(error.response ? error.response.data : error.message);
         }

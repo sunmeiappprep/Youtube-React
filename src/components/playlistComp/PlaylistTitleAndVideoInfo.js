@@ -2,17 +2,16 @@ import React, { useEffect, useState } from 'react';
 import { useGlobalState } from '../../StateContext';
 import { getUserFirstVideo } from '../../utils/playlist';
 import PlaylistThumbnail from './PlaylistThumbnail';
-
+import { useParams } from 'react-router-dom';
 function PlaylistTitleAndVideoInfo() {
-    const { user } = useGlobalState();
+    const { id } = useParams();
     const [playlist, setPlaylist] = useState([]);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                if (user) {
-                    console.log(user)
-                    const data = await getUserFirstVideo(user);
+                if (id) {
+                    const data = await getUserFirstVideo(id);
                     setPlaylist(data);
                     console.log(data);
                 }
@@ -21,9 +20,9 @@ function PlaylistTitleAndVideoInfo() {
             }
         };
         fetchData();
-    }, [user]); 
-    if (!user) return null;
+    }, [id]); 
 
+    if (!id) return null;
 
     return (
         <div className="mx-auto px-4 py-8 w-full">

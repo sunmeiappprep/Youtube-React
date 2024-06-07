@@ -14,7 +14,7 @@ export default function SidebarVideoRec() {
   return (
     <div>
     {videosSide.map((video) => (
-        <div key={video.id} className="">
+        <div key={video.videoId} className="">
             <VideoSideBarThumbnail
                 videoId={video.videoId}
                 title={video.videoTitle}

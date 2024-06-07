@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import NavBar from '../navBar/NavBar';
 import VideoGrid from '../grid/VideoGrid';
-import Sidebar from '../navBar/Sidebar'; // Import the Sidebar component
-import { useGlobalState } from '../../StateContext'; // Import the global state
+import Sidebar from '../navBar/Sidebar'; 
+import { useGlobalState } from '../../StateContext'; 
 import { fetchVideos } from '../../utils/videoUtils';
 
 export default function HomePage() {
