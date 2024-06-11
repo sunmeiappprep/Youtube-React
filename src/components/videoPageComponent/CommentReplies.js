@@ -10,7 +10,9 @@ const CommentReplies = ({ replies, commentReactions,
     handleDelete,
     activeComment,
     activeCommentIsUser,
-    handleUpdateComment
+    handleUpdateComment,
+    activeCommentId, // Accept activeCommentId
+    setActiveCommentId // Accept setActiveCommentId
 }) => {
     return (
         <div className="mt-4 space-y-4 ml-12">
@@ -18,19 +20,17 @@ const CommentReplies = ({ replies, commentReactions,
                 const createdAtSeed = new Date(reply.createdAt).getTime();
                 const randomNumber = getSeededRandomNumber(createdAtSeed);
                 const replyReactionWithRandom = commentReactions[reply.id] + randomNumber;
-
+                const makeSureNotNegative = Math.max(replyReactionWithRandom,0)
                 return (
                     <Comment
                         key={reply.id}
                         comment={reply}
-                        commentReactions={replyReactionWithRandom} // this is a number
+                        commentReactions={makeSureNotNegative} // this is a number
                         handleCommentReaction={handleCommentReaction}
-                        handleToggleOptions={handleToggleOptions}
-                        handleEdit={handleEdit}
-                        handleDelete={handleDelete}
-                        activeComment={activeComment}
-                        activeCommentIsUser={activeCommentIsUser}
                         handleUpdateComment={handleUpdateComment}
+                        activeCommentId={activeCommentId} 
+                        setActiveCommentId={setActiveCommentId}
+                        handleDelete={handleDelete}
                     />
                 );
             })}

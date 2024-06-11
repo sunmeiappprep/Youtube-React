@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { formatDateDifference } from '../../utils/dateUtils';
 import { convertNumber } from '../../utils/numberUtils';
-
+import { getColorFromInitial } from '../../utils/getColorFromInitial';
 function VideoThumbnail({ videoId, title, uploader, url, generatedDate, view, userId }) {
   const navigate = useNavigate();
 
@@ -14,13 +14,9 @@ function VideoThumbnail({ videoId, title, uploader, url, generatedDate, view, us
     return name ? name.charAt(0).toUpperCase() : '';
   };
 
-  const getRandomColor = () => {
-    const colors = ['#FF5722', '#3F51B5', '#4CAF50', '#FFC107', '#009688'];
-    return colors[Math.floor(Math.random() * colors.length)];
-  };
 
   const initial = getInitial(uploader);
-  const circleColor = getRandomColor();
+  const circleColor = getColorFromInitial(initial); 
 
   return (
     <div className="max-w-xs mx-auto rounded overflow-hidden shadow-lg relative">
@@ -36,12 +32,12 @@ function VideoThumbnail({ videoId, title, uploader, url, generatedDate, view, us
       <div className="px-2 py-2 relative z-10 flex items-start">
         {uploader && (
           <div
-            className="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center mr-2"
-            style={{ backgroundColor: circleColor }}
+              className="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center mr-2"
+              style={{ backgroundColor: circleColor }}
           >
-            <span className="text-white font-bold text-lg">{initial}</span>
+              <span className="text-white font-bold text-lg">{initial}</span>
           </div>
-        )}
+      )}
         <div>
           <div
             className="font-bold text-xl mb-1 line-clamp-2 cursor-pointer"

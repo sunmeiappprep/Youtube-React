@@ -1,141 +1,175 @@
-import React, { useEffect, useState } from 'react';
-import { commentAddLiked, deleteComment, getCommentsReaction, getVideoCommentsReactions, updateComment } from '../../utils/commentUtils';
+import React, { useEffect, useState,useRef  } from 'react';
+import { commentAddLiked, deleteComment, getCommentsReaction, getComments, getVideoCommentsReactions, updateComment } from '../../utils/commentUtils';
 import { useGlobalState } from '../../StateContext';
 import Comment from './Comment'; // Import Comment component
 import CommentReplies from './CommentReplies';
 import { getSeededRandomNumber } from '../../utils/numberUtils';
+import CommentInput from '../videoPageComponent/CommentInput';;
 
-const CommentsDisplay = ({ comments, handleUpdateComment,commentsReactionsObject,handleCommentReaction }) => {
-    const [activeComment, setActiveComment] = useState(null);
-    const [activeCommentIsUser, setActiveCommentIsUser] = useState(false);
-    const [commentReactions, setCommentReactions] = useState({});
-    const [replies, setReplies] = useState({});
-    const { user } = useGlobalState(); // Access the context methods
+const CommentsDisplay = ({ videoId, }) => {
+  const { user } = useGlobalState();
+  const [comments, setComments] = useState([]);
+  const [commentsReactionsObject, setCommentReactionsObject] = useState({});
+  const [activeCommentId, setActiveCommentId] = useState(null);
+  const [replies, setReplies] = useState({});
+  const containerRef = useRef(null);
 
-    const handleToggleOptions = (comment) => {
-        if (activeComment === comment.id) {
-            setActiveComment(null);
-        } else {
-            setActiveComment(comment.id);
-        }
+  const fetchComments = async () => {
+    try {
+      const commentsData = await getComments(videoId);
+      commentsData.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+      setComments(commentsData);
+    } catch (error) {
+      console.error('Error fetching comments:', error);
+    }
+  };
 
-        setActiveCommentIsUser(comment.user.id === user);
-    };
-    
-    
+  const fetchCommentsReactions = async () => {
+    try {
+      const commentsReactionsArray = await getVideoCommentsReactions(videoId);
+      const reactionsObject = commentsReactionsArray.reduce((acc, reaction) => {
+        acc[reaction.commentId] = reaction.diff;
+        return acc;
+      }, {});
+      setCommentReactionsObject(reactionsObject);
+    } catch (error) {
+      console.error('Error fetching comments reactions:', error);
+    }
+  };
 
-    // useEffect(() => {
-    //     const fetchReactions = async (comment) => {
-    //         const newCommentReactions = {};
+  useEffect(() => {
+    fetchComments();
+    fetchCommentsReactions();
+  }, [videoId]);
 
-    //         const fetchReactionsRecursive = async (comment) => {
-    //             try {
-    //                 const response = await getCommentsReaction(comment.id);
-    //                 newCommentReactions[comment.id] = response;
-    //             } catch (error) {
-    //                 console.log("Error fetching reactions for comment:", comment.id, error);
-    //                 newCommentReactions[comment.id] = null;
-    //             }
+  useEffect(() => {
+    const allReplies = {};
 
-    //             if (comment.replies && comment.replies.length > 0) {
-    //                 for (const reply of comment.replies) {
-    //                     await fetchReactionsRecursive(reply);
-    //                 }
-    //             }
-    //         };
-
-    //         await fetchReactionsRecursive(comment);
-    //         return newCommentReactions;
-    //     };
-
-    //     const fetchCommentReactions = async () => {
-    //         const combinedReactions = {};
-
-    //         for (const comment of comments) {
-    //             const newCommentReactions = await fetchReactions(comment);
-    //             Object.assign(combinedReactions, newCommentReactions);
-    //         }
-
-    //         setCommentReactions(prevReactions => ({ ...prevReactions, ...combinedReactions }));
-    //     };
-
-    //     if (comments.length > 0) {
-    //         fetchCommentReactions();
-    //     }
-    // }, [comments, getCommentsReaction, setCommentReactions]);
-    const handleEdit = () => {
-        const newComment = {
-            text: "testing"
-        };
-        updateComment(activeComment, newComment).then(() => handleUUpdateComment());
-    };
-
-    const handleDelete = () => {
-        deleteComment(activeComment).then(() => handleUpdateComment());
-    };
-
-
-    useEffect(() => {
-        const allReplies = {};
-
-        const collectReplies = (comment) => {
-            const replies = [];
-            if (comment.replies && comment.replies.length > 0) {
-                comment.replies.forEach(reply => {
-                    replies.push(reply);
-                    replies.push(...collectReplies(reply));
-                });
-            }
-            return replies;
-        };
-
-        comments.forEach(comment => {
-            allReplies[comment.id] = collectReplies(comment);
+    const collectReplies = (comment) => {
+      const replies = [];
+      if (comment.replies && comment.replies.length > 0) {
+        comment.replies.forEach(reply => {
+          replies.push(reply);
+          replies.push(...collectReplies(reply));
         });
-        console.log(allReplies)
-        setReplies(allReplies)
-    }, [comments]);
+      }
+      return replies;
+    };
 
-   
+    comments.forEach(comment => {
+      allReplies[comment.id] = collectReplies(comment);
+    });
+    setReplies(allReplies);
+  }, [comments]);
 
-    return (
-        <div className="space-y-4 mt-6">
-          {comments.map((comment) => {
-            const createdAtSeed = new Date(comment.createdAt).getTime();
-            const randomNumber = getSeededRandomNumber(createdAtSeed);
-            const commentReactionWithRandom = commentsReactionsObject[comment.id] + randomNumber;
-      
-            return (
-              <div key={comment.id}>
-                <Comment
+  const handleToggleOptions = (commentId) => {
+    setActiveCommentId((prevId) => (prevId === commentId ? null : commentId));
+  };
+
+  const handleClickOutside = (event) => {
+    if (containerRef.current && !containerRef.current.contains(event.target)) {
+      setActiveCommentId(null);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
+  const handleCommentReaction = async (commentId, bool) => {
+    const commentLikedInfo = {
+      userId: user,
+      commentId,
+      liked: bool,
+    };
+
+    try {
+      await commentAddLiked(commentLikedInfo);
+      const commentsReactionsArray = await getVideoCommentsReactions(videoId);
+      const reactionsObject = commentsReactionsArray.reduce((acc, reaction) => {
+        acc[reaction.commentId] = reaction.diff;
+        return acc;
+      }, {});
+      setCommentReactionsObject(reactionsObject);
+    } catch (error) {
+      console.error('Failed to update comment reaction:', error);
+    }
+  };
+
+const handleUpdateComment = async (commentId, newText) => {
+    try {
+        await updateComment(commentId, { text: newText });
+        await fetchComments();
+        await fetchCommentsReactions();
+    } catch (error) {
+        console.error('Failed to update comment:', error);
+    }
+};
+
+  const handleEdit = async (commentId, newText) => {
+    try {
+      const newComment = { text: newText };
+      await updateComment(commentId, newComment);
+      handleUpdateComment();
+    } catch (error) {
+      console.error('Failed to update comment:', error);
+    }
+  };
+
+  const handleDelete = async (commentId) => {
+    try {
+      await deleteComment(commentId);
+      handleUpdateComment();
+    } catch (error) {
+      console.error('Failed to delete comment:', error);
+    }
+  };
+
+  return (
+    <div ref={containerRef}>
+      <CommentInput videoId={videoId} handleUpdateComment={handleUpdateComment} />
+      <div className="space-y-4 mt-6">
+        {comments.map((comment) => {
+          const createdAtSeed = new Date(comment.createdAt).getTime();
+          const randomNumber = getSeededRandomNumber(createdAtSeed);
+          const commentReactionWithRandom = commentsReactionsObject[comment.id] + randomNumber;
+          const makeSureNotNegative = Math.max(commentReactionWithRandom, 0);
+          return (
+            <div key={comment.id}>
+              <Comment
+                handleUpdateComment={handleUpdateComment}
+                comment={comment}
+                commentReactions={makeSureNotNegative}
+                handleCommentReaction={handleCommentReaction}
+                handleEdit={handleEdit}
+                handleDelete={handleDelete}
+                isOpen={activeCommentId === comment.id}
+                onToggleOptions={() => handleToggleOptions(comment.id)}
+                activeCommentId={activeCommentId} 
+                setActiveCommentId={setActiveCommentId}
+                
+              />
+              {replies[comment.id] && (
+                <CommentReplies
+                  replies={replies[comment.id]}
                   handleUpdateComment={handleUpdateComment}
-                  comment={comment}
-                  commentReactions={commentReactionWithRandom}
+                  commentReactions={commentsReactionsObject}
                   handleCommentReaction={handleCommentReaction}
-                  handleToggleOptions={handleToggleOptions}
                   handleEdit={handleEdit}
                   handleDelete={handleDelete}
-                  activeComment={activeComment}
-                  activeCommentIsUser={activeCommentIsUser}
+                  activeCommentId={activeCommentId} 
+                  setActiveCommentId={setActiveCommentId}
                 />
-                {replies[comment.id] && (
-                  <CommentReplies
-                    replies={replies[comment.id]}
-                    handleUpdateComment={handleUpdateComment}
-                    commentReactions={commentsReactionsObject}
-                    handleCommentReaction={handleCommentReaction}
-                    handleToggleOptions={handleToggleOptions}
-                    handleEdit={handleEdit}
-                    handleDelete={handleDelete}
-                    activeComment={activeComment}
-                    activeCommentIsUser={activeCommentIsUser}
-                  />
-                )}
-              </div>
-            );
-          })}
-        </div>
-      );
+              )}
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
 };
 
 export default CommentsDisplay;
