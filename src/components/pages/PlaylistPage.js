@@ -6,20 +6,19 @@ import { useGlobalState } from '../../StateContext';
 import { formatDateDifference } from '../../utils/dateUtils';
 import PlaylistThumbnailColumn from '../playlistComp/PlaylistThumbnailColumn';
 import { convertNumber } from '../../utils/numberUtils';
+import { useParams } from 'react-router-dom';
 const PlaylistPage = () => {
+  const { id } = useParams();
   const [videos, setVideos] = useState([]);
   const [totalViews, setTotalViews] = useState(0);
   const [playlistInfo, setPlaylistInfo] = useState({});
   const { showSubMenu } = useGlobalState();
 
   useEffect(() => {
-    const currentUrl = window.location.href;
-    const parts = currentUrl.split('/');
-    const lastPart = parts.pop();
     const fetchVideos = async () => {
       try {
-        const response = await getPlaylistVideo(lastPart);
-        const response2 = await getPlaylistTitle(lastPart);
+        const response = await getPlaylistVideo(id);
+        const response2 = await getPlaylistTitle(id);
         setPlaylistInfo(response2);
         setVideos(response);
         const viewsReducer = response.reduce((acc, video) => acc + video.videoViews, 0);
@@ -30,7 +29,7 @@ const PlaylistPage = () => {
     };
 
     fetchVideos();
-  }, []);
+  }, [id]);
 
 
   if (videos.length === 0) {

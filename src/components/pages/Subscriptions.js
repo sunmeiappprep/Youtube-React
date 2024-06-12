@@ -6,8 +6,12 @@ import { useGlobalState } from '../../StateContext';
 import { getSubscribedVideos } from '../../utils/videoUtils';
 
 export default function Subscriptions() {
-    const { user, showSubMenu,isAuthenticated } = useGlobalState();
+    const { user, showSubMenu,isAuthenticated,setShowSubMenu } = useGlobalState();
     const [videos, setVideos] = useState([]);
+
+    useEffect(() =>{
+        setShowSubMenu(true)
+    },[])
 
     useEffect(() => {
         const fetchSubscribedVideos = async () => {
@@ -33,14 +37,14 @@ export default function Subscriptions() {
     }, [user,isAuthenticated]);
 
     return (
-        <div className="relative flex">
-            <Sidebar />
-            <div className={`flex-grow ${showSubMenu ? 'ml-64' : 'ml-0'}`}>
-                <NavBar />
-                <div className="p-4">
-                    <VideoGrid videos={videos} />
-                </div>
+        <div className="relative flex min-h-screen bg-custom-black">
+          <Sidebar />
+          <div className={`flex-grow ${showSubMenu ? 'ml-64' : 'ml-0'} min-h-screen`}>
+            <NavBar />
+            <div className="p-4">
+              <VideoGrid videos={videos} />
             </div>
+          </div>
         </div>
-    );
+      );
 }

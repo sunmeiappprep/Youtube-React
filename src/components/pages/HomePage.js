@@ -9,7 +9,11 @@ export default function HomePage() {
   const [seed, setSeed] = useState(null);
   const [videos, setVideos] = useState([]);
   const [page, setPage] = useState(1);
-  const { showSubMenu } = useGlobalState(); // Get the state for the sidebar visibility
+  const { showSubMenu,setShowSubMenu } = useGlobalState(); 
+
+  useEffect(() => {
+    setShowSubMenu(true)
+  },[])
 
   // Set a seed and make sure it doesn't change when scrolling
   useEffect(() => {
@@ -54,11 +58,15 @@ export default function HomePage() {
   }
 
   return (
-    <div className="relative flex">
-      <Sidebar />
-      <div className={`flex-grow ${showSubMenu ? 'ml-64' : 'ml-0'}`}>
-        <NavBar />
-        <div className="p-4">
+    <div className="relative flex min-h-screen">
+      <div className={`${showSubMenu ? 'w-64' : 'w-0'} transition-all duration-300`}>
+        <Sidebar />
+      </div>
+      <div className={`flex-grow flex flex-col transition-all duration-300`}>
+        <div className={`relative`}>
+          <NavBar />
+        </div>
+        <div className="flex-grow p-4">
           <VideoGrid videos={videos} />
         </div>
       </div>

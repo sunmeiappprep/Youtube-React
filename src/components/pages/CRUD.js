@@ -8,6 +8,8 @@ import { loginUser,logOut, registerUser } from '../../utils/authUtils';
 import { addToPlaylist, createPlaylist, deleteVideoFromPlaylist, getPlaylistVideo, getUserFirstVideo } from '../../utils/playlist';
 import NavBar from '../navBar/NavBar';
 import { subscribeToChannel,unsubscribeFromChannel,getSubscribers,getSubscriptions, getSubscribedChannels  } from '../../utils/subscriptionUtils';
+import arrayData from '../../data/pp.json';
+
 function Register() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -23,12 +25,13 @@ function Register() {
 
 
     const handleMakeSubmitted = () =>{
-      for (let index = 0; index < arr.length; index++) {
-        const element = arr[index];
+      for (let index = 0; index < arrayData.length; index++) {
+        const element = arrayData[index];
         const videoInfo = {
           title: element.title,
           url: `https://www.youtube.com/watch?v=${element.url}`,
-          description: element.title
+          description: element.description,
+          view: parseInt(element.views.replace(/,/g, ''), 10)
         };
         postVideo(videoInfo)
       }

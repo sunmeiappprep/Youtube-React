@@ -69,8 +69,8 @@ const Comment = ({
             <div className="flex-1 min-w-0 ml-4">
                 <div className="flex items-start justify-between">
                     <div className="flex items-center space-x-2">
-                        <div className="flex-1 min-w-0 flex flex-col">
-                            <p className="text-sm font-medium text-white truncate">{comment.user.username}</p>
+                        <div className="flex-1 min-w-0 flex flex-row">
+                            <p className="text-sm font-medium text-white truncate pr-2">{comment.user.username}</p>
                             <p className="text-sm text-custom-white">{formatDateDifference(comment.createdAt)} ago</p>
                         </div>
                     </div>

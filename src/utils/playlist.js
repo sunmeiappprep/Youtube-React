@@ -84,3 +84,15 @@ export const createPlaylist = async (playlistData) => {
           console.error(error.response ? error.response.data : error.message);
         }
       };
+
+    export const findPlaylistIdByUserAndTitle = async (title) => {
+      try {
+          const response = await api.get(`http://localhost:8080/api/playlistTitle/findIdByTitle`, {
+              params: { title },
+          });
+          return response.data;
+      } catch (error) {
+          console.error('Error fetching playlist ID:', error);
+          throw error;
+      }
+  };
