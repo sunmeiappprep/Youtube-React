@@ -4,16 +4,28 @@ module.exports = {
   theme: {
     extend: {
       gridTemplateColumns: {
-        // Define a 15-column layout
         '15': 'repeat(15, minmax(0, 1fr))',
         'auto-fit-minmax-300': 'repeat(auto-fit, minmax(300px, 1fr))',
       },
       
       maxWidth: {
-        '13xl': '96rem', // Custom width, you can set it to any value you like
+        '8xl': '88rem',   // 1408px
+        '9xl': '96rem',   // 1536px
+        '10xl': '104rem', // 1664px
+        '10.5xl': '108rem', // 1664px
+        '11xl': '112rem', // 1792px
+        '12xl': '120rem', // 1920px
+        '13xl': '128rem', // 2048px
+        '14xl': '136rem', // 2176px
+        '15xl': '144rem', // 2304px
+      
       },
       fontSize: {
-        'xxs': '0.625rem', // Custom size, adjust as needed
+        'xxs': '0.625rem', 
+        'custom-xl': '1.0rem',
+      },
+      lineHeight: {
+        'custom-xl': '2.2rem',
       },
       colors: {
         'custom-dark': '#0F0F0F',
@@ -21,11 +33,18 @@ module.exports = {
         'custom-gray': '#262626',
         "custom-hover-gray": "#3F3F3F",
         "custom-gray-desc": "#272727",
-        
+        "custom-gray-thumbnail": "#ACACAC",
+        "custom-white-thumbnail": "#F1F1F1",
       },
       width: {
-        '128': '32rem', // Adds w-128 class with 32rem width
-      }
+        '128': '32rem', 
+      },
+      fontFamily: {
+        'roboto': ['Roboto', 'sans-serif'],
+      },
+      fontWeight: {
+        'medium': 600,
+      },
     },
   },
   variants: {},

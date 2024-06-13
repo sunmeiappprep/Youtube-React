@@ -1,21 +1,19 @@
 import React, { useRef, useState, useEffect, useLayoutEffect } from 'react';
 import { getVideo, getUserVideos, updateVideo, deleteVideo, postVideo } from '../../utils/videoUtils';
-import { addLiked, getLiked } from '../../utils/videoReactionUtils';
+import { getLiked } from '../../utils/videoReactionUtils';
 import { useGlobalState } from '../../StateContext';
-import LikedAndDislike from '../videoPageComponent/LikedAndDislike';
 import LikeAndDislikeButton from '../videoPageComponent/LikeAndDislikeButton';
 import VideoEmbed from '../videoPageComponent/VideoEmbed';
 import NavBar from '../navBar/NavBar';
-import CommentInput from '../videoPageComponent/CommentInput';
 import CommentsDisplay from '../videoPageComponent/CommentsDisplay';
 import SidebarVideoRec from '../videoPageComponent/SidebarVideoRec';
-import { getUsernameById } from '../../utils/authUtils';
 import Playlist from '../videoPageComponent/Playlist';
 import Sidebar from '../navBar/Sidebar'; 
 import { findPlaylistIdByUserAndTitle } from '../../utils/playlist';
 import { getColorFromInitial } from '../../utils/getColorFromInitial';
 import { convertNumber } from '../../utils/numberUtils';
 import { formatDateDifference } from '../../utils/dateUtils';
+import { useNavigate } from 'react-router-dom';
 
 function VideoPage() {
   const { user, token, setUser, setToken, showSubMenu, setShowSubMenu } = useGlobalState();
@@ -34,6 +32,8 @@ function VideoPage() {
   const [watchLaterPlaylistId,setWatchLaterPlaylistId] = useState(0)
   const [likedVideoPlaylistId,setLikedVideoPlaylistId] = useState(0)
   const [isDescriptionExpanded, setDescriptionExpanded] = useState(false);
+  const navigate = useNavigate()
+
 
   const handleMoreClick = () => {
     setDescriptionExpanded(!isDescriptionExpanded);
@@ -135,6 +135,10 @@ function VideoPage() {
     });
   };
 
+  const handleDelete = () => {
+    deleteVideo(videoId).then(() => navigate('/git '))
+  }
+
   if (!youtubeCode) {
     return <div>Loading...</div>;
   }
@@ -149,7 +153,7 @@ function VideoPage() {
           <div className="video-responsive">
             <NavBar />
             <div className="flex justify-center">
-              <div className="w-full max-w-7xl">
+              <div className="w-full max-w-10.5xl">
                 <div className="flex">
                   <div className="w-3/4">
                     <VideoEmbed ref={videoRef} videoId={youtubeCode} onClick={() => {}} />
@@ -172,6 +176,11 @@ function VideoPage() {
                         Subscribe
                       </button>
                       <div className="flex-grow flex justify-end items-center mr-8">
+                        <div>
+                          <button onClick={handleDelete} className='h-8 w-36 bg-custom-gray rounded-l-full rounded-r-full mr-2'>
+                          Delete Video 
+                          </button>
+                        </div>
                         <div className="flex justify-center mr-4">
                           <LikeAndDislikeButton
                             videoId={videoId}
@@ -180,6 +189,7 @@ function VideoPage() {
                             likedVideoPlaylistId={likedVideoPlaylistId}
                           />
                         </div>
+   
                         <div className="flex justify-center">
                           <Playlist videoId={videoId} />
                         </div>

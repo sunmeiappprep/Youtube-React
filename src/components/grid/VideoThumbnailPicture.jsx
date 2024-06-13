@@ -29,7 +29,7 @@ function VideoThumbnail({ videoId, title, uploader, url, generatedDate, view, us
           onClick={() => handleClick(`/video/${videoId}`)}
         />
       </div>
-      <div className="px-2 py-2 relative z-10 flex items-start">
+      <div className="pr-2 py-2 relative z-10 flex items-start">
         {uploader && (
           <div
               className="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center mr-2"
@@ -40,24 +40,21 @@ function VideoThumbnail({ videoId, title, uploader, url, generatedDate, view, us
       )}
         <div>
           <div
-            className="font-bold text-xl mb-1 line-clamp-2 cursor-pointer"
-            style={{ fontFamily: 'Roboto', fontWeight: 500 }}
+            className="font-medium text-custom-white-thumbnail text-l mb-1 line-clamp-2 cursor-pointer font-roboto"
             onClick={() => handleClick(`/video/${videoId}`)}
           >
             {title}
           </div>
           {uploader && (
             <p
-              className="text-gray-500 text-sm mb-1 cursor-pointer"
-              style={{ fontFamily: 'Roboto', fontWeight: 400 }}
+              className="text-sm text-custom-gray-thumbnail mb-1 cursor-pointer font-roboto"
               onClick={() => handleClick(`/user/${userId}`)}
             >
               {uploader}
             </p>
           )}
           <div
-            className="flex text-gray-500 text-sm cursor-pointer"
-            style={{ fontFamily: 'Roboto', fontWeight: 400 }}
+            className="flex text-custom-gray-thumbnail text-sm cursor-pointer font-roboto"
             onClick={() => handleClick(`/video/${videoId}`)}
           >
             <div className="pr-1">{convertNumber(view)} Views</div>

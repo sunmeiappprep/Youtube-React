@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState,useRef  } from 'react';
 import { addLiked } from '../../utils/videoReactionUtils';
 import { useGlobalState } from '../../StateContext';
 import { useNavigate } from 'react-router-dom';
@@ -8,6 +8,7 @@ import { addToPlaylist } from '../../utils/playlist';
 export default function LikeAndDislikeButton({ videoId, handleUpdateLiked,liked,likedVideoPlaylistId }) {
     const { user, token, setUser, setToken } = useGlobalState();
     const [attempted, setAttempted] = useState(false);
+    const containerRef = useRef(null);
     const navigate = useNavigate()
 
     const handleAddToLikedPlaylist = async () => {
@@ -21,6 +22,19 @@ export default function LikeAndDislikeButton({ videoId, handleUpdateLiked,liked,
           console.error('Error addToPlaylist or handleGetUserPlaylist', error);
       }
     }
+
+    const handleClickOutside = (event) => {
+      if (containerRef.current && !containerRef.current.contains(event.target)) {
+        setAttempted(false);
+      }
+    };
+  
+    useEffect(() => {
+      document.addEventListener('mousedown', handleClickOutside);
+      return () => {
+        document.removeEventListener('mousedown', handleClickOutside);
+      };
+    }, []);
 
     const handleLikeButton = () => {
         if (!user) {
@@ -50,33 +64,36 @@ export default function LikeAndDislikeButton({ videoId, handleUpdateLiked,liked,
     };
 
     const handleLogin = () => {
-        navigate('/login')
+        navigate('/signin')
     }
 
 
     return (
-        <div className="flex items-center h-8 bg-custom-gray rounded-l-full rounded-r-full">
+      <div ref={containerRef}>
+      <div className="flex items-center h-8 bg-custom-gray rounded-l-full rounded-r-full">
         <button
-        onClick={handleLikeButton}
-        className="flex items-center px-5 py-4 h-full bg-custom-gray text-white rounded-l-full rounded-r-none hover:bg-custom-hover-gray transition duration-150 ease-in-out">
-        <FontAwesomeIcon icon={faThumbsUp} /> {liked[0]}
-      </button>
-      
-      <div className="h-3/5 w-px bg-custom-white m-0"></div>
-      
-      <button
-        onClick={handleDislikeButton}
-        className="flex items-center px-5 py-4 h-full bg-custom-gray text-white rounded-l-none rounded-r-full hover:bg-custom-hover-gray transition duration-150 ease-in-out">
-        <FontAwesomeIcon icon={faThumbsDown} /> {liked[1]}
-      </button>
+          onClick={handleLikeButton}
+          className="flex items-center px-5 py-4 h-full bg-custom-gray text-white rounded-l-full rounded-r-none hover:bg-custom-hover-gray transition duration-150 ease-in-out">
+          <FontAwesomeIcon icon={faThumbsUp} /> {liked[0]}
+        </button>
         
+        <div className="h-3/5 w-px bg-custom-white m-0"></div>
+        
+        <button
+          onClick={handleDislikeButton}
+          className="flex items-center px-5 py-4 h-full bg-custom-gray text-white rounded-l-none rounded-r-full hover:bg-custom-hover-gray transition duration-150 ease-in-out">
+          <FontAwesomeIcon icon={faThumbsDown} /> {liked[1]}
+        </button>
+
         {token === "" && attempted && (
           <button 
             onClick={handleLogin} 
-            className="ml-2 px-4 py-1 text-sm font-semibold text-white bg-green-500 hover:bg-green-600 rounded">
+            className="ml-2 h-8 px-4 py-1 text-sm font-semibold text-white bg-green-500 hover:bg-green-600 rounded">
             Login
           </button>
         )}
       </div>
+      </div>
     );
+    
 }
