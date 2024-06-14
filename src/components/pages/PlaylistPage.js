@@ -5,7 +5,6 @@ import Sidebar from '../navBar/Sidebar';
 import { useGlobalState } from '../../StateContext'; 
 import { formatDateDifference } from '../../utils/dateUtils';
 import PlaylistThumbnailColumn from '../playlistComp/PlaylistThumbnailColumn';
-import { convertNumber } from '../../utils/numberUtils';
 import { useParams } from 'react-router-dom';
 const PlaylistPage = () => {
   const { id } = useParams();
@@ -33,7 +32,19 @@ const PlaylistPage = () => {
 
 
   if (videos.length === 0) {
-    return <div>Loading...</div>;
+    return (
+      <div className='bg-custom-dark min-h-screen'>
+        <div className="relative flex">
+          <Sidebar />
+          <div className={`flex-grow ${showSubMenu ? 'ml-64' : 'ml-0'}`}>
+            <NavBar />
+            <div className="flex-grow flex items-center justify-center">
+              <p className="text-gray-500 text-xl">This playlist is currently empty. Add some videos to get started.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   const firstVideo = videos[0];
@@ -47,7 +58,7 @@ const PlaylistPage = () => {
           <div className="p-4">
             <div className="flex">
               <div style={{ flex: '1', marginRight: '0px', paddingRight: '0px', display: 'flex', justifyContent: 'flex-end' }}>
-                <div className="w-full max-w-xs rounded-lg overflow-hidden shadow-lg relative"> {/* Adjusted width */}
+                <div className="w-full max-w-xs rounded-lg overflow-hidden shadow-lg relative"> 
                   <div className="relative w-full" style={{ paddingTop: '56.25%' }}>
                     <div className="absolute inset-0 bg-gradient-to-br from-gray-800 to-transparent opacity-50 z-0 rounded-lg"></div>
                     <img 
@@ -56,9 +67,9 @@ const PlaylistPage = () => {
                       alt="Video thumbnail" 
                     />
                   </div>
-                  <div className="py-1"> {/* Added padding for spacing */}
-                  <p className="text-white font-bold text-3xl py-2">{playlistInfo.title}</p> {/* Title: Bold, bigger, white */}
-                  <p className="text-white font-semibold text-sm">{playlistInfo.createdBy.username}</p> {/* Username: Bold, smaller, white */}
+                  <div className="py-1"> 
+                  <p className="text-white font-bold text-3xl py-2">{playlistInfo.title}</p> 
+                  <p className="text-white font-semibold text-sm">{playlistInfo.createdBy.username}</p> 
                   <div className="flex text-xs font-medium text-custom-white py-3">
                   <p className="pr-2">{videos.length} videos</p>
                   <p className="pr-2">{totalViews} views</p>

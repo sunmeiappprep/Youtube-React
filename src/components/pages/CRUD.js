@@ -8,7 +8,11 @@ import { loginUser,logOut, registerUser } from '../../utils/authUtils';
 import { addToPlaylist, createPlaylist, deleteVideoFromPlaylist, getPlaylistVideo, getUserFirstVideo } from '../../utils/playlist';
 import NavBar from '../navBar/NavBar';
 import { subscribeToChannel,unsubscribeFromChannel,getSubscribers,getSubscriptions, getSubscribedChannels  } from '../../utils/subscriptionUtils';
-import arrayData from '../../data/pp.json';
+import chess from '../../data/chess.json';
+import react from '../../data/react.json';
+import gadget from '../../data/gadget.json';
+import pp from '../../data/tableTennis.json';
+import JSONUsername from '../../data/username.json';
 
 function Register() {
   const [email, setEmail] = useState('');
@@ -22,20 +26,51 @@ function Register() {
   console.log(user, token);
 
 
+  const dataSets = {
+    chess: chess,
+    react: react,
+    gadget: gadget,
+    pp: pp,
+};
 
+const getRandomUsername = (category) => {
+    const usernames = JSONUsername[category];
+    return usernames[Math.floor(Math.random() * usernames.length)];
+};
 
-    const handleMakeSubmitted = () =>{
-      for (let index = 0; index < arrayData.length; index++) {
-        const element = arrayData[index];
-        const videoInfo = {
-          title: element.title,
-          url: `https://www.youtube.com/watch?v=${element.url}`,
-          description: element.description,
-          view: parseInt(element.views.replace(/,/g, ''), 10)
-        };
-        postVideo(videoInfo)
+const handleMakeSubmitted = async () => {
+  for (const key in dataSets) {
+      if (dataSets.hasOwnProperty(key) && JSONUsername.hasOwnProperty(key.toLowerCase())) {
+          const dataArray = dataSets[key];
+          for (let index = 0; index < dataArray.length; index++) {
+              const element = dataArray[index];
+              const comments = element.comments;
+              const videoInfo = {
+                  title: element.title,
+                  url: `https://www.youtube.com/watch?v=${element.url}`,
+                  description: element.description,
+                  view: parseInt(element.views.replace(/,/g, ''), 10),
+                  username: getRandomUsername(key.toLowerCase())
+              };
+              // console.log(videoInfo, "testing");
+              try {
+                  const response = await postVideo(videoInfo);
+                  const videoId = response.id;
+                  comments.forEach(comment => {
+                      const commentObj = {
+                          videoId: videoId,
+                          text: comment
+                      };
+                      console.log(commentObj)
+                      createComment(commentObj);
+                  });
+              } catch (error) {
+                  console.error("Error posting video:", error);
+              }
+          }
       }
-    }
+  }
+};
 
   const likedInfo = {
     userId:user,
@@ -101,7 +136,7 @@ function Register() {
   
   
   comments.forEach(comment => {
-      const commentObj = { text: "Noooo" };
+      const commentObj = { text: comment };
       createComment(commentObj);
     });
   };
@@ -183,25 +218,23 @@ function Register() {
     }
     addToPlaylist(playlistInfo)
   }
-  const handleGeneratingUser =() =>{
-    const firstNames = ["James", "John", "Robert", "Michael", "William", "David", "Richard", "Joseph", "Thomas", "Charles", "Christopher", "Daniel", "Matthew", "Anthony", "Mark", "Donald", "Steven", "Paul", "Andrew", "Joshua"];
-    const lastNames = ["Smith", "Johnson", "Williams", "Brown", "Jones", "Garcia", "Miller", "Davis", "Rodriguez", "Martinez", "Hernandez", "Lopez", "Gonzalez", "Wilson", "Anderson", "Thomas", "Taylor", "Moore", "Jackson", "Martin"];
+  const handleGeneratingUser = () => {
     const userData = [];
-    const numUsers = 100; // Adjust this number as needed
-    
-    for (let i = 0; i < numUsers; i++) {
-      const firstName = firstNames[Math.floor(Math.random() * firstNames.length)];
-      const lastName = lastNames[Math.floor(Math.random() * lastNames.length)];
-      const username = `${firstName}.${lastName}${i}`.toLowerCase();
-      const password = `pass${i + 1000}`; // Simple passwords for example
-      userData.push({ username, password });
+
+    for (const category in JSONUsername) {
+        if (JSONUsername.hasOwnProperty(category)) {
+            JSONUsername[category].forEach((username, index) => {
+                const password = `pass${index + 1000}`; // Simple passwords for example
+                userData.push({ username, password });
+            });
+        }
     }
     
     // Loop over the user data and register each user
     userData.forEach(user => {
-      registerUser(user.username, user.password);
+        registerUser(user.username, user.password);
     });
-  }
+}
 // Generate user data with realistic usernames
 
 

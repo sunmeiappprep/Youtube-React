@@ -16,10 +16,10 @@ function UserPage() {
                 <div className={`flex-grow ${showSubMenu ? 'ml-64' : 'ml-0'}`}>
                     <NavBar />
                     <div className="flex flex-col items-center p-6">
-                        <div className="max-w-6xl w-full">
+                        <div className="max-w-10.5xl w-full">
                             <UserProfileNavbar />
                         </div>
-                        <div className="max-w-6xl w-full mt-6">
+                        <div className="max-w-10.5xl w-full mt-6">
                             <UserHomeVideoPlaylist />
                         </div>
                     </div>

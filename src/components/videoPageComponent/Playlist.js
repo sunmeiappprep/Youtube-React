@@ -7,7 +7,7 @@ export default function Playlist({videoId}) {
   const navigate = useNavigate()
   const containerRef = useRef(null);
   const [playlists, setPlaylists] = useState([]);
-  const {user, token, setUser, setToken } = useGlobalState();
+  const {user, token, isAuthenticated } = useGlobalState();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [playlistName, setPlaylistName] = useState('');
   const [playlistChecked, setPlaylistChecked] = useState({});
@@ -73,7 +73,9 @@ export default function Playlist({videoId}) {
       }
     };
 
-    updatePlaylistChecked();
+    if(token && isAuthenticated){
+      updatePlaylistChecked();
+    }
   }, [videoId]); 
 
 

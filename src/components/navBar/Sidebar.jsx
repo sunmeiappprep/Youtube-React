@@ -10,7 +10,7 @@ import Youtube from "../../assets/images/y3.png"
 import SubMenu from './SubMenu';
 import { useNavigate } from 'react-router-dom'
 const Sidebar = () => {
-  const { showSubMenu, user,isAuthenticated } = useGlobalState(); 
+  const { showSubMenu, user,isAuthenticated,token } = useGlobalState(); 
   const navigate = useNavigate()
   const [subscribedChannels, setSubscribedChannels] = useState([]);
   const [watchLaterPlaylistId,setWatchLaterPlaylistId] = useState(0)
@@ -30,7 +30,9 @@ const Sidebar = () => {
       }
     };
 
+    if (token && isAuthenticated) {
     fetchPlaylistIds();
+  }
   }, []);
 
   useEffect(() => {
@@ -73,7 +75,7 @@ const Sidebar = () => {
       });
     };
 
-return (
+    return (
   <div
     className={`fixed top-0 left-0 h-full bg-custom-black text-white shadow-lg transition-transform transform ${
       showSubMenu ? 'translate-x-0' : '-translate-x-full'
@@ -88,53 +90,49 @@ return (
       <ul className="mt-6">
         <li className="mt-4 flex items-center hover:bg-gray-700 rounded-full p-2">
           <FontAwesomeIcon icon={faHome} className="ml-2 mr-4" />
-          <Link to="/" className="block hover:text-gray-400">Home</Link>
+          <Link to="/" className="block w-full hover:text-gray-400">Home</Link>
         </li>
         {isAuthenticated ? (
           <>
-              <li className="mt-4 flex items-center hover:bg-gray-700 rounded-full p-2">
-          <FontAwesomeIcon icon={faBell} className="ml-2 mr-4" />
-          <Link to="/subscriptions" className="block hover:text-gray-400">Subscriptions</Link>
-        </li>
-        <hr className="my-4 border-gray-700 w-full" />
-        <li className="mt-4 flex items-center hover:bg-gray-700 rounded-full p-2">
-          <FontAwesomeIcon icon={faChevronRight} className="ml-2 mr-4" />
-          <span className="block hover:text-gray-400">You</span>
-        </li>
-        
-        <li className="mt-4 flex items-center hover:bg-gray-700 rounded-full p-2">
-          <FontAwesomeIcon icon={faUser} className="ml-2 mr-4" />
-          <Link to={`/user/${user}?tab=home`} className="block hover:text-gray-400">Your Channel</Link>
-        </li>
-        <li className="mt-4 flex items-center hover:bg-gray-700 rounded-full p-2">
-          <FontAwesomeIcon icon={faList} className="ml-2 mr-4" />
-          <Link to={`/user/${user}?tab=Playlist`} className="block hover:text-gray-400">Playlist</Link>
-        </li>
-        <li className="mt-4 flex items-center hover:bg-gray-700 rounded-full p-2">
-          <FontAwesomeIcon icon={faVideo} className="ml-2 mr-4" />
-          <Link to={`/user/${user}?tab=Video`} className="block hover:text-gray-400">Your videos</Link>
-        </li>
-        <li className="mt-4 flex items-center hover:bg-gray-700 rounded-full p-2">
-          <FontAwesomeIcon icon={faClock} className="ml-2 mr-4" />
-          <Link to={`/playlist/${watchLaterPlaylistId}`} className="block hover:text-gray-400">Watch later</Link>
-        </li>
-        <li className="mt-4 flex items-center hover:bg-gray-700 rounded-full p-2">
-          <FontAwesomeIcon icon={faThumbsUp} className="ml-2 mr-4" />
-          <Link to={`/playlist/${likedVideoPlaylistId}`} className="block hover:text-gray-400">Liked videos</Link>
-        </li>
-        
-        <hr className="my-4 border-gray-700 w-full" />
-        
-        <li className="mt-4">
-          <span className="block font-bold">Subscriptions</span>
-        </li>
+            <li className="mt-4 flex items-center hover:bg-gray-700 rounded-full p-2">
+              <FontAwesomeIcon icon={faBell} className="ml-2 mr-4" />
+              <Link to="/subscriptions" className="block w-full hover:text-gray-400">Subscriptions</Link>
+            </li>
+            <hr className="my-4 border-gray-700 w-full" />
+            <li className="mt-4 flex items-center hover:bg-gray-700 rounded-full p-2">
+              <FontAwesomeIcon icon={faChevronRight} className="ml-2 mr-4" />
+              <span className="block w-full hover:text-gray-400">You</span>
+            </li>
+            <li className="mt-4 flex items-center hover:bg-gray-700 rounded-full p-2">
+              <FontAwesomeIcon icon={faUser} className="ml-2 mr-4" />
+              <Link to={`/user/${user}?tab=home`} className="block w-full hover:text-gray-400">Your Channel</Link>
+            </li>
+            <li className="mt-4 flex items-center hover:bg-gray-700 rounded-full p-2">
+              <FontAwesomeIcon icon={faList} className="ml-2 mr-4" />
+              <Link to={`/user/${user}?tab=Playlist`} className="block w-full hover:text-gray-400">Playlist</Link>
+            </li>
+            <li className="mt-4 flex items-center hover:bg-gray-700 rounded-full p-2">
+              <FontAwesomeIcon icon={faVideo} className="ml-2 mr-4" />
+              <Link to={`/user/${user}?tab=Video`} className="block w-full hover:text-gray-400">Your videos</Link>
+            </li>
+            <li className="mt-4 flex items-center hover:bg-gray-700 rounded-full p-2">
+              <FontAwesomeIcon icon={faClock} className="ml-2 mr-4" />
+              <Link to={`/playlist/${watchLaterPlaylistId}`} className="block w-full hover:text-gray-400">Watch later</Link>
+            </li>
+            <li className="mt-4 flex items-center hover:bg-gray-700 rounded-full p-2">
+              <FontAwesomeIcon icon={faThumbsUp} className="ml-2 mr-4" />
+              <Link to={`/playlist/${likedVideoPlaylistId}`} className="block w-full hover:text-gray-400">Liked videos</Link>
+            </li>
+            <hr className="my-4 border-gray-700 w-full" />
+            <li className="mt-4">
+              <span className="block font-bold">Subscriptions</span>
+            </li>
             {renderSubscribedChannels()}
-
           </>
         ) : (
           <li className="mt-4 flex items-center hover:bg-gray-700 rounded-full p-2">
             <FontAwesomeIcon icon={faSignInAlt} className="ml-2 mr-4" />
-            <Link to="/signin" className="block hover:text-gray-400">Login</Link>
+            <Link to="/signin" className="block w-full hover:text-gray-400">Login</Link>
           </li>
         )}
       </ul>

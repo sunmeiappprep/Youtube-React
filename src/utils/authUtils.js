@@ -27,8 +27,8 @@ export const loginUser = async (username,password) => {
       console.log(response);
       return response.data
     } catch (error) {
-      console.error(error.response || error.message);
-      // Handle error here
+      console.error('SignIn failed:', error.response || error.message);
+      return { success: false, error: error.response ? error.response.data : error.message };
     }
   };
 
@@ -65,11 +65,11 @@ export const registerUser = async (username,password) => {
 
     try {
       const response = await axios.post('http://localhost:8080/register', userData);
-      console.log('register successful:', response.data);
-      return true
+      console.log('Register successful:', response.data);
+      return { success: true, data: response.data };
     } catch (error) {
-      console.error('register failed:', error.response || error.message);
-      return false
+      console.error('Register failed:', error.response || error.message);
+      return { success: false, error: error.response ? error.response.data : error.message };
     }
   };
    

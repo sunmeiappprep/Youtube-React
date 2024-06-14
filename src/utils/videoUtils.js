@@ -6,6 +6,7 @@ export const postVideo = async (videoData) => {
     console.log(videoData)
       const response = await api.post('http://localhost:8080/api/video/', videoData);
       console.log(response.data); // Handle the response as needed
+      return response.data
     } catch (error) {
       console.error(error.response ? error.response.data : error.message);
     }

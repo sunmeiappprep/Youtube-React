@@ -73,9 +73,6 @@ useEffect(() => {
       <SearchBar className="max-w-screen-md w-full" style={{ maxWidth: '600px' }} />
     </div>
     <div className="flex gap-4 flex-shrink-0">
-    {isAuthenticated && (
-        <button onClick={handleUserPageRedirect} className="px-4 py-1 text-sm font-semibold text-white bg-blue-500 hover:bg-blue-600 rounded">User Page</button>
-      )}
       {isAuthenticated === null ? (
         <button className="px-4 py-1 text-sm font-semibold text-white bg-gray-500 rounded">Loading...</button>
       ) : (

@@ -14,9 +14,11 @@ import { getColorFromInitial } from '../../utils/getColorFromInitial';
 import { convertNumber } from '../../utils/numberUtils';
 import { formatDateDifference } from '../../utils/dateUtils';
 import { useNavigate } from 'react-router-dom';
+import { checkIfSubscribed, subscribeToChannel, unsubscribeFromChannel } from '../../utils/subscriptionUtils';
+import useWindowSize from '../hooks/useWindowSize';
 
 function VideoPage() {
-  const { user, token, setUser, setToken, showSubMenu, setShowSubMenu } = useGlobalState();
+  const { user, token, setUser, isAuthenticated, showSubMenu, setShowSubMenu } = useGlobalState();
   const [title, setVideoTitle] = useState('');
   const [url, setVideoURL] = useState('');
   const [description, setVideoDescription] = useState('');
@@ -28,33 +30,31 @@ function VideoPage() {
   const [uploaderUserId, setUploaderUserId] = useState('');
   const [uploadUsername, setUploaderUsername] = useState('');
   const videoRef = useRef(null);
-  const [position, setPosition] = useState({ x: 0, y: 0 });
-  const [watchLaterPlaylistId,setWatchLaterPlaylistId] = useState(0)
   const [likedVideoPlaylistId,setLikedVideoPlaylistId] = useState(0)
   const [isDescriptionExpanded, setDescriptionExpanded] = useState(false);
+  const [isSubscribed, setIsSubscribed] = useState(false);
   const navigate = useNavigate()
+  const { width } = useWindowSize();
 
-
-  const handleMoreClick = () => {
-    setDescriptionExpanded(!isDescriptionExpanded);
-  };
 
 
   useEffect(() => {
     const fetchPlaylistIds = async () => {
       try {
-        const watchLaterId = await findPlaylistIdByUserAndTitle("Watch Later");
         const likedVideoId = await findPlaylistIdByUserAndTitle("Liked Video");
-
-        setWatchLaterPlaylistId(watchLaterId);
         setLikedVideoPlaylistId(likedVideoId);
-        console.log(watchLaterId,likedVideoId)
       } catch (error) {
         console.error("Error fetching playlist IDs:", error);
       }
     };
+    //Need to get playlist ID for this user for liked.
+    //Could be improve in the backend
+    if(token && isAuthenticated){
+      fetchPlaylistIds();
+    }
+    //hideSidebar when loading Videopage
+    setShowSubMenu(false);
 
-    fetchPlaylistIds();
   }, []);
 
   useEffect(() => {
@@ -62,7 +62,6 @@ function VideoPage() {
       try {
         const videoData = await getVideo(videoId);
         console.log(videoData);
-
         setUploaderUserId(videoData.userId);
         setUploaderUsername(videoData.username);
         setVideoTitle(videoData.videoTitle);
@@ -78,56 +77,42 @@ function VideoPage() {
       }
     };
 
-    fetchVideoData();
 
+    const fetchVideoLikedData = async (videoId) => {
+      try {
+        const likedData = await getLiked(videoId);
+        setLiked(likedData);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+
+    fetchVideoLikedData(videoId);
+    fetchVideoData();
+    //moving away from page renames tab to Youtube
     return () => {
       document.title = 'Youtube';
     };
   }, [videoId]);
 
+
   useEffect(() => {
-    setShowSubMenu(false);
+    if (token && isAuthenticated) {
+      const fetchSubscriptionStatus = async () => {
+        const subscribed = await checkIfSubscribed(uploaderUserId);
+        setIsSubscribed(subscribed);
+      };
+      fetchSubscriptionStatus();
+    }
   }, []);
 
-  const fetchData = async (videoId) => {
-    try {
-      const likedData = await getLiked(videoId);
-      setLiked(likedData);
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    }
+
+  
+
+  const handleMoreClick = () => {
+    setDescriptionExpanded(!isDescriptionExpanded);
   };
-
-  useEffect(() => {
-    fetchData(videoId);
-  }, [videoId]);
-
-  useLayoutEffect(() => {
-    const updatePosition = () => {
-      if (videoRef.current) {
-        const rect = videoRef.current.getBoundingClientRect();
-        setPosition((prevPosition) => {
-          const newPosition = {
-            x: Math.floor(rect.left),
-            y: Math.floor(rect.top),
-          };
-          if (prevPosition.x === 0) {
-            console.log('position is initially 0');
-            newPosition.x -= 12;
-          }
-          console.log(newPosition); // Directly log the new position
-          return newPosition;
-        });
-      }
-    };
-
-    updatePosition();
-    window.addEventListener('resize', updatePosition);
-
-    return () => {
-      window.removeEventListener('resize', updatePosition);
-    };
-  }, [youtubeCode]);
 
   const handleUpdateLiked = () => {
     getLiked(videoId).then((e) => {
@@ -135,13 +120,46 @@ function VideoPage() {
     });
   };
 
-  const handleDelete = () => {
-    deleteVideo(videoId).then(() => navigate('/git '))
+  const handleDeleteVideoThenRedirectHomepage = () => {
+    deleteVideo(videoId).then(() => navigate('/'))
   }
+
+
+  const handleUnsubscribe = async () => {
+    try {
+      await unsubscribeFromChannel(uploaderUserId);
+      setIsSubscribed(false);
+    } catch (error) {
+      console.error('Failed to unsubscribe:', error);
+    }
+  };
+
+  const handleSubscribe = async () => {
+    if (isSubscribed) {
+      handleUnsubscribe();
+      return;
+    }
+    try {
+      await subscribeToChannel(uploaderUserId);
+      setIsSubscribed(true);
+    } catch (error) {
+      console.error('Failed to subscribe:', error);
+    }
+  };
+
+  const handleLinkToUploaderChannel = () => {
+    navigate(`/user/${uploaderUserId}`)
+  }
+
+
+
 
   if (!youtubeCode) {
     return <div>Loading...</div>;
   }
+
+  const widthCutOff = 1250
+
   
   const initial = uploadUsername[0];
   const circleColor = getColorFromInitial(initial); 
@@ -155,7 +173,7 @@ function VideoPage() {
             <div className="flex justify-center">
               <div className="w-full max-w-10.5xl">
                 <div className="flex">
-                  <div className="w-3/4">
+                  <div className={width < widthCutOff ? 'w-full' : 'w-3/4'}>
                     <VideoEmbed ref={videoRef} videoId={youtubeCode} onClick={() => {}} />
                     <p className="title truncate">{title}</p>
                     <div className="flex items-center mt-4">
@@ -166,18 +184,18 @@ function VideoPage() {
                         <span className="text-white font-bold text-lg">{initial}</span>
                       </div>
                       <div className="flex flex-col">
-                        <p>{uploadUsername}</p>
+                        <p onClick={handleLinkToUploaderChannel}>{uploadUsername}</p>
                         <p className="text-gray-500 text-sm">4.82K subscribers</p>
                       </div>
                       <button
-                        className="ml-4 bg-red-600 text-white px-4 py-1 rounded"
-                        onClick={() => { /* subscribe logic here */ }}
-                      >
-                        Subscribe
-                      </button>
+                      className={`ml-4 px-4 py-1 rounded ${isSubscribed ? 'bg-custom-gray-desc text-white' : 'bg-custom-gray text-black'}`}
+                      onClick={handleSubscribe}
+                    >
+                      {isSubscribed ? 'Subscribed' : 'Subscribe'}
+                    </button>
                       <div className="flex-grow flex justify-end items-center mr-8">
                         <div>
-                          <button onClick={handleDelete} className='h-8 w-36 bg-custom-gray rounded-l-full rounded-r-full mr-2'>
+                          <button onClick={handleDeleteVideoThenRedirectHomepage} className='h-8 w-36 bg-custom-gray rounded-l-full rounded-r-full mr-2'>
                           Delete Video 
                           </button>
                         </div>
@@ -219,10 +237,17 @@ function VideoPage() {
                     </div>
                   </div>
                     <CommentsDisplay videoId={videoId} />
+                    {width < widthCutOff && (
+                      <div className="mt-4 w-full">
+                        <SidebarVideoRec />
+                      </div>
+                    )}
                   </div>
-                  <div className="w-1/4 ml-2">
-                    <SidebarVideoRec />
-                  </div>
+                  {width >= widthCutOff && (
+                    <div className="w-1/4 ml-2">
+                      <SidebarVideoRec />
+                    </div>
+                  )}
                 </div>
               </div>
             </div>

@@ -128,6 +128,10 @@ const handleUpdateComment = async (commentId, newText) => {
     }
   };
 
+  if (commentsReactionsObject === undefined) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <div ref={containerRef}>
       <CommentInput videoId={videoId} handleUpdateComment={handleUpdateComment} />
@@ -135,7 +139,8 @@ const handleUpdateComment = async (commentId, newText) => {
         {comments.map((comment) => {
           const createdAtSeed = new Date(comment.createdAt).getTime();
           const randomNumber = getSeededRandomNumber(createdAtSeed);
-          const commentReactionWithRandom = commentsReactionsObject[comment.id] + randomNumber;
+          const reactionValue = commentsReactionsObject[comment.id] || 0;//Not sure why there is NaN on first render
+          const commentReactionWithRandom = isNaN(reactionValue + randomNumber) ? 0 : reactionValue + randomNumber;//Not sure why there is NaN on first render
           const makeSureNotNegative = Math.max(commentReactionWithRandom, 0);
           return (
             <div key={comment.id}>

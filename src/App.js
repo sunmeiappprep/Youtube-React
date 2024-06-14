@@ -22,7 +22,7 @@ function App() {
   // <Route path="/gpt" element={<VideoDescriptions />} />
 
   return (
-    <div className="App bg-custom-dark text-custom-white">
+    <div className="App bg-custom-dark text-custom-white min-h-screen w-full overflow-x-hidden">
     <Router>
       <Routes>
         <Route path="/login" element={<LoginPage />} />

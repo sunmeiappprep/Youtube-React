@@ -2,9 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { getUsernameById } from '../../utils/authUtils';
 import { useParams } from 'react-router-dom';
 import { checkIfSubscribed, subscribeToChannel, unsubscribeFromChannel } from '../../utils/subscriptionUtils';
-
+import { useGlobalState } from '../../StateContext';
 function UserProfileNavbar() {
   const { id } = useParams();
+  const {token,isAuthenticated} = useGlobalState()
   const [userUsername, setUserUsername] = useState('');
   const [isSubscribed, setIsSubscribed] = useState(false);
   const [hovering, setHovering] = useState(false);
@@ -25,7 +26,9 @@ function UserProfileNavbar() {
         const subscribed = await checkIfSubscribed(id);
         setIsSubscribed(subscribed);
       };
-      fetchSubscriptionStatus();
+      if(token && isAuthenticated){
+        fetchSubscriptionStatus();
+      }
     }
   }, [id]);
 

@@ -28,7 +28,7 @@ function VideoSideBarThumbnail({ generatedDate, view, videoId, title, uploader, 
                 <div className="flex flex-col justify-start w-3/5 pl-2 "style={{height: '90px' }}>
                     <div className="font-bold text-sm mb-2 break-words truncate-multiline text-custom-white-thumbnail">{title}</div> 
                     <p className="text-custom-gray-thumbnail text-xs">
-                        Uploaded by {uploader}
+                        {uploader}
                     </p>
                     <div className='flex text-custom-gray-thumbnail text-xs '>
                         <div className='pr-4'>
