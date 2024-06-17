@@ -1,9 +1,9 @@
 // LoginPage.jsx
 import React, { useState,useEffect } from 'react';
-import { postVideo,getUserVideos,updateVideo,deleteVideo,getVideo, fetchVideos, getSearchVideo,getSubscribedVideos } from '../../utils/videoUtils';
+import { postVideo,getUserVideos,updateVideo,deleteVideo,getVideo, fetchVideos, getSearchVideo,getSubscribedVideos, seedVideo } from '../../utils/videoUtils';
 import { addLiked, getLiked } from '../../utils/videoReactionUtils';
 import { useGlobalState } from '../../StateContext'; 
-import { createComment,getComments,deleteComment, updateComment, getCommentsReaction, commentAddLiked, deleteAllComments, getVideoCommentsReactions } from '../../utils/commentUtils';
+import { createComment,getComments,deleteComment, updateComment, getCommentsReaction, commentAddLiked, deleteAllComments, getVideoCommentsReactions, seedComment } from '../../utils/commentUtils';
 import { loginUser,logOut, registerUser } from '../../utils/authUtils';
 import { addToPlaylist, createPlaylist, deleteVideoFromPlaylist, getPlaylistVideo, getUserFirstVideo } from '../../utils/playlist';
 import NavBar from '../navBar/NavBar';
@@ -12,7 +12,9 @@ import chess from '../../data/chess.json';
 import react from '../../data/react.json';
 import gadget from '../../data/gadget.json';
 import pp from '../../data/tableTennis.json';
+import workout from '../../data/workout.json';
 import JSONUsername from '../../data/username.json';
+import anime from '../../data/anime.json';
 
 function Register() {
   const [email, setEmail] = useState('');
@@ -31,6 +33,8 @@ function Register() {
     react: react,
     gadget: gadget,
     pp: pp,
+    workout:workout,
+    anime:anime
 };
 
 const getRandomUsername = (category) => {
@@ -54,7 +58,7 @@ const handleMakeSubmitted = async () => {
               };
               // console.log(videoInfo, "testing");
               try {
-                  const response = await postVideo(videoInfo);
+                  const response = await seedVideo(videoInfo);
                   const videoId = response.id;
                   comments.forEach(comment => {
                       const commentObj = {
@@ -62,7 +66,7 @@ const handleMakeSubmitted = async () => {
                           text: comment
                       };
                       console.log(commentObj)
-                      createComment(commentObj);
+                      seedComment(commentObj);
                   });
               } catch (error) {
                   console.error("Error posting video:", error);

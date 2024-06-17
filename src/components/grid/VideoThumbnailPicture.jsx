@@ -3,12 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import { formatDateDifference } from '../../utils/dateUtils';
 import { convertNumber } from '../../utils/numberUtils';
 import { getColorFromInitial } from '../../utils/getColorFromInitial';
+import useNavigateWithMiddleClick from '../hooks/useNavigateWithMiddleClick';
+useNavigateWithMiddleClick
 function VideoThumbnail({ videoId, title, uploader, url, generatedDate, view, userId }) {
-  const navigate = useNavigate();
+  const handleClickToVideo = useNavigateWithMiddleClick(`/video/${videoId}`);
+  const handleClickToUser = useNavigateWithMiddleClick(`/user/${userId}`);
 
-  const handleClick = (path) => {
-    navigate(path);
-  };
 
   const getInitial = (name) => {
     return name ? name.charAt(0).toUpperCase() : '';
@@ -26,7 +26,7 @@ function VideoThumbnail({ videoId, title, uploader, url, generatedDate, view, us
           className="absolute top-0 left-0 w-full h-full object-cover rounded-lg cursor-pointer"
           src={`https://i.ytimg.com/vi/${url}/hqdefault.jpg`}
           alt="Video thumbnail"
-          onClick={() => handleClick(`/video/${videoId}`)}
+          onMouseDown={handleClickToVideo}
         />
       </div>
       <div className="pr-2 py-2 relative z-10 flex items-start">
@@ -41,21 +41,21 @@ function VideoThumbnail({ videoId, title, uploader, url, generatedDate, view, us
         <div>
           <div
             className="font-medium text-custom-white-thumbnail text-l mb-1 line-clamp-2 cursor-pointer font-roboto"
-            onClick={() => handleClick(`/video/${videoId}`)}
+            onMouseDown={handleClickToVideo}
           >
             {title}
           </div>
           {uploader && (
             <p
               className="text-sm text-custom-gray-thumbnail mb-1 cursor-pointer font-roboto"
-              onClick={() => handleClick(`/user/${userId}`)}
+              onMouseDown={handleClickToUser}
             >
               {uploader}
             </p>
           )}
           <div
             className="flex text-custom-gray-thumbnail text-sm cursor-pointer font-roboto"
-            onClick={() => handleClick(`/video/${videoId}`)}
+            onMouseDown={handleClickToVideo}
           >
             <div className="pr-1">{convertNumber(view)} Views</div>
             <div className='pr-1'>•</div>

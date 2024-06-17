@@ -35,7 +35,7 @@
     "HeapHacker",
     "SetSage"
   ],
-  "Soccer": [
+  "soccer": [
     "GoalGladiator",
     "StrikerStar",
     "MidfieldMaestro",
@@ -198,5 +198,17 @@
   "ReduxRuler",
   "ContextCommander",
   "RenderRebel"
-]
+],
+  "anime": [
+    "AnimeNexus",
+    "OtakuCorner",
+    "AnimeRealm",
+    "MangaMadness",
+    "WeebWorld",
+    "AnimeAdventures",
+    "OtakuEmpire",
+    "AnimeChronicles",
+    "NerdyNeko",
+    "KawaiiKingdom"
+  ]
 }

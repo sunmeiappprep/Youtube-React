@@ -49,6 +49,7 @@ function VideoPage() {
     };
     //Need to get playlist ID for this user for liked.
     //Could be improve in the backend
+    console.log(token,isAuthenticated)
     if(token && isAuthenticated){
       fetchPlaylistIds();
     }
@@ -214,23 +215,23 @@ function VideoPage() {
                       </div>
                     </div>
                     <hr className="border-gray-500 my-4" />
-                    <div className="bg-custom-gray-desc p-4 rounded-lg text-white mt-4 cursor-pointer"
+                    <div className="bg-custom-gray-desc pt-2 pl-3 pr-3 pb-3 rounded-lg text-white mt-4 cursor-pointer"
                     onClick={handleMoreClick}>
                     <div className="flex gap-2 font-bold">
                       <p>{convertNumber(views)} views</p>
                       <p>{formatDateDifference(videoGeneratedDate)} ago</p>
                     </div>
-                    <div className="mt-2">
+                    <div className="">
                       <p className={isDescriptionExpanded ? '' : 'line-clamp-2'}>
                         {description}
                       </p>
                       {!isDescriptionExpanded && (
-                        <span className="text-blue-500 cursor-pointer" onClick={handleMoreClick}>
+                        <span className="text-custom-grey cursor-pointer" onClick={handleMoreClick}>
                           ... more
                         </span>
                       )}
                       {isDescriptionExpanded && (
-                        <span className="text-blue-500 cursor-pointer" onClick={handleMoreClick}>
+                        <span className="text-custom-grey cursor-pointer" onClick={handleMoreClick}>
                           Show less
                         </span>
                       )}

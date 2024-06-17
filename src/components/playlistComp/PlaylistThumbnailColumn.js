@@ -13,7 +13,7 @@ const PlaylistThumbnailColumn = ({ video,index }) => {
         <div onClick={handleClick} className="flex justify-start w-full mb-5">
           <div className="flex w-auto max-w-full p-2">
             <div className="flex items-center justify-center px-4" style={{ width: '20px' }}>
-              <div className='text-custom-white'>{index}</div>
+              <div className='text-custom-white'>{index+1}</div>
             </div>
             <div className="flex-none" style={{ width: '160px', height: '90px' }}>
               <div className="relative w-full h-full overflow-hidden rounded-lg">

@@ -16,6 +16,7 @@ export default function SidebarVideoRec() {
     {videosSide.map((video) => (
         <div key={video.videoId} className="">
             <VideoSideBarThumbnail
+                uploaderId={video.userId}
                 videoId={video.videoId}
                 title={video.videoTitle}
                 uploader={video.username}

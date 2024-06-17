@@ -33,7 +33,7 @@ const Sidebar = () => {
     if (token && isAuthenticated) {
     fetchPlaylistIds();
   }
-  }, []);
+  }, [token,isAuthenticated]);
 
   useEffect(() => {
   if (user && isAuthenticated) {
@@ -88,41 +88,55 @@ const Sidebar = () => {
         <img onClick={handleHomepageRedirect} src={Youtube} className="ml-8 h-12 w-24" alt="YouTube" />
       </div>
       <ul className="mt-6">
-        <li className="mt-4 flex items-center hover:bg-gray-700 rounded-full p-2">
-          <FontAwesomeIcon icon={faHome} className="ml-2 mr-4" />
-          <Link to="/" className="block w-full hover:text-gray-400">Home</Link>
-        </li>
+        <Link to="/" className="block w-full">
+          <li className="mt-4 flex items-center hover:bg-gray-700 rounded-full p-2">
+            <FontAwesomeIcon icon={faHome} className="ml-2 mr-4" />
+            <span className="hover:text-gray-400">Home</span>
+          </li>
+        </Link>
         {isAuthenticated ? (
           <>
-            <li className="mt-4 flex items-center hover:bg-gray-700 rounded-full p-2">
-              <FontAwesomeIcon icon={faBell} className="ml-2 mr-4" />
-              <Link to="/subscriptions" className="block w-full hover:text-gray-400">Subscriptions</Link>
-            </li>
+            <Link to="/subscriptions" className="block w-full">
+              <li className="mt-4 flex items-center hover:bg-gray-700 rounded-full p-2">
+                <FontAwesomeIcon icon={faBell} className="ml-2 mr-4" />
+                <span className="hover:text-gray-400">Subscriptions</span>
+              </li>
+            </Link>
             <hr className="my-4 border-gray-700 w-full" />
             <li className="mt-4 flex items-center hover:bg-gray-700 rounded-full p-2">
               <FontAwesomeIcon icon={faChevronRight} className="ml-2 mr-4" />
               <span className="block w-full hover:text-gray-400">You</span>
             </li>
-            <li className="mt-4 flex items-center hover:bg-gray-700 rounded-full p-2">
-              <FontAwesomeIcon icon={faUser} className="ml-2 mr-4" />
-              <Link to={`/user/${user}?tab=home`} className="block w-full hover:text-gray-400">Your Channel</Link>
-            </li>
-            <li className="mt-4 flex items-center hover:bg-gray-700 rounded-full p-2">
-              <FontAwesomeIcon icon={faList} className="ml-2 mr-4" />
-              <Link to={`/user/${user}?tab=Playlist`} className="block w-full hover:text-gray-400">Playlist</Link>
-            </li>
-            <li className="mt-4 flex items-center hover:bg-gray-700 rounded-full p-2">
-              <FontAwesomeIcon icon={faVideo} className="ml-2 mr-4" />
-              <Link to={`/user/${user}?tab=Video`} className="block w-full hover:text-gray-400">Your videos</Link>
-            </li>
-            <li className="mt-4 flex items-center hover:bg-gray-700 rounded-full p-2">
-              <FontAwesomeIcon icon={faClock} className="ml-2 mr-4" />
-              <Link to={`/playlist/${watchLaterPlaylistId}`} className="block w-full hover:text-gray-400">Watch later</Link>
-            </li>
-            <li className="mt-4 flex items-center hover:bg-gray-700 rounded-full p-2">
-              <FontAwesomeIcon icon={faThumbsUp} className="ml-2 mr-4" />
-              <Link to={`/playlist/${likedVideoPlaylistId}`} className="block w-full hover:text-gray-400">Liked videos</Link>
-            </li>
+            <Link to={`/user/${user}?tab=home`} className="block w-full">
+              <li className="mt-4 flex items-center hover:bg-gray-700 rounded-full p-2">
+                <FontAwesomeIcon icon={faUser} className="ml-2 mr-4" />
+                <span className="hover:text-gray-400">Your Channel</span>
+              </li>
+            </Link>
+            <Link to={`/user/${user}?tab=Playlist`} className="block w-full">
+              <li className="mt-4 flex items-center hover:bg-gray-700 rounded-full p-2">
+                <FontAwesomeIcon icon={faList} className="ml-2 mr-4" />
+                <span className="hover:text-gray-400">Playlist</span>
+              </li>
+            </Link>
+            <Link to={`/user/${user}?tab=Video`} className="block w-full">
+              <li className="mt-4 flex items-center hover:bg-gray-700 rounded-full p-2">
+                <FontAwesomeIcon icon={faVideo} className="ml-2 mr-4" />
+                <span className="hover:text-gray-400">Your videos</span>
+              </li>
+            </Link>
+            <Link to={`/playlist/${watchLaterPlaylistId}`} className="block w-full">
+              <li className="mt-4 flex items-center hover:bg-gray-700 rounded-full p-2">
+                <FontAwesomeIcon icon={faClock} className="ml-2 mr-4" />
+                <span className="hover:text-gray-400">Watch later</span>
+              </li>
+            </Link>
+            <Link to={`/playlist/${likedVideoPlaylistId}`} className="block w-full">
+              <li className="mt-4 flex items-center hover:bg-gray-700 rounded-full p-2">
+                <FontAwesomeIcon icon={faThumbsUp} className="ml-2 mr-4" />
+                <span className="hover:text-gray-400">Liked videos</span>
+              </li>
+            </Link>
             <hr className="my-4 border-gray-700 w-full" />
             <li className="mt-4">
               <span className="block font-bold">Subscriptions</span>
@@ -130,10 +144,12 @@ const Sidebar = () => {
             {renderSubscribedChannels()}
           </>
         ) : (
-          <li className="mt-4 flex items-center hover:bg-gray-700 rounded-full p-2">
-            <FontAwesomeIcon icon={faSignInAlt} className="ml-2 mr-4" />
-            <Link to="/signin" className="block w-full hover:text-gray-400">Login</Link>
-          </li>
+          <Link to="/signin" className="block w-full">
+            <li className="mt-4 flex items-center hover:bg-gray-700 rounded-full p-2">
+              <FontAwesomeIcon icon={faSignInAlt} className="ml-2 mr-4" />
+              <span className="hover:text-gray-400">Login</span>
+            </li>
+          </Link>
         )}
       </ul>
     </div>

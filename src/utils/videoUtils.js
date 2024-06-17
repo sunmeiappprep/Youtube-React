@@ -12,6 +12,18 @@ export const postVideo = async (videoData) => {
     }
   };
 
+  export const seedVideo = async (videoData) => {
+    try {
+    console.log(videoData)
+      const response = await axios.post('http://localhost:8080/api/video/seed', videoData);
+      console.log(response.data); // Handle the response as needed
+      return response.data
+    } catch (error) {
+      console.error(error.response ? error.response.data : error.message);
+    }
+  };
+
+
   export const getUserVideos = async (user) => {
     try {
       const response = await api.get(`http://localhost:8080/api/user/video/${user}`);

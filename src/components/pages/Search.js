@@ -32,6 +32,8 @@ function Search() {
                               <DisplaySearchVideoThumbnail
                                   key={video.id}
                                   id={video.id}
+                                  userId={video.userId}
+                                    username={video.username}
                                   title={video.title}
                                   description={video.description}
                                   view={video.view}

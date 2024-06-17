@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import NavBar from '../navBar/NavBar';
 
 function SignInPage() {
-  const { setUser, setToken, setUserUsername,setShowSubMenu } = useGlobalState();
+  const { setUser, setToken, setUserUsername,setShowSubMenu,setIsAuthenticated } = useGlobalState();
   const navigate = useNavigate();
 
   const [username, setUsername] = useState('');
@@ -41,6 +41,7 @@ function SignInPage() {
       setUser(data.user.id);
       setToken(data.jwtToken);
       setUserUsername(data.user.username);
+      setIsAuthenticated(true)
       navigate("/");
     }
     else{

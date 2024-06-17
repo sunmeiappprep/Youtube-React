@@ -5,7 +5,7 @@ import { useEffect,useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import NavBar from '../navBar/NavBar';
 function RegisterUserPage() {
-    const { user, token, setUser, setToken,setUserUsername } = useGlobalState(); // Access the context methods
+    const { user, token, setUser, setToken,setUserUsername,setIsAuthenticated } = useGlobalState(); // Access the context methods
     const navigate = useNavigate()
     
     const handleDemoSignIn = async (event) => {
@@ -13,10 +13,12 @@ function RegisterUserPage() {
         // Handle the login logic here
         let data = await loginUser("asdasd1@gmail.com", 'asdasd')
         if(data.user.id && data.jwtToken){
-            setUser(data.user.id)
-            setToken(data.jwtToken)
-            navigate("/")
-        }
+          setUser(data.user.id)
+          setToken(data.jwtToken)
+          setUserUsername(data.user.username)
+          setIsAuthenticated(true)
+          navigate("/")
+      }
 
     }
 
@@ -48,6 +50,7 @@ function RegisterUserPage() {
               setUser(data.user.id)
               setToken(data.jwtToken)
               setUserUsername(data.user.username)
+              setIsAuthenticated(true)
               navigate("/")
           }
         }

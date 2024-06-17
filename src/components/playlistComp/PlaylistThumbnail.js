@@ -19,7 +19,7 @@ function PlaylistThumbnail({ url, title, createdOn, count,playlistId }) {
     };
 
     return (
-        <div className="max-w-xs mx-auto rounded overflow-hidden shadow-lg relative">
+        <div className="max-w-xs mx-auto rounded overflow-hidden shadow-lg relative cursor-pointer" onClick={handleViewPlaylist}>
             <div className="relative w-full" style={{ paddingTop: '56.25%' }}>
                 <div className="absolute inset-0 bg-gradient-to-br from-gray-800 to-transparent opacity-50 z-0"></div>
                 <img 

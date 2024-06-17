@@ -67,7 +67,7 @@ const Comment = ({
                 <span className="text-white font-bold text-lg">{initial}</span>
             </div>
             <div className="flex-1 min-w-0 ml-4">
-                <div className="flex items-start justify-between">
+                <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-2">
                         <div className="flex-1 min-w-0 flex flex-row">
                             <p className="text-sm font-medium text-white truncate pr-2">{comment.user.username}</p>
@@ -91,7 +91,7 @@ const Comment = ({
                     </div>
                 </div>
                 {isEditing ? (
-                    <div className="mt-4 bg-black p-4 rounded">
+                    <div className="bg-black p-4 rounded">
                         <textarea
                             ref={textareaRef}
                             className="w-full p-2 rounded bg-black text-white"
@@ -113,10 +113,10 @@ const Comment = ({
                     </div>
                 ) : (
                     <>
-                        <div className="text-white flex items-center mt-4">
+                        <div className="text-white flex items-center">
                             <p>{comment.text}</p>
                         </div>
-                        <div className="mt-4 flex space-x-4 items-center">
+                        <div className="mt-2 flex space-x-4 items-center">
                             <button
                                 onClick={() => handleCommentReaction(comment.id, true)}
                                 className="text-lg text-white px-2 py-1 rounded flex items-center justify-center hover:bg-gray-400 hover:rounded-full"

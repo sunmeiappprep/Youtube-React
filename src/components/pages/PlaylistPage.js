@@ -11,7 +11,7 @@ const PlaylistPage = () => {
   const [videos, setVideos] = useState([]);
   const [totalViews, setTotalViews] = useState(0);
   const [playlistInfo, setPlaylistInfo] = useState({});
-  const { showSubMenu } = useGlobalState();
+  const { showSubMenu,setShowSubMenu } = useGlobalState();
 
   useEffect(() => {
     const fetchVideos = async () => {
@@ -29,6 +29,10 @@ const PlaylistPage = () => {
 
     fetchVideos();
   }, [id]);
+
+  useEffect(() =>{
+    setShowSubMenu(true)
+  },[])
 
 
   if (videos.length === 0) {

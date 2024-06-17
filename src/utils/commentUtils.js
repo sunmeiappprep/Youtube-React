@@ -10,6 +10,16 @@ export const createComment = async (commentInfo) => {
     }
   };
 
+export const seedComment = async (commentInfo) => {
+  try {
+  console.log(commentInfo)
+    const response = await axios.post('http://localhost:8080/api/comment/seed', commentInfo);
+    console.log(response.data); // Handle the response as needed
+  } catch (error) {
+    console.error(error.response ? error.response.data : error.message);
+  }
+};
+
 export const getComments = async (videoId) => {
     try {
         const response = await axios.get(`http://localhost:8080/api/comment/get/video/${videoId}`);
