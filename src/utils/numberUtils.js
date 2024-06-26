@@ -1,4 +1,3 @@
-
 export function convertNumber(num) {
     if (num >= 1 && num <= 999) {
         return num.toString();
@@ -7,7 +6,7 @@ export function convertNumber(num) {
     } else if (num >= 10000 && num <= 999999) {
         return Math.floor(num / 1000) + 'K';
     } else if (num >= 1000000) {
-        return Math.floor(num / 1000000) + 'M';
+        return (Math.floor(num / 100000) / 10).toFixed(1) + 'M';
     } else {
         return '0';
     }
@@ -22,3 +21,4 @@ export function seededRandom(seed) {
 export function getSeededRandomNumber(seed) {
     return Math.floor(seededRandom(seed) * 1000) + 1;
 }
+

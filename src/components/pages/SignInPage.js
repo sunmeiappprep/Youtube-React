@@ -49,6 +49,11 @@ function SignInPage() {
     }
   };
 
+  const handleRegister =() => {
+    console.log("register")
+    navigate("/register")
+  }
+
   return (
     <div className="min-h-screen bg-custom-dark flex flex-col">
       <NavBar />
@@ -113,9 +118,9 @@ function SignInPage() {
             </div>
 
             <div className="text-center">
-              <a href="/register" className="font-medium text-indigo-400 hover:text-indigo-300">
+              <div onClick={handleRegister} className="font-medium text-indigo-400 hover:text-indigo-300">
                 Don't have an account? Register
-              </a>
+              </div>
             </div>
           </form>
         </div>

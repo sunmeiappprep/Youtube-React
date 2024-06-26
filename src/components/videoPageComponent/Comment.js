@@ -6,23 +6,29 @@ import { getColorFromInitial } from '../../utils/getColorFromInitial';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faThumbsUp, faThumbsDown } from '@fortawesome/free-solid-svg-icons';
 import { useGlobalState } from '../../StateContext';
+import { useNavigate } from 'react-router-dom';
 
 const Comment = ({
     comment, commentReactions, handleCommentReaction, handleUpdateComment, activeCommentId,
     setActiveCommentId,handleDelete
 }) => {
-    const { userUsername } = useGlobalState();
+    const { userUsername,isAuthenticated,token } = useGlobalState();
+    const navigate = useNavigate()
     const [isReplying, setIsReplying] = useState(false);
     const [showOptions, setShowOptions] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
+    const [showLogin, setShowLogin] = useState(false);
     const [editedText, setEditedText] = useState(comment.text);
+    
     const textareaRef = useRef(null);
+    const commentDivRef = useRef(null);
     useEffect(() => {
         if (activeCommentId !== comment.id) {
             setShowOptions(false);
             setIsEditing(false);
+            setShowLogin(false); 
         }
-    }, [activeCommentId]);
+    }, [activeCommentId,comment.id]);
 
     const handleReplyClick = () => {
         setIsReplying(true);
@@ -49,6 +55,20 @@ const Comment = ({
         setShowOptions(false);
     };
 
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (commentDivRef.current && !commentDivRef.current.contains(event.target)) {
+                setTimeout(() => {
+                    setShowLogin(false);
+                }, 150); // add delay cause of how it feels
+            }
+        };
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, []);
+
     const handleEditSubmit = async () => {
         await handleUpdateComment(comment.id, editedText);
         setIsEditing(false);
@@ -58,11 +78,24 @@ const Comment = ({
         setEditedText(e.target.value);
     };
 
+    const handleCommentReactionWithLoginButtonIfNotAuth = (commentId, isLike) => {
+        if (isAuthenticated && token) {
+            handleCommentReaction(commentId, isLike);
+        } else {
+            setActiveCommentId(commentId); 
+            setShowLogin(true);
+        }
+    };
+
+    const handleLogin = () => {
+        navigate("/login")
+      }
+
     const initial = comment.user.username[0];
     const circleColor = getColorFromInitial(initial);
 
     return (
-        <div key={comment.id} className="bg-custom-dark shadow rounded-lg p-1 relative ml-6  flex items-start">
+        <div ref={commentDivRef} key={comment.id} className="bg-custom-dark shadow rounded-lg p-1 relative ml-6  flex items-start">
             <div className="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center mt-1" style={{ backgroundColor: circleColor }}>
                 <span className="text-white font-bold text-lg">{initial}</span>
             </div>
@@ -118,20 +151,25 @@ const Comment = ({
                         </div>
                         <div className="mt-2 flex space-x-4 items-center">
                             <button
-                                onClick={() => handleCommentReaction(comment.id, true)}
+                                onClick={() => handleCommentReactionWithLoginButtonIfNotAuth(comment.id, true)}
                                 className="text-lg text-white px-2 py-1 rounded flex items-center justify-center hover:bg-gray-400 hover:rounded-full"
                             >
                                 <FontAwesomeIcon icon={faThumbsUp} />
                             </button>
                             <p className="text-white">{commentReactions}</p>
                             <button
-                                onClick={() => handleCommentReaction(comment.id, false)}
+                                onClick={() => handleCommentReactionWithLoginButtonIfNotAuth(comment.id, false)}
                                 className="text-lg text-white px-2 py-1 rounded flex items-center justify-center hover:bg-gray-400 hover:rounded-full"
                             >
                                 <FontAwesomeIcon icon={faThumbsDown} />
                             </button>
                             <button onClick={handleReplyClick}>Reply</button>
                         </div>
+                        {showLogin && activeCommentId === comment.id  && (
+                            <div className="mt-2 p-2 rounded shadow-md">
+                            <button onClick={handleLogin} className="px-4 py-1 text-sm font-semibold text-white bg-green-500 hover:bg-green-600 rounded" >Login</button>
+                            </div>
+                        )}
                     </>
                 )}
                 {isReplying && (

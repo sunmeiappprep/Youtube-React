@@ -1,9 +1,9 @@
 import axios from 'axios';
 import api from './axiosInterceptors';
-
+const apiUrl = process.env.REACT_APP_BACKEND_URL;
 export const loginUser = async (username,password) => {
 
-    const url = 'http://localhost:8080/login'; 
+    const url = `${apiUrl}/user/login`; 
     const userData = {
       username: username,
       password: password
@@ -23,7 +23,7 @@ export const loginUser = async (username,password) => {
 
   export const getUsernameById = async (userId) => {
     try {
-      const response = await axios.get(`http://localhost:8080/api/user/${userId}/username`);
+      const response = await axios.get(`${apiUrl}/api/user/${userId}/username`);
       console.log(response);
       return response.data
     } catch (error) {
@@ -42,7 +42,7 @@ export const loginUser = async (username,password) => {
             return false;
         }
 
-        const response = await axios.get('http://localhost:8080/api/user/checkJWT', {
+        const response = await axios.get(`${apiUrl}/api/user/checkJWT`, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -64,8 +64,8 @@ export const registerUser = async (username,password) => {
     };
 
     try {
-      const response = await axios.post('http://localhost:8080/register', userData);
-      console.log('Register successful:', response.data);
+      const response = await axios.post(`${apiUrl}/user/register`, userData);
+      console.log(`Register successful:`, response.data);
       return { success: true, data: response.data };
     } catch (error) {
       console.error('Register failed:', error.response || error.message);

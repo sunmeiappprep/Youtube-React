@@ -44,7 +44,7 @@ const Sidebar = () => {
 
     const timer = setTimeout(() => {
       fetchSubscribedChannels();
-    }, 1500);
+    }, 500);
 
 
     return () => clearTimeout(timer);
@@ -63,11 +63,11 @@ const Sidebar = () => {
         const initial = channel.username.charAt(0).toUpperCase(); 
         const circleColor = getColorFromInitial(initial)
         return (
-          <li key={channel.id} className="mt-4 flex items-center hover:bg-gray-700 rounded-full p-2">
-            <div className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center mt-1" style={{ backgroundColor: circleColor }}>
-              <span className="text-white font-bold text-lg">{initial}</span>
+          <li key={channel.id} className="mt-4 ml-1 flex items-center hover:bg-gray-700 rounded-full p-2">
+            <div className="flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center mt-1" style={{ backgroundColor: circleColor }}>
+              <span className="text-white font-bold text-sm">{initial}</span>
             </div>
-            <Link to={`/user/${channel.id}`} className="block hover:text-gray-400 ml-4">
+            <Link to={`/user/${channel.id}`} className="block hover:text-gray-400 text-sm ml-4">
               {channel.username}
             </Link>
           </li>
@@ -76,12 +76,12 @@ const Sidebar = () => {
     };
 
     return (
-  <div
-    className={`fixed top-0 left-0 h-full bg-custom-black text-white shadow-lg transition-transform transform ${
-      showSubMenu ? 'translate-x-0' : '-translate-x-full'
-    } z-40`}
-    style={{ width: '200px' }}
-  >
+      <div
+      className={`fixed top-0 left-0 h-full bg-custom-black text-white shadow-lg transition-transform transform ${
+        showSubMenu ? 'translate-x-0' : '-translate-x-full'
+      } z-40 overflow-y-auto sidebar-custom-scrollbar`}  // Added sidebar-custom-scrollbar class
+      style={{ width: '240px' }}
+    >
     <div className="p-2">
       <div className="flex gap-4 items-center flex-shrink-0 ml-2">
         <SubMenu className="" />
@@ -89,65 +89,65 @@ const Sidebar = () => {
       </div>
       <ul className="mt-6">
         <Link to="/" className="block w-full">
-          <li className="mt-4 flex items-center hover:bg-gray-700 rounded-full p-2">
+          <li className="mt-4 ml-1 flex items-center hover:bg-gray-700 rounded-full p-2">
             <FontAwesomeIcon icon={faHome} className="ml-2 mr-4" />
-            <span className="hover:text-gray-400">Home</span>
+            <span className="hover:text-gray-400 text-sm">Home</span>
           </li>
         </Link>
         {isAuthenticated ? (
           <>
             <Link to="/subscriptions" className="block w-full">
-              <li className="mt-4 flex items-center hover:bg-gray-700 rounded-full p-2">
+              <li className="mt-4 ml-1 flex items-center hover:bg-gray-700 rounded-full p-2">
                 <FontAwesomeIcon icon={faBell} className="ml-2 mr-4" />
-                <span className="hover:text-gray-400">Subscriptions</span>
+                <span className="hover:text-gray-400 text-sm">Subscriptions</span>
               </li>
             </Link>
             <hr className="my-4 border-gray-700 w-full" />
-            <li className="mt-4 flex items-center hover:bg-gray-700 rounded-full p-2">
+            <li className="mt-4 ml-1 flex items-center hover:bg-gray-700 rounded-full p-2">
               <FontAwesomeIcon icon={faChevronRight} className="ml-2 mr-4" />
-              <span className="block w-full hover:text-gray-400">You</span>
+              <span className="block w-full hover:text-gray-400 text-sm">You</span>
             </li>
             <Link to={`/user/${user}?tab=home`} className="block w-full">
-              <li className="mt-4 flex items-center hover:bg-gray-700 rounded-full p-2">
+              <li className="mt-4 ml-1 flex items-center hover:bg-gray-700 rounded-full p-2">
                 <FontAwesomeIcon icon={faUser} className="ml-2 mr-4" />
-                <span className="hover:text-gray-400">Your Channel</span>
+                <span className="hover:text-gray-400 text-sm">Your Channel</span>
               </li>
             </Link>
             <Link to={`/user/${user}?tab=Playlist`} className="block w-full">
-              <li className="mt-4 flex items-center hover:bg-gray-700 rounded-full p-2">
+              <li className="mt-4 ml-1 flex items-center hover:bg-gray-700 rounded-full p-2">
                 <FontAwesomeIcon icon={faList} className="ml-2 mr-4" />
-                <span className="hover:text-gray-400">Playlist</span>
+                <span className="hover:text-gray-400 text-sm">Playlist</span>
               </li>
             </Link>
             <Link to={`/user/${user}?tab=Video`} className="block w-full">
-              <li className="mt-4 flex items-center hover:bg-gray-700 rounded-full p-2">
+              <li className="mt-4 ml-1 flex items-center hover:bg-gray-700 rounded-full p-2">
                 <FontAwesomeIcon icon={faVideo} className="ml-2 mr-4" />
-                <span className="hover:text-gray-400">Your videos</span>
+                <span className="hover:text-gray-400 text-sm">Your videos</span>
               </li>
             </Link>
             <Link to={`/playlist/${watchLaterPlaylistId}`} className="block w-full">
-              <li className="mt-4 flex items-center hover:bg-gray-700 rounded-full p-2">
+              <li className="mt-4 ml-1 flex items-center hover:bg-gray-700 rounded-full p-2">
                 <FontAwesomeIcon icon={faClock} className="ml-2 mr-4" />
-                <span className="hover:text-gray-400">Watch later</span>
+                <span className="hover:text-gray-400 text-sm">Watch later</span>
               </li>
             </Link>
             <Link to={`/playlist/${likedVideoPlaylistId}`} className="block w-full">
-              <li className="mt-4 flex items-center hover:bg-gray-700 rounded-full p-2">
+              <li className="mt-4 ml-1 flex items-center hover:bg-gray-700 rounded-full p-2">
                 <FontAwesomeIcon icon={faThumbsUp} className="ml-2 mr-4" />
-                <span className="hover:text-gray-400">Liked videos</span>
+                <span className="hover:text-gray-400 text-sm">Liked videos</span>
               </li>
             </Link>
             <hr className="my-4 border-gray-700 w-full" />
-            <li className="mt-4">
+            <li className="mt-4 ml-1">
               <span className="block font-bold">Subscriptions</span>
             </li>
             {renderSubscribedChannels()}
           </>
         ) : (
-          <Link to="/signin" className="block w-full">
-            <li className="mt-4 flex items-center hover:bg-gray-700 rounded-full p-2">
+          <Link to="/login" className="block w-full">
+            <li className="mt-4 ml-1 flex items-center hover:bg-gray-700 rounded-full p-2">
               <FontAwesomeIcon icon={faSignInAlt} className="ml-2 mr-4" />
-              <span className="hover:text-gray-400">Login</span>
+              <span className="hover:text-gray-400 text-sm">Login</span>
             </li>
           </Link>
         )}

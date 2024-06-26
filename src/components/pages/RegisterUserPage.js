@@ -1,7 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { loginUser,registerUser } from '../../utils/authUtils';
 import { useGlobalState } from '../../StateContext'; 
-import { useEffect,useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import NavBar from '../navBar/NavBar';
 function RegisterUserPage() {
@@ -59,6 +58,10 @@ function RegisterUserPage() {
         }
         // Implement your submission logic here, e.g., calling an API
     };
+
+    const handleSignIn = () => {
+      navigate("/login")
+    }
 
     useEffect(() => {
         console.log("Updated global state user:", user);
@@ -130,9 +133,9 @@ function RegisterUserPage() {
                 </div>
     
                 <div className="text-center">
-                  <a href="/signin" className="font-medium text-indigo-400 hover:text-indigo-300">
+                  <div onClick={handleSignIn} className="font-medium text-indigo-400 hover:text-indigo-300">
                     Have an account? Sign In
-                  </a>
+                  </div>
                 </div>
               </form>
             </div>

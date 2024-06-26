@@ -31,6 +31,7 @@ module.exports = {
         'custom-dark': '#0F0F0F',
         'custom-white': '#F5F3F4',
         'custom-gray': '#262626',
+        'custom-gray-sub': '#292a2a',
         "custom-hover-gray": "#3F3F3F",
         "custom-gray-desc": "#272727",
         "custom-gray-thumbnail": "#ACACAC",

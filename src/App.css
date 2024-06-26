@@ -87,10 +87,49 @@ body {
   line-height: 1.5; /* Ensure this matches your font size line height */
 }
 
-/* .transition-transform {
-  transition: transform 0.3s ease-in-out;
+
+/* Hide scrollbar by default */
+.sidebar-custom-scrollbar {
+  scrollbar-width: none; /* For Firefox */
 }
 
-.transition-margin {
-  transition: margin-left 0.3s ease-in-out;
-} */
+.sidebar-custom-scrollbar::-webkit-scrollbar {
+  width: 0; /* For Chrome, Safari, and Opera */
+}
+
+/* Show scrollbar on hover with custom colors */
+.sidebar-custom-scrollbar:hover {
+  scrollbar-width: thin; /* For Firefox */
+  scrollbar-color: #3d3d3d #1a1a1a; /* Custom colors */
+}
+
+.sidebar-custom-scrollbar:hover::-webkit-scrollbar {
+  width: 8px; /* Adjust width as needed */
+}
+
+.sidebar-custom-scrollbar:hover::-webkit-scrollbar-track {
+  background: #1a1a1a; /* Dark grey background for the track */
+}
+
+.sidebar-custom-scrollbar:hover::-webkit-scrollbar-thumb {
+  background-color: #3d3d3d; /* Dark grey color for the thumb */
+  border-radius: 10px; /* Rounded corners for the thumb */
+  border: 2px solid #1a1a1a; /* Optional: Add some padding around the thumb */
+}
+
+.video-container {
+  padding-bottom: 57.40%;
+}
+
+/* Media query for smaller screens */
+@media (max-width: 768px) {
+  .video-container {
+    padding-bottom: 75%; /* Increase the padding-bottom for a smaller aspect ratio */
+  }
+}
+
+@media (max-width: 480px) {
+  .video-container {
+    padding-bottom: 100%; /* Make it a 1:1 aspect ratio */
+  }
+}

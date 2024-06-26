@@ -1,8 +1,8 @@
 import api from "./axiosInterceptors";
-
+const apiUrl = process.env.REACT_APP_BACKEND_URL;
 export const subscribeToChannel = async (channelId) => {
     try {
-      const response = await api.post('http://localhost:8080/api/subscriptions/subscribe', null, {
+      const response = await api.post(`${apiUrl}/api/subscriptions/subscribe`, null, {
         params: {
           channelId: channelId,
         },
@@ -16,7 +16,7 @@ export const subscribeToChannel = async (channelId) => {
 
   export const checkIfSubscribed = async (channelId) => {
     try {
-      const response = await api.get('http://localhost:8080/api/subscriptions/check', {
+      const response = await api.get(`${apiUrl}/api/subscriptions/check`, {
         params: {
           channelId: channelId,
         },
@@ -30,7 +30,7 @@ export const subscribeToChannel = async (channelId) => {
 
 export const unsubscribeFromChannel = async (channelId) => {
   try {
-    const response = await api.delete('http://localhost:8080/api/subscriptions/unsubscribe', {
+    const response = await api.delete(`${apiUrl}/api/subscriptions/unsubscribe`, {
       params: {
         channelId: channelId,
       },
@@ -44,7 +44,7 @@ export const unsubscribeFromChannel = async (channelId) => {
 
 export const getSubscriptions = async (subscriberId) => {
     try {
-      const response = await api.get(`http://localhost:8080/api/subscriptions/subscriber/${subscriberId}`);
+      const response = await api.get(`${apiUrl}/api/subscriptions/subscriber/${subscriberId}`);
       console.log("Axios", response.data);
       return response.data; 
     } catch (error) {
@@ -55,7 +55,7 @@ export const getSubscriptions = async (subscriberId) => {
 
 export const getSubscribers = async (channelId) => {
   try {
-    const response = await api.get(`http://localhost:8080/api/subscriptions/channel/${channelId}`);
+    const response = await api.get(`${apiUrl}/api/subscriptions/channel/${channelId}`);
     console.log("Axios", response.data);
     return response.data; 
   } catch (error) {
@@ -66,7 +66,7 @@ export const getSubscribers = async (channelId) => {
 
 export const getSubscribedChannels = async (subscriberId) => {
   try {
-    const response = await api.get(`http://localhost:8080/api/subscriptions/${subscriberId}/channels`);
+    const response = await api.get(`${apiUrl}/api/subscriptions/${subscriberId}/channels`);
     console.log("Axios", response.data);
     return response.data;
   } catch (error) {

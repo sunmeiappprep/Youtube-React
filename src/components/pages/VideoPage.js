@@ -141,8 +141,10 @@ function VideoPage() {
       return;
     }
     try {
-      await subscribeToChannel(uploaderUserId);
-      setIsSubscribed(true);
+      if(isAuthenticated&&token){
+        await subscribeToChannel(uploaderUserId);
+        setIsSubscribed(true);
+      }
     } catch (error) {
       console.error('Failed to subscribe:', error);
     }
@@ -189,7 +191,7 @@ function VideoPage() {
                         <p className="text-gray-500 text-sm">4.82K subscribers</p>
                       </div>
                       <button
-                      className={`ml-4 px-4 py-1 rounded ${isSubscribed ? 'bg-custom-gray-desc text-white' : 'bg-custom-gray text-black'}`}
+                      className={`ml-4 px-6 py-2 text-lg rounded-full ${isSubscribed ? 'bg-custom-gray-sub text-white' : 'bg-custom-white-thumbnail text-black'}`}
                       onClick={handleSubscribe}
                     >
                       {isSubscribed ? 'Subscribed' : 'Subscribe'}
@@ -215,7 +217,7 @@ function VideoPage() {
                       </div>
                     </div>
                     <hr className="border-gray-500 my-4" />
-                    <div className="bg-custom-gray-desc pt-2 pl-3 pr-3 pb-3 rounded-lg text-white mt-4 cursor-pointer"
+                    <div className="bg-custom-gray-desc pt-2 pl-3 pr-3 pb-3 rounded-xl text-white mt-4 cursor-pointer"
                     onClick={handleMoreClick}>
                     <div className="flex gap-2 font-bold">
                       <p>{convertNumber(views)} views</p>

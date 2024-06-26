@@ -42,6 +42,25 @@ const getRandomUsername = (category) => {
     return usernames[Math.floor(Math.random() * usernames.length)];
 };
 
+const convertViewIntoLong = (view) => {
+  // Extract the last character (K or M) and the rest of the string
+  let suffix = view.slice(-1);
+  let numberStr = view.slice(0, -1);
+
+  // Convert the remaining string to a number
+  let number = parseFloat(numberStr);
+
+  // Multiply based on the suffix
+  if (suffix === 'K') {
+      number *= 1000;
+  } else if (suffix === 'M') {
+      number *= 1000000;
+  }
+
+  // Return the result as a whole number
+  return number;
+}
+
 const handleMakeSubmitted = async () => {
   for (const key in dataSets) {
       if (dataSets.hasOwnProperty(key) && JSONUsername.hasOwnProperty(key.toLowerCase())) {
@@ -53,7 +72,7 @@ const handleMakeSubmitted = async () => {
                   title: element.title,
                   url: `https://www.youtube.com/watch?v=${element.url}`,
                   description: element.description,
-                  view: parseInt(element.views.replace(/,/g, ''), 10),
+                  view: convertViewIntoLong(element.views),
                   username: getRandomUsername(key.toLowerCase())
               };
               // console.log(videoInfo, "testing");
@@ -189,7 +208,6 @@ const handleMakeSubmitted = async () => {
   
   
   const handleUpdateVideo = () => {
-    updateVideo(2,videoInfo)
   }
 
   const handleSubmit = (event) => {
@@ -246,7 +264,6 @@ const handleMakeSubmitted = async () => {
   return (
     <div className="flex-wrap justify-center items-center h-screen ">
     <NavBar/>
-      <button  className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700"  onClick={() => { postVideo(videoInfo); }}>Post Video</button>
       <button  className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-700"  onClick={() => { getUserVideos(1); }}>Get User Video</button>
       <button  className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-yellow-700"  onClick={() => handleUpdateVideo()}>Update Video</button>
       <button  className="px-4 py-2 bg-red-500 text-white rounded hover:bg-yellow-700"  onClick={() => deleteVideo(187)}>Delete Video</button>

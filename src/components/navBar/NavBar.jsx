@@ -6,6 +6,8 @@ import Youtube from "../../assets/images/y3.png"
 import { useGlobalState } from '../../StateContext'
 import { useNavigate } from 'react-router-dom'
 import { checkJWT, logOut } from '../../utils/authUtils'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUpload, faUser , faSignOutAlt,faSpinner  } from '@fortawesome/free-solid-svg-icons';
 
 function NavBar() {
   const { user, token, setUser, setToken,setUserUsername,isAuthenticated, setIsAuthenticated,showSubMenu} = useGlobalState();
@@ -19,7 +21,7 @@ function NavBar() {
   const handleLogOut = async (event) => {
     event.preventDefault();
     await deleteInfo();
-    navigate("/signin");
+    navigate("/login");
   };
 
   const deleteInfo = async () => {
@@ -27,10 +29,11 @@ function NavBar() {
     setUser("");
     setToken("");
     setUserUsername("");
+    setIsAuthenticated(false)
   };
 
   const handleLogin = () => {
-    navigate("/signin")
+    navigate("/login")
   }
 
   const handleUserPageRedirect = () => {
@@ -51,7 +54,9 @@ useEffect(() => {
   }, [user, token, setIsAuthenticated]);
 
 
-
+  const handleUpload = () => {
+    navigate('/upload'); 
+  };
 
   const handleHomepageRedirect = () => {
     if (window.location.pathname !== "/") {
@@ -72,17 +77,24 @@ useEffect(() => {
     <div className="flex-grow mx-4">
       <SearchBar className="max-w-screen-md w-full" style={{ maxWidth: '600px' }} />
     </div>
-    <div className="flex gap-4 flex-shrink-0">
-      {isAuthenticated === null ? (
-        <button className="px-4 py-1 text-sm font-semibold text-white bg-gray-500 rounded">Loading...</button>
-      ) : (
-        !isAuthenticated ? (
-          <button onClick={handleLogin} className="px-4 py-1 text-sm font-semibold text-white bg-green-500 hover:bg-green-600 rounded">Login</button>
-        ) : (
-          <button onClick={handleLogOut} className="px-4 py-1 text-sm font-semibold text-white bg-red-500 hover:bg-red-600 rounded">Logout</button>
-        )
-      )}
-    </div>
+    <div className="flex gap-4 items-center flex-shrink-0">
+    <button onClick={handleUpload} className="w-10 h-10 rounded-full bg-custom-black hover:bg-gray-600">
+      <FontAwesomeIcon icon={faUpload} className="text-white" />
+    </button>
+    {isAuthenticated === null ? (
+      <button className="w-10 h-10 rounded-full bg-gray-500">
+        <FontAwesomeIcon icon={faSpinner} className="text-white" />
+      </button>
+    ) : !isAuthenticated ? (
+      <button onClick={handleLogin} className="w-10 h-10 rounded-full bg-custom-black hover:bg-gray-600">
+        <FontAwesomeIcon icon={faUser } className="text-white" />
+      </button>
+    ) : (
+      <button onClick={handleLogOut} className="w-10 h-10 rounded-full bg-custom-black hover:bg-gray-600">
+        <FontAwesomeIcon icon={faSignOutAlt} className="text-white" />
+      </button>
+    )}
+  </div>
   </div>
 );
 }

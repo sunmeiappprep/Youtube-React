@@ -64,7 +64,7 @@ export default function LikeAndDislikeButton({ videoId, handleUpdateLiked,liked,
     };
 
     const handleLogin = () => {
-        navigate('/signin')
+        navigate('/login')
     }
 
 

@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { formatDateDifference } from '../../utils/dateUtils';
+import { convertNumber } from '../../utils/numberUtils';
 import { getColorFromInitial } from '../../utils/getColorFromInitial';
 function DisplaySearchVideoThumbnail({ id, title, description, view, url, generatedDate, thumbnail,userId,username }) {
     const navigate = useNavigate();
@@ -27,8 +28,8 @@ function DisplaySearchVideoThumbnail({ id, title, description, view, url, genera
                     {title}
                 </h2>
                 <div className="flex gap-2 items-center my-2 text-sm">
-                    <p className="text-gray-500">Views: {view}</p>
-                    <p className="text-gray-500">Generated Date: {new Date(generatedDate).toLocaleDateString()} ago</p>
+                    <p className="text-gray-500">{convertNumber(view)} views</p>
+                    <p className="text-gray-500">{formatDateDifference(generatedDate)} ago</p>
                 </div>
                 <div className="flex items-center mb-2">
                     <div

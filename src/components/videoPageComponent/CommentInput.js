@@ -24,7 +24,7 @@ const CommentInput = ({videoId,handleUpdateComment}) => {
   }
 
   const handleLogin = () => {
-    navigate("/signin")
+    navigate("/login")
   }
 
   return (

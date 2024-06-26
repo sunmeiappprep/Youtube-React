@@ -4,7 +4,6 @@ import { formatDateDifference } from '../../utils/dateUtils';
 import { convertNumber } from '../../utils/numberUtils';
 import { getColorFromInitial } from '../../utils/getColorFromInitial';
 import useNavigateWithMiddleClick from '../hooks/useNavigateWithMiddleClick';
-useNavigateWithMiddleClick
 function VideoThumbnail({ videoId, title, uploader, url, generatedDate, view, userId }) {
   const handleClickToVideo = useNavigateWithMiddleClick(`/video/${videoId}`);
   const handleClickToUser = useNavigateWithMiddleClick(`/user/${userId}`);
@@ -57,7 +56,7 @@ function VideoThumbnail({ videoId, title, uploader, url, generatedDate, view, us
             className="flex text-custom-gray-thumbnail text-sm cursor-pointer font-roboto"
             onMouseDown={handleClickToVideo}
           >
-            <div className="pr-1">{convertNumber(view)} Views</div>
+            <div className="pr-1">{convertNumber(view)} views</div>
             <div className='pr-1'>•</div>
             <div>{formatDateDifference(generatedDate)} ago</div>
           </div>

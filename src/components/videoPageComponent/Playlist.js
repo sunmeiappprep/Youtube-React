@@ -114,7 +114,7 @@ export default function Playlist({videoId}) {
   };
 
   const handleLogin = () => {
-    navigate('/signin')
+    navigate('/login')
 }
 
 const handleClickOutside = (event) => {

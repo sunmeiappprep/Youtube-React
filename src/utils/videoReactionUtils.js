@@ -1,9 +1,10 @@
 import api from './axiosInterceptors';
 import axios from 'axios';
+const apiUrl = process.env.REACT_APP_BACKEND_URL;
 export const addLiked = async (videoData) => {
     try {
     console.log(videoData)
-      const response = await api.post('http://localhost:8080/api/videoReactions/add', videoData);
+      const response = await api.post(`${apiUrl}/api/videoReactions/add`, videoData);
       return(response.data); // Handle the response as needed
     } catch (error) {
       console.error(error.response ? error.response.data : error.message);
@@ -13,7 +14,7 @@ export const addLiked = async (videoData) => {
 
   export const getLiked = async (id) => {
     try {
-      const response = await axios.get(`http://localhost:8080/api/videoReactions/results/${id}`);
+      const response = await axios.get(`${apiUrl}/api/videoReactions/results/${id}`);
       return(response.data); // Handle the response as needed
     } catch (error) {
       console.error(error.response ? error.response.data : error.message);
