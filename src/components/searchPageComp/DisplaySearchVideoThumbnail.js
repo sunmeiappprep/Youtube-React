@@ -20,7 +20,7 @@ function DisplaySearchVideoThumbnail({ id, title, description, view, url, genera
           <img src={thumbnail} alt="Video thumbnail" className="absolute top-0 left-0 w-full h-full object-cover rounded-lg" />
         </div>
       </div>
-      <div className="mt-4 md:mt-0 md:ml-0 flex-1">
+      <div className="mt-4 md:mt-0 md:ml-0 flex-1 px-4 ">
         <h2
           className="text-lg font-semibold cursor-pointer hover:underline text-custom-white-thumbnail"
           onClick={handleClick}
