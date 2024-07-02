@@ -1,29 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { getUsernameById } from '../../utils/authUtils';
 import { useParams } from 'react-router-dom';
 import { checkIfSubscribed, subscribeToChannel, unsubscribeFromChannel } from '../../utils/subscriptionUtils';
 import { useGlobalState } from '../../StateContext';
 import { convertNumber } from '../../utils/numberUtils';
-function UserProfileNavbar({viewTotal,subTotal}) {
+function UserProfileNavbar({viewTotal,subTotal,userUsername}) {
   const { id } = useParams();
   const {token,isAuthenticated} = useGlobalState()
-  const [userUsername, setUserUsername] = useState('');
   const [isSubscribed, setIsSubscribed] = useState(false);
   const [hovering, setHovering] = useState(false);
 
-  useEffect(() => {
-    if (id) {
-      const fetchUsername = async () => {
-        const username = await getUsernameById(id);
-        setUserUsername(username);
-      };
-      fetchUsername();
-    }
-    console.log(isSubscribed,id,token,isAuthenticated)
-  }, [id]);
+
 
   useEffect(() => {
-    console.log("id",id)
+    // console.log("id",id)
     if (id) {
       const fetchSubscriptionStatus = async () => {
         const subscribed = await checkIfSubscribed(id);
@@ -63,24 +52,26 @@ function UserProfileNavbar({viewTotal,subTotal}) {
       </div>
       <div className="ml-6">
         <div className="text-2xl font-semibold">{userUsername}</div>
-        <div className="text-gray-600 mt-2">{convertNumber(viewTotal)} views • {subTotal} Subscribers</div>
-        {isSubscribed ? (
-          <div
-            className={`mt-4 px-6 py-2 font-semibold rounded-full cursor-pointer transition-colors duration-300 ${hovering ? 'bg-red-300 text-white w-36' : 'bg-gray-500 text-white w-36'}`}
-            onMouseEnter={() => setHovering(true)}
-            onMouseLeave={() => setHovering(false)}
-            onClick={handleUnsubscribe}
-          >
-            {hovering ? 'Unsubscribe' : 'Subscribed'}
-          </div>
-        ) : (
-          <button
-            onClick={handleSubscribe}
-            className="mt-4 px-6 py-2 bg-white text-black font-semibold rounded-full border hover:bg-gray-100"
-          >
-            Subscribe
-          </button>
-        )}
+        <div className="text-gray-600 mt-2">{convertNumber(viewTotal)} views • {convertNumber(subTotal)} Subscribers</div>
+        <div className="mt-4">
+          {isSubscribed ? (
+            <div
+              className={`flex items-center justify-center px-6 py-2 font-semibold rounded-full cursor-pointer transition-colors duration-300 ${hovering ? 'bg-red-300 text-white w-36' : 'bg-gray-500 text-white w-36'}`}
+              onMouseEnter={() => setHovering(true)}
+              onMouseLeave={() => setHovering(false)}
+              onClick={handleUnsubscribe}
+            >
+              {hovering ? 'Unsubscribe' : 'Subscribed'}
+            </div>
+          ) : (
+            <button
+              onClick={handleSubscribe}
+              className="flex items-center justify-center px-6 py-2 bg-white text-black font-semibold rounded-full border hover:bg-gray-100"
+            >
+              Subscribe
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );

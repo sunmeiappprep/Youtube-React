@@ -11,7 +11,7 @@ function RegisterUserPage() {
     const handleDemoSignIn = async (event) => {
         event.preventDefault();
         // Handle the login logic here
-        let data = await loginUser("asdasd1@gmail.com", 'asdasd')
+        let data = await loginUser("DemoUser", 'asdasd')
         if(data.user.id && data.jwtToken){
           setUser(data.user.id)
           setToken(data.jwtToken)
@@ -69,8 +69,8 @@ function RegisterUserPage() {
     }
 
     useEffect(() => {
-        console.log("Updated global state user:", user);
-        console.log("Updated global state token:", token);
+        // console.log("Updated global state user:", user);
+        // console.log("Updated global state token:", token);
     }, [user, token]); // This effect runs when `user` or `token` changes
 
     return (

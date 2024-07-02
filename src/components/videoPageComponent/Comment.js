@@ -47,7 +47,7 @@ const Comment = ({
     const handleButtonClick = () => {
         setActiveCommentId(comment.id);
         setShowOptions((prevShowOptions) => !prevShowOptions);
-        console.log('Active Comment ID:', comment.id);
+        // console.log('Active Comment ID:', comment.id);
     };
 
     const handleEditClick = () => {

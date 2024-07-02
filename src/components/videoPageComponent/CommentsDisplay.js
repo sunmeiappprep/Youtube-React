@@ -4,7 +4,8 @@ import { useGlobalState } from '../../StateContext';
 import Comment from './Comment'; // Import Comment component
 import CommentReplies from './CommentReplies';
 import { getSeededRandomNumber } from '../../utils/numberUtils';
-import CommentInput from '../videoPageComponent/CommentInput';;
+import CommentInput from '../videoPageComponent/CommentInput';import { isOlderThanHardcodedDate } from '../../utils/dateUtils';
+;
 
 const CommentsDisplay = ({ videoId, }) => {
   const { user } = useGlobalState();
@@ -132,7 +133,6 @@ const handleUpdateComment = async (commentId, newText) => {
     return <div>Loading...</div>;
   }
 
-  console.log(commentsReactionsObject)
   return (
     <div ref={containerRef}>
       <CommentInput videoId={videoId} handleUpdateComment={handleUpdateComment} />
@@ -140,7 +140,11 @@ const handleUpdateComment = async (commentId, newText) => {
       <div className="space-y-4 mt-6">
         {comments.map((comment) => {
           const createdAtSeed = new Date(comment.createdAt).getTime();
-          const randomNumber = getSeededRandomNumber(createdAtSeed);
+          let randomNumber = 0
+          if(isOlderThanHardcodedDate(comment.createdAt)){
+            // console.log("it is true")
+            randomNumber = getSeededRandomNumber(createdAtSeed);
+          }
           const reactionValue = commentsReactionsObject[comment.id] || 0;//Not sure why there is NaN on first render
           const commentReactionWithRandom = isNaN(reactionValue + randomNumber) ? 0 : reactionValue + randomNumber;//Not sure why there is NaN on first render
           const makeSureNotNegative = Math.max(commentReactionWithRandom, 0);

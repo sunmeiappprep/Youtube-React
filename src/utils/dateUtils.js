@@ -1,4 +1,6 @@
 
+
+import { parseISO, isBefore } from 'date-fns';
 export const formatDateDifference = (generatedDate) => {
         const date1 = new Date(generatedDate);
         const date2 = new Date(); 
@@ -19,3 +21,15 @@ export const formatDateDifference = (generatedDate) => {
         }
       };
     
+
+
+      export const isOlderThanHardcodedDate = (date) => {
+        // Hardcoded date to 2:15 PM EST (which is 7:15 PM UTC)
+        const hardcodedDate = parseISO('2024-07-02T20:15:00-05:00');
+        
+        // Parse the input date
+        const inputDate = parseISO(date);
+        // console.log(inputDate,hardcodedDate)
+        // Compare the dates
+        return isBefore(inputDate, hardcodedDate);
+    };

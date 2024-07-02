@@ -54,7 +54,10 @@ export default function HomePage() {
 
     window.addEventListener('scroll', handleScroll);
 
-    return () => window.removeEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+      document.title = 'Youtube';
+    };
   }, []); 
 
   if (videos.length === 0) {

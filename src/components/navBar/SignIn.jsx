@@ -9,7 +9,7 @@ function SignIn() {
   const loginAndRedirect = async () => {
   try {
     let info = await loginUser();
-    console.log(info)
+    // console.log(info)
     
   } catch (error) {
     console.error("Login failed:", error);

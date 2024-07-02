@@ -8,39 +8,64 @@ import Sidebar from '../navBar/Sidebar';
 import { useParams } from 'react-router-dom';
 import { getUserVideos } from '../../utils/videoUtils';
 import { getSubscribers } from '../../utils/subscriptionUtils';
+import { getUserById, getUsernameById } from '../../utils/authUtils';
+import { getUsernameBasedRandomNumber } from '../../utils/numberUtils';
+import { isOlderThanHardcodedDate } from '../../utils/dateUtils';
+
 function UserPage() {
     const { showSubMenu,setShowSubMenu } = useGlobalState(); 
     const { id } = useParams();
     const [videos, setVideos] = useState([]); 
     const [viewTotal, setViewTotal] = useState(); 
     const [subTotal, setSubTotal] = useState(); 
-
+    const [userUsername, setUserUsername] = useState('');
+    const [userInfo,setUserInfo] = useState({})
 
     useEffect(() => {
-        const fetchVideos = async () => {
+        const fetchData = async () => {
             try {
+       
+                const username = await getUsernameById(id);
+                setUserUsername(username);
+    
+
+
+                const userInfo = await getUserById(id)
+                setUserInfo(userInfo)
+
+                const response = await getSubscribers(id);
+                const realSub = response.length;
+                if(isOlderThanHardcodedDate(userInfo.createdAt)){
+                    setSubTotal(getUsernameBasedRandomNumber(username) + realSub)
+                    }
+                    else{
+                    setSubTotal(realSub)
+                    }
+                    
+    
                 if (id) {
-                    const response = await getUserVideos(id);
-                    setVideos(response);
-                    const totalViews = response.reduce((total, video) => total + video.view, 0);
-                    setViewTotal(totalViews);
+                    const videoResponse = await getUserVideos(id);
+                    setVideos(videoResponse);
+                    if(videoResponse && videoResponse.length > 0){
+                        const totalViews = videoResponse.reduce((total, video) => total + video.view, 0);
+                        setViewTotal(totalViews);
+                    }
                 }
             } catch (error) {
-                console.error("Error fetching videos:", error);
+                console.error("Error fetching data:", error);
             }
         };
+        fetchData()
+     
 
-        const getSubscriberNumber = async () => {
-            try {
-                let response = await getSubscribers(id)
-                setSubTotal(response.length)
-            } catch (error) {
-                console.error("Error fetching subs:", error);
-            }
-        }
-        fetchVideos()
-        getSubscriberNumber();
     }, [id]);
+
+    useEffect(() => {
+        if (userUsername) {
+            document.title = `${userUsername} Channel`;
+        }
+    }, [userUsername]);
+    
 
     useEffect(() => {
         if (window.innerWidth < 900) {
@@ -49,6 +74,11 @@ function UserPage() {
           setShowSubMenu(true);
         }
       }, [setShowSubMenu]);
+
+    //   console.log(userInfo)
+
+    
+
     return (
         <div className='bg-custom-dark min-h-screen'>
             <div className="relative flex flex-col md:flex-row">
@@ -59,7 +89,7 @@ function UserPage() {
                     <NavBar />
                     <div className="flex flex-col items-center p-4 md:p-6">
                         <div className="max-w-10.5xl w-full">
-                            <UserProfileNavbar viewTotal={viewTotal} subTotal={subTotal}/>
+                            <UserProfileNavbar viewTotal={viewTotal} userUsername={userUsername} subTotal={subTotal}/>
                         </div>
                         <div className="max-w-10.5xl w-full mt-4 md:mt-6">
                             <UserHomeVideoPlaylist videos={videos} />

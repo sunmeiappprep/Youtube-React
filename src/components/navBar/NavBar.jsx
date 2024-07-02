@@ -45,7 +45,7 @@ useEffect(() => {
       const result = await checkJWT();
       setIsAuthenticated(result);
       if (!result) {
-        console.log(result,"auth fail")
+        // console.log(result,"auth fail")
         await deleteInfo();
       }
     };

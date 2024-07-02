@@ -22,3 +22,21 @@ export function getSeededRandomNumber(seed) {
     return Math.floor(seededRandom(seed) * 1000) + 1;
 }
 
+export function getUsernameBasedRandomNumber(username) {
+    const seed = username.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+    let randomValue = seededRandom(seed);
+
+    // Use exponential distribution to favor lower numbers
+    const maxNumber = 10000000;
+    const lambda = 0.000001; // Adjust this value to control the distribution skewness
+
+    // Generate an exponentially distributed number
+    let expRandom = -Math.log(1 - randomValue) / lambda;
+
+    // Ensure the number is within the desired range
+    let result = Math.floor(expRandom);
+    if (result < 1) result = 1;
+    if (result > maxNumber) result = maxNumber;
+
+    return result;
+}

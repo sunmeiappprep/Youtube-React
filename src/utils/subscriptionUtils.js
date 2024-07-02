@@ -7,10 +7,10 @@ export const subscribeToChannel = async (channelId) => {
           channelId: channelId,
         },
       });
-      console.log("Axios", response.data);
+      // console.log("Axios", response.data);
       return response.data; 
     } catch (error) {
-      console.error(error.response ? error.response.data : error.message);
+      // console.error(error.response ? error.response.data : error.message);
     }
   };
 
@@ -21,10 +21,10 @@ export const subscribeToChannel = async (channelId) => {
           channelId: channelId,
         },
       });
-      console.log("Axios", response.data);
+      // console.log("Axios", response.data);
       return response.data; 
     } catch (error) {
-      console.error(error.response ? error.response.data : error.message);
+      // console.error(error.response ? error.response.data : error.message);
     }
   };
 
@@ -35,9 +35,9 @@ export const unsubscribeFromChannel = async (channelId) => {
         channelId: channelId,
       },
     });
-    console.log("Axios", response.data); 
+    // console.log("Axios", response.data); 
   } catch (error) {
-    console.error(error.response ? error.response.data : error.message);
+    // console.error(error.response ? error.response.data : error.message);
   }
 };
 
@@ -45,10 +45,10 @@ export const unsubscribeFromChannel = async (channelId) => {
 export const getSubscriptions = async (subscriberId) => {
     try {
       const response = await api.get(`${apiUrl}/api/subscriptions/subscriber/${subscriberId}`);
-      console.log("Axios", response.data);
+      // console.log("Axios", response.data);
       return response.data; 
     } catch (error) {
-      console.error(error.response ? error.response.data : error.message);
+      // console.error(error.response ? error.response.data : error.message);
     }
   };
 
@@ -56,10 +56,10 @@ export const getSubscriptions = async (subscriberId) => {
 export const getSubscribers = async (channelId) => {
   try {
     const response = await api.get(`${apiUrl}/api/subscriptions/channel/${channelId}`);
-    console.log("Axios", response.data);
+    // console.log("Axios", response.data);
     return response.data; 
   } catch (error) {
-    console.error(error.response ? error.response.data : error.message);
+    // console.error(error.response ? error.response.data : error.message);
   }
 };
 
@@ -67,9 +67,9 @@ export const getSubscribers = async (channelId) => {
 export const getSubscribedChannels = async (subscriberId) => {
   try {
     const response = await api.get(`${apiUrl}/api/subscriptions/${subscriberId}/channels`);
-    console.log("Axios", response.data);
+    // console.log("Axios", response.data);
     return response.data;
   } catch (error) {
-    console.error(error.response ? error.response.data : error.message);
+    // console.error(error.response ? error.response.data : error.message);
   }
 };

@@ -11,7 +11,6 @@ const VideoEmbed = forwardRef(({ videoId }, ref) => {
       playerRef.current = new window.YT.Player(`youtube-player-${videoId}`, {
         events: {
           onReady: (event) => {
-            console.log('Player is ready');
             setIsPlayerReady(true);
           },
         },
@@ -33,7 +32,7 @@ const VideoEmbed = forwardRef(({ videoId }, ref) => {
 
     const handleIframeClick = (e) => {
       e.preventDefault();
-      console.log('Overlay clicked. Toggling video play/pause.');
+      // console.log('play/pause.');
 
       if (isPlayerReady && playerRef.current) {
         const playerState = playerRef.current.getPlayerState();
@@ -50,7 +49,7 @@ const VideoEmbed = forwardRef(({ videoId }, ref) => {
 
     const handleDoubleClick = (e) => {
       e.preventDefault();
-      console.log('Overlay double-clicked. Toggling fullscreen.');
+      // console.log('Toggling fullscreen.');
       if (document.fullscreenElement) {
         if (document.exitFullscreen) {
           document.exitFullscreen();
@@ -70,16 +69,12 @@ const VideoEmbed = forwardRef(({ videoId }, ref) => {
 
     const overlay = iframeOverlayRef.current;
     if (overlay) {
-      console.log('Overlay is present. Adding click event listener.');
       overlay.addEventListener('click', handleIframeClick);
       overlay.addEventListener('dblclick', handleDoubleClick);
-    } else {
-      console.log('Overlay not found.');
-    }
+    } 
 
     return () => {
       if (overlay) {
-        console.log('Removing event listeners from overlay.');
         overlay.removeEventListener('click', handleIframeClick);
         overlay.removeEventListener('dblclick', handleDoubleClick);
       }

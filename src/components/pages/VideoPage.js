@@ -11,13 +11,14 @@ import Playlist from '../videoPageComponent/Playlist';
 import Sidebar from '../navBar/Sidebar'; 
 import { findPlaylistIdByUserAndTitle } from '../../utils/playlist';
 import { getColorFromInitial } from '../../utils/getColorFromInitial';
-import { convertNumber } from '../../utils/numberUtils';
-import { formatDateDifference } from '../../utils/dateUtils';
+import { convertNumber, getUsernameBasedRandomNumber } from '../../utils/numberUtils';
+import { formatDateDifference, isOlderThanHardcodedDate } from '../../utils/dateUtils';
 import { useNavigate } from 'react-router-dom';
-import { checkIfSubscribed, subscribeToChannel, unsubscribeFromChannel } from '../../utils/subscriptionUtils';
+import { checkIfSubscribed, getSubscribers, subscribeToChannel, unsubscribeFromChannel } from '../../utils/subscriptionUtils';
 import useWindowSize from '../hooks/useWindowSize';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faSave } from '@fortawesome/free-solid-svg-icons';
+import { getUserById } from '../../utils/authUtils';
 
 function VideoPage() {
   const { user, token, setUser, isAuthenticated, showSubMenu, setShowSubMenu } = useGlobalState();
@@ -35,6 +36,8 @@ function VideoPage() {
   const [likedVideoPlaylistId,setLikedVideoPlaylistId] = useState(0)
   const [isDescriptionExpanded, setDescriptionExpanded] = useState(false);
   const [isSubscribed, setIsSubscribed] = useState(false);
+  const [randomSub, setRandomSub] = useState("");
+  const [uploaderInfo, setUploaderInfo] = useState({});
   const navigate = useNavigate()
   const { width } = useWindowSize();
 
@@ -51,20 +54,20 @@ function VideoPage() {
     };
     //Need to get playlist ID for this user for liked.
     //Could be improve in the backend
-    console.log(token,isAuthenticated)
+    // console.log(token,isAuthenticated)
     if(token){
       fetchPlaylistIds();
     }
     //hideSidebar when loading Videopage
     setShowSubMenu(false);
-
+ 
   }, []);
 
   useEffect(() => {
     const fetchVideoData = async () => {
       try {
         const videoData = await getVideo(videoId);
-        console.log(videoData);
+        // console.log(videoData);
         setUploaderUserId(videoData.userId);
         setUploaderUsername(videoData.username);
         setVideoTitle(videoData.videoTitle);
@@ -75,6 +78,9 @@ function VideoPage() {
         const code = videoData.videoUrl.split('=')[1];
         setYoutubeCode(code);
         document.title = videoData.videoTitle;
+        
+        const userInfo = await getUserById(videoData.userId)
+        setUploaderInfo(userInfo)
       } catch (error) {
         console.error('Error fetching video data or username:', error);
       }
@@ -92,12 +98,33 @@ function VideoPage() {
 
 
     fetchVideoLikedData(videoId);
-    fetchVideoData();
-    //moving away from page renames tab to Youtube
+    fetchVideoData()
+    
     return () => {
       document.title = 'Youtube';
     };
   }, [videoId]);
+
+  useEffect(() =>{
+
+    const getSubscriberNumber = async () => {
+      try {
+        if(uploaderUserId && uploaderInfo.createdAt){
+          let response = await getSubscribers(uploaderUserId)
+          let realSub = response.length
+          if(isOlderThanHardcodedDate(uploaderInfo.createdAt)){
+          setRandomSub(convertNumber(getUsernameBasedRandomNumber(uploadUsername)+realSub))
+          }
+          else{
+          setRandomSub(convertNumber(realSub))
+          }
+        }
+      } catch (error) {
+          console.error("Error fetching subs:", error);
+      }
+    }
+    getSubscriberNumber();
+  },[uploadUsername,uploaderInfo])
 
 
   useEffect(() => {
@@ -105,7 +132,7 @@ function VideoPage() {
     if (token && uploaderUserId) {
       const fetchSubscriptionStatus = async () => {
         const subscribed = await checkIfSubscribed(uploaderUserId);
-        console.log("sub status",subscribed )
+        // console.log("sub status",subscribed )
         setIsSubscribed(subscribed);
       };
       fetchSubscriptionStatus();
@@ -159,14 +186,14 @@ function VideoPage() {
   }
 
 
-
+  
 
   if (!youtubeCode) {
     return <div>Loading...</div>;
   }
 
   const widthCutOff = 1250
-
+  // console.log(uploaderInfo)
   
   const initial = uploadUsername[0];
   const circleColor = getColorFromInitial(initial); 
@@ -192,7 +219,7 @@ function VideoPage() {
                       </div>
                       <div className="flex flex-col">
                         <p onClick={handleLinkToUploaderChannel}>{uploadUsername}</p>
-                        <p className="text-gray-500 text-sm">4.82K subscribers</p>
+                        <p className="text-gray-500 text-sm">{randomSub} subscribers</p>
                       </div>
                       <button
                         className={`ml-4 px-6 py-2 text-lg rounded-full ${isSubscribed ? 'bg-custom-gray-sub text-white' : 'bg-custom-white-thumbnail text-black'}`}

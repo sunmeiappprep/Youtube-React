@@ -24,7 +24,7 @@ const Sidebar = () => {
 
         setWatchLaterPlaylistId(watchLaterId);
         setLikedVideoPlaylistId(likedVideoId);
-        console.log(watchLaterId,likedVideoId)
+        // console.log(watchLaterId,likedVideoId)
       } catch (error) {
         console.error("Error fetching playlist IDs:", error);
       }

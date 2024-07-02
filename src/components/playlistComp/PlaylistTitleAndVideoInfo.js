@@ -13,7 +13,7 @@ function PlaylistTitleAndVideoInfo() {
                 if (id) {
                     const data = await getUserFirstVideo(id);
                     setPlaylist(data);
-                    console.log(data);
+                    // console.log(data);
                 }
             } catch (error) {
                 console.error('Error fetching data:', error);

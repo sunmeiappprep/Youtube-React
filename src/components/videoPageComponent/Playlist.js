@@ -31,7 +31,7 @@ export default function Playlist({videoId}) {
       };
       try {
         await createPlaylist(playlistInfo);
-        console.log('Playlist created:', playlistInfo);
+        // console.log('Playlist created:', playlistInfo);
         // Fetch playlists again after creating a new one
         await handleGetUserPlaylist();
       } catch (error) {
@@ -47,7 +47,7 @@ export default function Playlist({videoId}) {
       getUserPlaylist(user)
         .then(e => {
           setPlaylists(e);
-          console.log(e); 
+          // console.log(e); 
         })
         .catch(error => {
           console.error('Error fetching user playlists:', error);
@@ -67,7 +67,7 @@ export default function Playlist({videoId}) {
         });
 
         setPlaylistChecked(updatedPlaylistChecked);
-        console.log(playlistChecked)
+        // console.log(playlistChecked)
       } catch (error) {
         console.error('Error fetching playlists:', error);
       }
@@ -84,7 +84,7 @@ export default function Playlist({videoId}) {
     getUserPlaylist(user)
       .then(response => {
         setPlaylists(response);
-        console.log(response)
+        // console.log(response)
       })
       .catch(error => {
         console.error('Error fetching playlist:', error);

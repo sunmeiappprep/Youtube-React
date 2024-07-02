@@ -18,7 +18,7 @@ function SignInPage() {
 
   const handleDemoSignIn = async (event) => {
     event.preventDefault();
-    let data = await loginUser("asdasd1@gmail.com", 'asdasd');
+    let data = await loginUser("DemoUser", 'asdasd');
     if (data?.user?.id && data?.jwtToken) {
       setUser(data.user.id);
       setToken(data.jwtToken);
@@ -51,8 +51,8 @@ function SignInPage() {
   };
 
   const handleRegister =() => {
-    console.log("register")
-    navigate("/register")
+    // console.log("register")
+    // navigate("/register")
   }
   return (
     <div className="min-h-screen bg-custom-dark flex">

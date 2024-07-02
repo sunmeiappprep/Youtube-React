@@ -19,7 +19,7 @@ const CommentInput = ({videoId,handleUpdateComment}) => {
         videoId:videoId,
         text:comment
     }
-    console.log(commentInfo)
+    // console.log(commentInfo)
     createComment(commentInfo).then(() => handleUpdateComment())
     setComment('');
     setIsActive(false);
