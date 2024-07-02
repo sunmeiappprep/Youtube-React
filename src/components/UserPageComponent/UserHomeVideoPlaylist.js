@@ -3,9 +3,11 @@ import { useLocation } from 'react-router-dom';
 import PlaylistTitleAndVideoInfo from '../playlistComp/PlaylistTitleAndVideoInfo';
 import UserVideoUploadInfo from './UserVideoUploadInfo';
 
-function UserHomeVideoPlaylist() {
+
+function UserHomeVideoPlaylist({videos}) {
     const location = useLocation();
     const [selected, setSelected] = useState("Home");
+
 
     useEffect(() => {
         const params = new URLSearchParams(location.search);
@@ -53,7 +55,7 @@ function UserHomeVideoPlaylist() {
             <div className="p-4">
                 {selected === "Home" && <div>Subscribers</div>}
                 {selected === "Playlist" && <PlaylistTitleAndVideoInfo />}
-                {selected === "Video" && <UserVideoUploadInfo />}
+                {selected === "Video" && <UserVideoUploadInfo videos={videos}/>}
             </div>
         </div>
     );

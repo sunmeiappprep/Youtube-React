@@ -77,9 +77,10 @@ const Sidebar = () => {
 
     return (
       <div
-      className={`fixed top-0 left-0 h-full bg-custom-black text-white shadow-lg transition-transform transform ${
+      className={`fixed top-0 left-0 h-full bg-custom-dark text-white shadow-lg transition-transform transform z-50
+      ${
         showSubMenu ? 'translate-x-0' : '-translate-x-full'
-      } z-40 overflow-y-auto sidebar-custom-scrollbar`}  // Added sidebar-custom-scrollbar class
+      } z-50 overflow-y-auto sidebar-custom-scrollbar`}  // Added sidebar-custom-scrollbar class
       style={{ width: '240px' }}
     >
     <div className="p-2">

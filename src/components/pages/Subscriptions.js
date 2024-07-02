@@ -37,7 +37,7 @@ export default function Subscriptions() {
     }, [user,isAuthenticated]);
 
     return (
-        <div className="relative flex min-h-screen bg-custom-black">
+        <div className="relative flex min-h-screen bg-custom-dark">
           <Sidebar />
           <div className={`flex-grow ${showSubMenu ? 'ml-64' : 'ml-0'} min-h-screen`}>
             <NavBar />

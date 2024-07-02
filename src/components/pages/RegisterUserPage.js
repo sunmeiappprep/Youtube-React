@@ -3,8 +3,9 @@ import { loginUser,registerUser } from '../../utils/authUtils';
 import { useGlobalState } from '../../StateContext'; 
 import { useNavigate } from 'react-router-dom';
 import NavBar from '../navBar/NavBar';
+import Sidebar from '../navBar/Sidebar';
 function RegisterUserPage() {
-    const { user, token, setUser, setToken,setUserUsername,setIsAuthenticated } = useGlobalState(); // Access the context methods
+    const { user, token, setUser, setToken,setUserUsername,setIsAuthenticated,showSubMenu,setShowSubMenu  } = useGlobalState(); // Access the context methods
     const navigate = useNavigate()
     
     const handleDemoSignIn = async (event) => {
@@ -20,6 +21,10 @@ function RegisterUserPage() {
       }
 
     }
+
+    useEffect(() =>{
+      setShowSubMenu(false)
+    },[])
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -69,7 +74,11 @@ function RegisterUserPage() {
     }, [user, token]); // This effect runs when `user` or `token` changes
 
     return (
-        <div className="min-h-screen bg-custom-dark flex flex-col">
+      <div className="min-h-screen bg-custom-dark flex">
+        <div className={`${showSubMenu ? 'w-full md:w-64' : 'w-0'} transition-all duration-300`}>
+          <Sidebar />
+        </div>
+        <div className="flex-grow flex flex-col">
           <NavBar />
           <div className="flex flex-grow items-center justify-center">
             <div className="max-w-md w-full space-y-8">
@@ -108,13 +117,13 @@ function RegisterUserPage() {
                     />
                   </div>
                 </div>
-
+  
                 {errorMessage && (
                   <div className="text-red-500 text-sm mt-2 text-center">
                     {errorMessage}
                   </div>
                 )}
-    
+  
                 <div className="space-y-2">
                   <button 
                     onClick={(e) => handleSubmit(e)} 
@@ -131,7 +140,7 @@ function RegisterUserPage() {
                     Demo User
                   </button>
                 </div>
-    
+  
                 <div className="text-center">
                   <div onClick={handleSignIn} className="font-medium text-indigo-400 hover:text-indigo-300">
                     Have an account? Sign In
@@ -141,8 +150,8 @@ function RegisterUserPage() {
             </div>
           </div>
         </div>
-      );
-    };
-    
-    export default RegisterUserPage;
-    
+      </div>
+    );
+  };
+  
+  export default RegisterUserPage;

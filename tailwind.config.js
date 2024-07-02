@@ -46,6 +46,9 @@ module.exports = {
       fontWeight: {
         'medium': 600,
       },
+      borderWidth: {
+        '1': '1px',
+      },
     },
   },
   variants: {},

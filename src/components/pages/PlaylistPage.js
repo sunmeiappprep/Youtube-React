@@ -30,10 +30,13 @@ const PlaylistPage = () => {
     fetchVideos();
   }, [id]);
 
-  useEffect(() =>{
-    setShowSubMenu(true)
-  },[])
-
+  useEffect(() => {
+    if (window.innerWidth < 900) {
+      setShowSubMenu(false);
+    } else {
+      setShowSubMenu(true);
+    }
+  }, [setShowSubMenu]);
 
   if (videos.length === 0) {
     return (

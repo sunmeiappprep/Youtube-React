@@ -132,9 +132,11 @@ const handleUpdateComment = async (commentId, newText) => {
     return <div>Loading...</div>;
   }
 
+  console.log(commentsReactionsObject)
   return (
     <div ref={containerRef}>
       <CommentInput videoId={videoId} handleUpdateComment={handleUpdateComment} />
+      <p className='text-xl'>{Object.keys(commentsReactionsObject).length} Comments</p>
       <div className="space-y-4 mt-6">
         {comments.map((comment) => {
           const createdAtSeed = new Date(comment.createdAt).getTime();

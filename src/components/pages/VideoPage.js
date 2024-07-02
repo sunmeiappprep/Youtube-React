@@ -16,6 +16,8 @@ import { formatDateDifference } from '../../utils/dateUtils';
 import { useNavigate } from 'react-router-dom';
 import { checkIfSubscribed, subscribeToChannel, unsubscribeFromChannel } from '../../utils/subscriptionUtils';
 import useWindowSize from '../hooks/useWindowSize';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrash, faSave } from '@fortawesome/free-solid-svg-icons';
 
 function VideoPage() {
   const { user, token, setUser, isAuthenticated, showSubMenu, setShowSubMenu } = useGlobalState();
@@ -50,7 +52,7 @@ function VideoPage() {
     //Need to get playlist ID for this user for liked.
     //Could be improve in the backend
     console.log(token,isAuthenticated)
-    if(token && isAuthenticated){
+    if(token){
       fetchPlaylistIds();
     }
     //hideSidebar when loading Videopage
@@ -99,14 +101,16 @@ function VideoPage() {
 
 
   useEffect(() => {
-    if (token && isAuthenticated) {
+    
+    if (token && uploaderUserId) {
       const fetchSubscriptionStatus = async () => {
         const subscribed = await checkIfSubscribed(uploaderUserId);
+        console.log("sub status",subscribed )
         setIsSubscribed(subscribed);
       };
       fetchSubscriptionStatus();
     }
-  }, []);
+  }, [uploaderUserId]);
 
 
   
@@ -168,15 +172,15 @@ function VideoPage() {
   const circleColor = getColorFromInitial(initial); 
   return (
     <div className="bg-custom-dark min-h-screen">
-      <div className="relative flex">
+      <div className="relative flex flex-col md:flex-row">
         <Sidebar />
-        <div className={`flex-grow ${showSubMenu ? 'ml-64' : 'ml-0'}`}>
+        <div className={`flex-grow ${showSubMenu ? 'ml-0 md:ml-64' : 'ml-0'}`}>
           <div className="video-responsive">
             <NavBar />
             <div className="flex justify-center">
-              <div className="w-full max-w-10.5xl">
-                <div className="flex">
-                  <div className={width < widthCutOff ? 'w-full' : 'w-3/4'}>
+              <div className="w-full max-w-10.5xl p-2">
+                <div className="flex flex-col md:flex-row">
+                  <div className={width < widthCutOff ? 'w-full p-4' : 'w-full md:w-3/4'}>
                     <VideoEmbed ref={videoRef} videoId={youtubeCode} onClick={() => {}} />
                     <p className="title truncate">{title}</p>
                     <div className="flex items-center mt-4">
@@ -191,17 +195,26 @@ function VideoPage() {
                         <p className="text-gray-500 text-sm">4.82K subscribers</p>
                       </div>
                       <button
-                      className={`ml-4 px-6 py-2 text-lg rounded-full ${isSubscribed ? 'bg-custom-gray-sub text-white' : 'bg-custom-white-thumbnail text-black'}`}
-                      onClick={handleSubscribe}
-                    >
-                      {isSubscribed ? 'Subscribed' : 'Subscribe'}
-                    </button>
+                        className={`ml-4 px-6 py-2 text-lg rounded-full ${isSubscribed ? 'bg-custom-gray-sub text-white' : 'bg-custom-white-thumbnail text-black'}`}
+                        onClick={handleSubscribe}
+                      >
+                        {isSubscribed ? 'Subscribed' : 'Subscribe'}
+                      </button>
                       <div className="flex-grow flex justify-end items-center mr-8">
-                        <div>
-                          <button onClick={handleDeleteVideoThenRedirectHomepage} className='h-8 w-36 bg-custom-gray rounded-l-full rounded-r-full mr-2'>
-                          Delete Video 
-                          </button>
-                        </div>
+                      <div>
+                        <button
+                          onClick={handleDeleteVideoThenRedirectHomepage}
+                          className="h-8 w-8 bg-custom-gray rounded-full mr-2 flex items-center justify-center md:hidden"
+                        >
+                          <FontAwesomeIcon icon={faTrash} className="text-white" />
+                        </button>
+                        <button
+                          onClick={handleDeleteVideoThenRedirectHomepage}
+                          className="h-8 w-36 bg-custom-gray rounded-l-full rounded-r-full mr-2 hidden md:flex items-center justify-center"
+                        >
+                          Delete Video
+                        </button>
+                      </div>
                         <div className="flex justify-center mr-4">
                           <LikeAndDislikeButton
                             videoId={videoId}
@@ -210,35 +223,33 @@ function VideoPage() {
                             likedVideoPlaylistId={likedVideoPlaylistId}
                           />
                         </div>
-   
                         <div className="flex justify-center">
                           <Playlist videoId={videoId} />
                         </div>
                       </div>
                     </div>
                     <hr className="border-gray-500 my-4" />
-                    <div className="bg-custom-gray-desc pt-2 pl-3 pr-3 pb-3 rounded-xl text-white mt-4 cursor-pointer"
-                    onClick={handleMoreClick}>
-                    <div className="flex gap-2 font-bold">
-                      <p>{convertNumber(views)} views</p>
-                      <p>{formatDateDifference(videoGeneratedDate)} ago</p>
+                    <div className="bg-custom-gray-desc pt-2 pl-3 pr-3 pb-3 rounded-xl text-white mt-4 cursor-pointer" onClick={handleMoreClick}>
+                      <div className="flex gap-2 font-bold">
+                        <p>{convertNumber(views)} views</p>
+                        <p>{formatDateDifference(videoGeneratedDate)} ago</p>
+                      </div>
+                      <div>
+                        <p className={isDescriptionExpanded ? '' : 'line-clamp-2'}>
+                          {description}
+                        </p>
+                        {!isDescriptionExpanded && (
+                          <span className="text-custom-grey cursor-pointer" onClick={handleMoreClick}>
+                            ... more
+                          </span>
+                        )}
+                        {isDescriptionExpanded && (
+                          <span className="text-custom-grey cursor-pointer" onClick={handleMoreClick}>
+                            Show less
+                          </span>
+                        )}
+                      </div>
                     </div>
-                    <div className="">
-                      <p className={isDescriptionExpanded ? '' : 'line-clamp-2'}>
-                        {description}
-                      </p>
-                      {!isDescriptionExpanded && (
-                        <span className="text-custom-grey cursor-pointer" onClick={handleMoreClick}>
-                          ... more
-                        </span>
-                      )}
-                      {isDescriptionExpanded && (
-                        <span className="text-custom-grey cursor-pointer" onClick={handleMoreClick}>
-                          Show less
-                        </span>
-                      )}
-                    </div>
-                  </div>
                     <CommentsDisplay videoId={videoId} />
                     {width < widthCutOff && (
                       <div className="mt-4 w-full">
@@ -247,7 +258,7 @@ function VideoPage() {
                     )}
                   </div>
                   {width >= widthCutOff && (
-                    <div className="w-1/4 ml-2">
+                    <div className="w-full md:w-1/4 ml-0 md:ml-2 mt-4 md:mt-0">
                       <SidebarVideoRec />
                     </div>
                   )}
@@ -259,6 +270,6 @@ function VideoPage() {
       </div>
     </div>
   );
-}
+};
 
 export default VideoPage;

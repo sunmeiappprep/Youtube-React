@@ -21,6 +21,8 @@ const CommentInput = ({videoId,handleUpdateComment}) => {
     }
     console.log(commentInfo)
     createComment(commentInfo).then(() => handleUpdateComment())
+    setComment('');
+    setIsActive(false);
   }
 
   const handleLogin = () => {
@@ -35,26 +37,29 @@ const CommentInput = ({videoId,handleUpdateComment}) => {
         onChange={(e) => setComment(e.target.value)}
         onFocus={() => setIsActive(true)}
         placeholder="Write a comment..."
-        className="border text-white bg-black border-gray-300 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+        className="text-white bg-custom-dark p-2 border-b border-gray-300 focus:outline-none focus:border-b-2 focus:border-blue-500 transition-all"
       />
       {isActive ? (
         user ? (
           <div className="flex space-x-2">
             <button
               onClick={() => handlePostComment()}
-              className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors"
+              className={`px-4 py-2 bg-custom-gray text-white rounded-full transition-colors ${comment ? 'hover:bg-blue-600' : ''}`}
+              disabled={!comment}
             >
               Comment
             </button>
             <button
               onClick={handleCancel}
-              className="px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600 transition-colors"
+              className="px-4 py-2 text-white rounded-full bg-custom-gray hover:bg-gray-600 transition-colors"
             >
               Cancel
             </button>
           </div>
         ) : (
-          <button onClick={handleLogin} className="px-4 py-1 text-sm font-semibold text-white bg-green-500 hover:bg-green-600 rounded" >Login</button>
+          <button onClick={handleLogin} className="px-4 py-1 text-sm font-semibold text-white bg-green-500 hover:bg-green-600 rounded">
+            Login
+          </button>
         )
       ) : null}
     </div>

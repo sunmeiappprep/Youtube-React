@@ -152,7 +152,9 @@ return (
           </div>
           <div className="scrollable-content">
             <ul className="playlist-list">
-              {playlists.map((playlist, index) => (
+            {playlists
+              .filter(playlist => playlist.title !== "Liked Video")
+              .map((playlist, index) => (
                 <li key={index} className="playlist-item">
                   <input 
                     type="checkbox" 

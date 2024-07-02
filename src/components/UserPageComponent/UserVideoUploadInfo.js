@@ -1,27 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { getUserVideos } from '../../utils/videoUtils';
+
 import { useGlobalState } from '../../StateContext';
 import UserVideoGrid from './UserVideoGrid';
-import { useParams } from 'react-router-dom';
-function UserVideoUploadInfo() {
-    const { id } = useParams();
-    const [videos, setVideos] = useState([]); 
-
-    useEffect(() => {
-        const fetchVideos = async () => {
-            try {
-                if (id) {
-                    const response = await getUserVideos(id);
-                    setVideos(response);
-                }
-            } catch (error) {
-                console.error("Error fetching videos:", error);
-            }
-        };
-
-        fetchVideos();
-    }, [id]);
+function UserVideoUploadInfo({videos}) {
 
     return (
         <div className="p-4">

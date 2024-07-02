@@ -12,8 +12,12 @@ export default function HomePage() {
   const { showSubMenu,setShowSubMenu } = useGlobalState(); 
 
   useEffect(() => {
-    setShowSubMenu(true)
-  },[])
+    if (window.innerWidth < 900) {
+      setShowSubMenu(false);
+    } else {
+      setShowSubMenu(true);
+    }
+  }, [setShowSubMenu]);
 
   // Set a seed and make sure it doesn't change when scrolling
   useEffect(() => {
@@ -58,15 +62,15 @@ export default function HomePage() {
   }
 
   return (
-    <div className="relative flex min-h-screen">
-      <div className={`${showSubMenu ? 'w-64' : 'w-0'} transition-all duration-300`}>
+    <div className="relative flex flex-col md:flex-row min-h-screen">
+      <div className={`${showSubMenu ? 'w-full md:w-64' : 'w-0'} transition-all duration-300`}>
         <Sidebar />
       </div>
-      <div className={`flex-grow flex flex-col transition-all duration-300`}>
-        <div className={`relative`}>
+      <div className="flex-grow flex flex-col">
+        <div className="relative">
           <NavBar />
         </div>
-        <div className="flex-grow p-4">
+        <div className="flex-grow p-2 md:p-1">
           <VideoGrid videos={videos} />
         </div>
       </div>

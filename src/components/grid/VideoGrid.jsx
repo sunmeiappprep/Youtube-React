@@ -6,7 +6,7 @@ import YouTubeHoverAutoplay from './YouTubeHoverAutoplay';
 function VideoGrid({ videos }) { 
     console.log(videos)
     return (
-        <div className="mx-auto px-4 py-8 w-full">
+        <div className="mx-auto px-0 py-8 w-full">
             <div className="grid gap-4 grid-cols-auto-fit-minmax-300">
                 {videos.map((video) => (
                     <div key={video.videoId}>
