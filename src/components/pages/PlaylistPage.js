@@ -6,7 +6,9 @@ import { useGlobalState } from '../../StateContext';
 import { formatDateDifference } from '../../utils/dateUtils';
 import PlaylistThumbnailColumn from '../playlistComp/PlaylistThumbnailColumn';
 import { useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 const PlaylistPage = () => {
+  const navigate = useNavigate();
   const { id } = useParams();
   const [videos, setVideos] = useState([]);
   const [totalViews, setTotalViews] = useState(0);
@@ -29,6 +31,10 @@ const PlaylistPage = () => {
 
     fetchVideos();
   }, [id]);
+
+  useEffect(()=>{
+    console.log(videos)
+  },[videos])
 
   useEffect(() => {
     if (window.innerWidth < 900) {
@@ -53,42 +59,46 @@ const PlaylistPage = () => {
       </div>
     );
   }
-
+  const handleClick = () => {
+    navigate(`/playlist/${id}/video/${videos[0].videoId}`);
+    };
+    
   const firstVideo = videos[0];
 
   return (
-    <div className='bg-custom-dark min-h-screen'>
+    <div className="bg-custom-dark min-h-screen">
       <div className="relative flex">
         <Sidebar />
         <div className={`flex-grow ${showSubMenu ? 'ml-64' : 'ml-0'}`}>
           <NavBar />
-          <div className="p-4">
-            <div className="flex">
-              <div style={{ flex: '1', marginRight: '0px', paddingRight: '0px', display: 'flex', justifyContent: 'flex-end' }}>
-                <div className="w-full max-w-xs rounded-lg overflow-hidden shadow-lg relative"> 
-                  <div className="relative w-full" style={{ paddingTop: '56.25%' }}>
-                    <div className="absolute inset-0 bg-gradient-to-br from-gray-800 to-transparent opacity-50 z-0 rounded-lg"></div>
-                    <img 
-                      className="absolute top-0 left-0 w-full h-full object-cover rounded-lg" 
-                      src={`https://i.ytimg.com/vi/${firstVideo.videoUrl.split("=")[1]}/hqdefault.jpg`} 
-                      alt="Video thumbnail" 
+          <div className="p-4 flex justify-center">
+            <div className="w-full max-w-7xl flex flex-col lg:flex-row items-center lg:items-start lg:space-x-4">
+              <div className="w-full lg:w-1/3 mb-4 lg:mb-0 rounded-lg cursor-pointer p-4 hover:bg-custom-gray">
+                <div className="w-full max-w-xs mx-auto rounded-lg overflow-hidden shadow-lg relative">
+                  <div className="relative w-full pt-[56.25%]">
+                    <div className="absolute z-0 rounded-lg"></div>
+                    <img
+                      className="absolute top-0 left-0 w-full h-full object-cover rounded-lg "
+                      src={`https://i.ytimg.com/vi/${firstVideo.videoUrl.split("=")[1]}/hqdefault.jpg`}
+                      alt="Video thumbnail"
+                      onClick={handleClick}
                     />
                   </div>
-                  <div className="py-1"> 
-                  <p className="text-white font-bold text-3xl py-2">{playlistInfo.title}</p> 
-                  <p className="text-white font-semibold text-sm">{playlistInfo.createdBy.username}</p> 
-                  <div className="flex text-xs font-medium text-custom-white py-3">
-                  <p className="pr-2">{videos.length} videos</p>
-                  <p className="pr-2">{totalViews} views</p>
-                  <p>{formatDateDifference(playlistInfo.createdOn)}</p>
-                </div>
-                </div>
+                  <div className="py-1">
+                    <p className="text-white font-bold text-3xl py-2 text-center">{playlistInfo.title}</p>
+                    <p className="text-white font-semibold text-sm text-center">{playlistInfo.createdBy.username}</p>
+                    <div className="flex justify-center text-xs font-medium text-custom-white py-3">
+                      <p className="pr-2">{videos.length} videos</p>
+                      <p className="pr-2">{totalViews} views</p>
+                      <p>{formatDateDifference(playlistInfo.createdOn)}</p>
+                    </div>
+                  </div>
                 </div>
               </div>
-              <div style={{ flex: '2', marginLeft: '0px', paddingLeft: '0px' }}>
+              <div className="w-full lg:w-2/3 px-1">
                 {videos.map((video, index) => (
-                  <div key={video.videoId}>
-                    <PlaylistThumbnailColumn video={video} index={index} />
+                  <div key={video.videoId} className="mb-4">
+                    <PlaylistThumbnailColumn video={video} index={index} playlistId={id} />
                   </div>
                 ))}
               </div>
@@ -98,10 +108,6 @@ const PlaylistPage = () => {
       </div>
     </div>
   );
-  
-  
-  
-  
 };
 
 export default PlaylistPage;

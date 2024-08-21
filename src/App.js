@@ -11,6 +11,8 @@ import PlaylistPage from './components/pages/PlaylistPage';
 import Subscriptions from './components/pages/Subscriptions';
 import VideoUploadPage from './components/pages/Upload';
 import VideoPage from './components/pages/VideoPage';
+import PlaylistQuery from './components/videoPageComponent/PlaylistQuery';
+import PlaylistVideoPage from './components/pages/PlaylistVideoPage';
 
 
 function App() {
@@ -29,6 +31,8 @@ function App() {
         <Route path="/user/:id" element={<UserPage />} />
         <Route path="/subscriptions" element={<Subscriptions />} />
         <Route path="/playlist/:id" element={<PlaylistPage />} />
+        <Route path="/playlist/:playlistId/video/:videoId" element={<PlaylistVideoPage />} />
+        <Route path="/pq" element={<PlaylistQuery />} />
         <Route path="/" element={<HomePage />} />
       </Routes>
     </Router>

@@ -3,7 +3,6 @@ import React from 'react';
 function VideoThumbnail({ videoId, title, uploader }) {
   return (
     <div className="max-w-md rounded overflow-hidden shadow-lg">
-      {/* Aspect Ratio Wrapper specifically for the iframe */}
       <div className="aspect-w-16 aspect-h-9">
         <iframe
           className="w-full h-full"

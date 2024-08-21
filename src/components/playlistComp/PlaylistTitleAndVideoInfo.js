@@ -26,21 +26,22 @@ function PlaylistTitleAndVideoInfo() {
 
     return (
         <div className="mx-auto px-4 py-8 w-full">
-            <div className="text-lg font-bold mb-4">Created Playlist</div>
-            <div className="grid gap-4" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))' }}>
-                {playlist.map((item, index) => (
-                    <div key={index}>
-                        <PlaylistThumbnail 
-                            playlistId ={item.playlistTitle.id}
-                            url={item.video.url.split("=")[1]} 
-                            title={item.playlistTitle.title} 
-                            count={item.videoCount}
-                            createdOn={item.playlistTitle.createdOn}
-                        />
-                    </div>
-                ))}
+        <div className="text-lg font-bold mb-4">Created Playlist</div>
+        <div className="flex gap-5 flex-wrap">
+          {playlist.map((item, index) => (
+            <div key={index} className="min-w-[300px]">
+              <PlaylistThumbnail 
+                playlistId={item.playlistTitle.id}
+                url={item.video.url.split("=")[1]} 
+                title={item.playlistTitle.title} 
+                count={item.videoCount}
+                createdOn={item.playlistTitle.createdOn}
+              />
             </div>
+          ))}
         </div>
+      </div>
+      
     );
 }
 

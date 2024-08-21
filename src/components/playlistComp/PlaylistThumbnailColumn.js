@@ -2,15 +2,15 @@ import React from 'react';
 import { formatDateDifference } from '../../utils/dateUtils';
 import { useNavigate } from 'react-router-dom';
 import { convertNumber } from '../../utils/numberUtils';
-const PlaylistThumbnailColumn = ({ video,index }) => {
+const PlaylistThumbnailColumn = ({ video,index,playlistId }) => {
   const navigate = useNavigate();
 
     const handleClick = () => {
-      navigate(`/video/${video.videoId}`);
+      navigate(`/playlist/${playlistId}/video/${video.videoId}`);
       };
   
       return (
-        <div onClick={handleClick} className="flex justify-start w-full mb-5">
+        <div onClick={handleClick} className="flex justify-start w-full mb-5 cursor-pointer hover:bg-custom-gray rounded-lg">
           <div className="flex w-auto max-w-full p-2">
             <div className="flex items-center justify-center px-4" style={{ width: '20px' }}>
               <div className='text-custom-white'>{index+1}</div>

@@ -10,7 +10,7 @@ const useYouTubeIframeAPI = () => {
 
       window.onYouTubeIframeAPIReady = () => {
         window.YT.ready(() => {
-          console.log('YouTube IFrame API ready');
+          // console.log('YouTube IFrame API ready');
         });
       };
     }

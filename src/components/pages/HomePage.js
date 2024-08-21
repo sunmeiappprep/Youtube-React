@@ -32,7 +32,7 @@ export default function HomePage() {
     fetchVideos(seed, page).then(newVideos => {
       setVideos(prevVideos => [...prevVideos, ...newVideos]);
     });
-    console.log(videos)
+    // console.log(videos)
   }, [seed, page]);
 
   // Mirror the dependency on the callback

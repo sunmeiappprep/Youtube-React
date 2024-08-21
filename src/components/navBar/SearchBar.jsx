@@ -7,7 +7,9 @@ function SearchBar() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    navigate(`/search/${encodeURIComponent(searchTerm)}`); 
+    if(searchTerm.length !== 0){
+      navigate(`/search/${encodeURIComponent(searchTerm)}`); 
+    }
   };
   return (
     <form onSubmit={handleSubmit} className="flex w-full max-w-xs md:max-w-md lg:max-w-screen-md mx-auto">
